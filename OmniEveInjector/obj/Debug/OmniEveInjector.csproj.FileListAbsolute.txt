@@ -1,0 +1,13 @@
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\OmniEveInjector.exe.config
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\OmniEveInjector.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\OmniEveInjector.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\EasyHook.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\MetroFramework.Design.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\MetroFramework.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Debug\OmniEveInjector.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Debug\OmniEveInjector.InjectorUI.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Debug\OmniEveInjector.Properties.Resources.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Debug\OmniEveInjector.csproj.GenerateResource.Cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Debug\OmniEveInjector.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Debug\OmniEveInjector.pdb

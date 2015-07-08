@@ -1,0 +1,7 @@
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Debug\OmniEveModules.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Debug\OmniEveModules.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Debug\DirectEve.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Debug\DirectEve.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Debug\OmniEveModules.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Debug\OmniEveModules.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Debug\OmniEveModules.pdb

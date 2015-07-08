@@ -1,0 +1,12 @@
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Debug\OmniEveMarket.exe.config
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Debug\OmniEveMarket.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Debug\OmniEveMarket.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Debug\MetroFramework.Design.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Debug\MetroFramework.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.OmniEveMarketUI.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.Properties.Resources.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.csproj.GenerateResource.Cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.pdb

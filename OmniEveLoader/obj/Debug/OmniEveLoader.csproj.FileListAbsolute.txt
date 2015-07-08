@@ -1,0 +1,9 @@
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\bin\Debug\OmniEveLoader.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\bin\Debug\OmniEveLoader.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\bin\Debug\EasyHook.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\bin\Debug\Interop.mscoree.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\Interop.mscoree.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.csproj.ResolveComReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.pdb
