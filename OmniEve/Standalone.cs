@@ -22,7 +22,7 @@
 
         public void Log(string msg)
         {
-            Logging.Log("Framework", msg, Logging.Red);
+            Logging.Log("StandaloneFramework:Log", msg, Logging.Red);
         }
 
         #region IDisposable Members

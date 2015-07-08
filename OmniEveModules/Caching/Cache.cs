@@ -87,7 +87,7 @@ namespace OmniEveModules.Caching
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("ItemHangar", "Exception [" + ex + "]", Logging.Debug);
+                    Logging.Log("Cache:ItemHangar", "Exception [" + ex + "]", Logging.Debug);
                     return null;
                 }
             }
@@ -107,7 +107,7 @@ namespace OmniEveModules.Caching
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("MyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
+                    Logging.Log("Cache:MyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
                     return null;
                 }
             }
@@ -122,7 +122,7 @@ namespace OmniEveModules.Caching
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("MyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
+                    Logging.Log("Cache:MyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
                 }
             }
         }
@@ -139,7 +139,7 @@ namespace OmniEveModules.Caching
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("MySellOrders", "Exception [" + ex + "]", Logging.Debug);
+                    Logging.Log("Cache:MySellOrders", "Exception [" + ex + "]", Logging.Debug);
                     return null;
                 }
             }
@@ -154,7 +154,7 @@ namespace OmniEveModules.Caching
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("MySellOrders", "Exception [" + ex + "]", Logging.Debug);
+                    Logging.Log("Cache:MySellOrders", "Exception [" + ex + "]", Logging.Debug);
                 }
             }
         }
@@ -167,7 +167,7 @@ namespace OmniEveModules.Caching
             }
             catch (Exception ex)
             {
-                Logging.Log("SellOrders", "Exception [" + ex + "]", Logging.Debug);
+                Logging.Log("Cache:SellOrders", "Exception [" + ex + "]", Logging.Debug);
                 return null;
             }
         }
@@ -179,7 +179,7 @@ namespace OmniEveModules.Caching
             }
             catch (Exception ex)
             {
-                Logging.Log("SellOrders", "Exception [" + ex + "]", Logging.Debug);
+                Logging.Log("Cache:SellOrders", "Exception [" + ex + "]", Logging.Debug);
             }
         }
     }

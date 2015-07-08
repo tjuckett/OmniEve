@@ -61,7 +61,7 @@ namespace OmniEveModules.Actions
                     
                     // Don't close the market window if its already up
                     if (marketWindow != null)
-                        Logging.Log("ModifyOrder", "Market already open no need to open the market", Logging.White);
+                        Logging.Log("ModifyOrder:Process", "Market already open no need to open the market", Logging.White);
                     _state = ModifyOrderState.OpenMarket;
                     break;
 
@@ -70,7 +70,7 @@ namespace OmniEveModules.Actions
                     if (marketWindow == null)
                     {
                         Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.OpenMarket);
-                        Logging.Log("ModifyOrder", "Opening Market", Logging.White);
+                        Logging.Log("ModifyOrder:Process", "Opening Market", Logging.White);
                         break;
                     }
 
@@ -89,7 +89,7 @@ namespace OmniEveModules.Actions
 
                     if (marketWindow != null)
                     {
-                        Logging.Log("ModifyOrder", "Load orders", Logging.White);
+                        Logging.Log("ModifyOrder:Process", "Load orders", Logging.White);
 
                         if(marketWindow.LoadOrders() == true)
                             _state = ModifyOrderState.Modify;
@@ -98,7 +98,7 @@ namespace OmniEveModules.Actions
                     }
                     else
                     {
-                        Logging.Log("ModifyOrder", "MarketWindow is not open, going back to open market state", Logging.White);
+                        Logging.Log("ModifyOrder:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
                         _state = ModifyOrderState.OpenMarket;
                     }
@@ -115,14 +115,14 @@ namespace OmniEveModules.Actions
                     List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
                     DirectOrder order = orders.First(o => o.OrderId == OrderId);
 
-                    Logging.Log("ModifyOrder", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
+                    Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
 
                     bool success = order.ModifyOrder(Price);
 
                     if(success)
-                        Logging.Log("ModifyOrder", "Modifying order successful", Logging.White);
+                        Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
                     else
-                        Logging.Log("ModifyOrder", "Modifying order failure", Logging.White);
+                        Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
 
                     _state = ModifyOrderState.Done;
                     break;

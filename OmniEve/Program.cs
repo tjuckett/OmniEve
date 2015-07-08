@@ -46,7 +46,7 @@ namespace OmniEve
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("ReadyToLoginToEVE", "Exception [" + ex + "]", Logging.Debug);
+                    Logging.Log("Program:ReadyToLoginToEVE", "Exception [" + ex + "]", Logging.Debug);
                     return false;
                 }
             }
@@ -92,8 +92,8 @@ namespace OmniEve
                 bool EasyHookExists = File.Exists(System.IO.Path.Combine(Logging.PathToCurrentDirectory, "EasyHook.dll"));
                 if (!EasyHookExists && !_missingEasyHookWarningGiven)
                 {
-                    Logging.Log("Startup", "EasyHook DLL's are missing. Please copy them into the same directory as your questor.exe", Logging.Orange);
-                    Logging.Log("Startup", "halting!", Logging.Orange);
+                    Logging.Log("Program:Main", "EasyHook DLL's are missing. Please copy them into the same directory as your questor.exe", Logging.Orange);
+                    Logging.Log("Program:Main", "halting!", Logging.Orange);
                     _missingEasyHookWarningGiven = true;
                     return;
                 }
@@ -105,28 +105,28 @@ namespace OmniEve
                     // DE now has cloaking enabled using EasyHook, If EasyHook DLLs are missing DE should complain. We check for and complain about missing EasyHook stuff before we get this far.
                     // 
                     //
-                    //Logging.Log("Startup", "temporarily disabling the loading of DE for debugging purposes, halting", Logging.Debug);
+                    //Logging.Log("Program:Startup", "temporarily disabling the loading of DE for debugging purposes, halting", Logging.Debug);
                     //while (Cache.Instance.DirectEve == null)
                     //{
                     //    System.Threading.Thread.Sleep(50); //this pauses forever...
                     //}
                     try
                     {
-                        Logging.Log("Startup", "Starting Instance of DirectEVE using StandaloneFramework", Logging.Debug);
+                        Logging.Log("Program:Main", "Starting Instance of DirectEVE using StandaloneFramework", Logging.Debug);
                         Cache.Instance.DirectEve = new DirectEve(new StandaloneFramework());
                         TryLoadingDirectEVE++;
-                        Logging.Log("Startup", "DirectEVE should now be active: see above for any messages from DirectEVE", Logging.Debug);
+                        Logging.Log("Program:Main", "DirectEVE should now be active: see above for any messages from DirectEVE", Logging.Debug);
                     }
                     catch (Exception exception)
                     {
-                        Logging.Log("Startup", "exception [" + exception + "]", Logging.Orange);
+                        Logging.Log("Program:Main", "exception [" + exception + "]", Logging.Orange);
                         return;
                     }
                 }
             }
             catch (Exception exception)
             {
-                Logging.Log("Startup", "exception [" + exception + "]", Logging.Orange);
+                Logging.Log("Program:Main", "exception [" + exception + "]", Logging.Orange);
                 return;
             }
 
@@ -134,12 +134,12 @@ namespace OmniEve
             {
                 try
                 {
-                    Logging.Log("Startup", "Error on Loading DirectEve, maybe server is down", Logging.Orange);
+                    Logging.Log("Program:Main", "Error on Loading DirectEve, maybe server is down", Logging.Orange);
                     return;
                 }
                 catch (Exception exception)
                 {
-                    Logging.BasicLog("Startup", "Exception while logging exception, oh joy [" + exception + "]");
+                    Logging.BasicLog("Program:Main", "Exception while logging exception, oh joy [" + exception + "]");
                     return;
                 }
             }
@@ -152,7 +152,7 @@ namespace OmniEve
             }
             catch (Exception ex)
             {
-                Logging.Log("Startup", string.Format("DirectEVE.OnFrame: Exception {0}...", ex), Logging.White);
+                Logging.Log("Program:Main", string.Format("DirectEVE.OnFrame: Exception {0}...", ex), Logging.White);
             }
 
             // Sleep until we're LoggedInAndReady
@@ -169,14 +169,14 @@ namespace OmniEve
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("Startup", "DirectEVE.Dispose: Exception [" + ex + "]", Logging.White);
+                    Logging.Log("Program:Main", "DirectEVE.Dispose: Exception [" + ex + "]", Logging.White);
                 }
 
 
                 // If the last parameter is false, then we only auto-login
                 if (_loginOnly)
                 {
-                    Logging.Log("Startup", "LoginOnly: done and exiting", Logging.Teal);
+                    Logging.Log("Program:Main", "LoginOnly: done and exiting", Logging.Teal);
                     return;
                 }
 
@@ -189,8 +189,8 @@ namespace OmniEve
                 //
                 try
                 {
-                    Logging.Log("Startup", "We are logged in.", Logging.Teal);
-                    Logging.Log("Startup", "Launching OmniEve", Logging.Teal);
+                    Logging.Log("Program:Main", "We are logged in.", Logging.Teal);
+                    Logging.Log("Program:Main", "Launching OmniEve", Logging.Teal);
                     _omniEve = new OmniEve();
 
                     int intdelayOmniEveUI = 0;
@@ -200,7 +200,7 @@ namespace OmniEve
                         System.Threading.Thread.Sleep(50);
                     }
 
-                    Logging.Log("Startup", "Launching OmniEveUI", Logging.Teal);
+                    Logging.Log("Program:Main", "Launching OmniEveUI", Logging.Teal);
                     Application.Run(new OmniEveUI(_omniEve));
 
                     while (_omniEve.State != OmniEveModules.States.OmniEveState.CloseOmniEve)
@@ -209,12 +209,12 @@ namespace OmniEve
                     }
 
 
-                    Logging.Log("Startup", "Exiting OmniEve", Logging.Teal);
+                    Logging.Log("Program:Main", "Exiting OmniEve", Logging.Teal);
 
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("Startup", "Exception [" + ex + "]", Logging.Teal);
+                    Logging.Log("Program:Main", "Exception [" + ex + "]", Logging.Teal);
                 }
                 finally
                 {
@@ -231,7 +231,7 @@ namespace OmniEve
 
             if (DateTime.UtcNow < _lastServerStatusCheckWasNotOK.AddSeconds(Cache.Instance.RandomNumber(10, 20)))
             {
-                Logging.Log("Startup", "lastServerStatusCheckWasNotOK = [" + _lastServerStatusCheckWasNotOK.ToShortTimeString() + "] waiting 10 to 20 seconds.", Logging.White);
+                Logging.Log("Program:LoginOnFrame", "lastServerStatusCheckWasNotOK = [" + _lastServerStatusCheckWasNotOK.ToShortTimeString() + "] waiting 10 to 20 seconds.", Logging.White);
                 return;
             }
 
@@ -262,7 +262,7 @@ namespace OmniEve
             // If the session is ready, then we are done :)
             if (Cache.Instance.DirectEve.Session.IsReady)
             {
-                Logging.Log("Startup", "We have successfully logged in", Logging.White);
+                Logging.Log("Program:LoginOnFrame", "We have successfully logged in", Logging.White);
                 Time.Instance.LastSessionIsReady = DateTime.UtcNow;
                 _loggedInAndReady = true;
                 return;
@@ -548,9 +548,9 @@ namespace OmniEve
             }
             catch (OptionException ex)
             {
-                Logging.Log("Startup", "omnieve: ", Logging.White);
-                Logging.Log("Startup", ex.Message, Logging.White);
-                Logging.Log("Startup", "Try `omnieve --help' for more information.", Logging.White);
+                Logging.Log("Program:ParseArgs", "omnieve: ", Logging.White);
+                Logging.Log("Program:ParseArgs", ex.Message, Logging.White);
+                Logging.Log("Program:ParseArgs", "Try `omnieve --help' for more information.", Logging.White);
                 return;
             }
 
@@ -558,7 +558,7 @@ namespace OmniEve
             {
                 System.IO.StringWriter sw = new System.IO.StringWriter();
                 p.WriteOptionDescriptions(sw);
-                Logging.Log("Startup", sw.ToString(), Logging.White);
+                Logging.Log("Program:ParseArgs", sw.ToString(), Logging.White);
                 return;
             }
         }
@@ -580,17 +580,19 @@ namespace OmniEve
  
             if(File.Exists(SettingsINI))
             {
-                if (!PreLoginSettings(SettingsINI)) Logging.Log("Startup.PreLoginSettings", "Failed to load PreLogin settings from [" + SettingsINI + "]", Logging.Debug);
+                if (!PreLoginSettings(SettingsINI)) Logging.Log("Program:LoadPreLoginSettingsFromINI", "Failed to load PreLogin settings from [" + SettingsINI + "]", Logging.Debug);
             }
         }
 
         public static bool PreLoginSettings(string iniFile)
         {
+            string functionName = "Program:PreLoginSettings";
+
             try
             {
                 if (!File.Exists(iniFile))
                 {
-                    Logging.Log("PreLoginSettings", "Could not find a file named [" + iniFile + "]", Logging.Debug);
+                    Logging.Log(functionName, "Could not find a file named [" + iniFile + "]", Logging.Debug);
                 }
 
                 int index = 0;
@@ -613,7 +615,7 @@ namespace OmniEve
                     //if (sLine.Count() != 2 && !sLine[0].Equals(ProxyUsername) && !sLine[0].Equals(ProxyPassword) )
                     if (sLine.Count() != 2)
                     {
-                        Logging.Log("PreLoginSettings", "IniFile not right format at line: [" + index + "]", Logging.Debug);
+                        Logging.Log(functionName, "IniFile not right format at line: [" + index + "]", Logging.Debug);
                     }
 
                     switch (sLine[0].ToLower())
@@ -642,24 +644,24 @@ namespace OmniEve
 
                 if (Logging.EVELoginUserName == null)
                 {
-                    Logging.Log("PreLoginSettings", "Missing: EVELoginUserName in [" + iniFile + "]: omnieve cant possibly AutoLogin without the EVE Login UserName", Logging.Debug);
+                    Logging.Log(functionName, "Missing: EVELoginUserName in [" + iniFile + "]: omnieve cant possibly AutoLogin without the EVE Login UserName", Logging.Debug);
                 }
 
                 if (Logging.EVELoginPassword == null)
                 {
-                    Logging.Log("PreLoginSettings", "Missing: EVELoginPassword in [" + iniFile + "]: omnieve cant possibly AutoLogin without the EVE Login Password!", Logging.Debug);
+                    Logging.Log(functionName, "Missing: EVELoginPassword in [" + iniFile + "]: omnieve cant possibly AutoLogin without the EVE Login Password!", Logging.Debug);
                 }
 
                 if (Logging.MyCharacterName == null)
                 {
-                    Logging.Log("PreLoginSettings", "Missing: CharacterNameToLogin in [" + iniFile + "]: omnieve cant possibly AutoLogin without the EVE CharacterName to choose", Logging.Debug);
+                    Logging.Log(functionName, "Missing: CharacterNameToLogin in [" + iniFile + "]: omnieve cant possibly AutoLogin without the EVE CharacterName to choose", Logging.Debug);
                 }
 
                 return true;
             }
             catch (Exception exception)
             {
-                Logging.Log("Startup.PreLoginSettings", "Exception [" + exception + "]", Logging.Debug);
+                Logging.Log(functionName, "Exception [" + exception + "]", Logging.Debug);
                 return false;
             }
         }

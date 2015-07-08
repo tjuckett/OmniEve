@@ -61,7 +61,7 @@ namespace OmniEveModules.Actions
 
                     // Don't close the market window if its already up
                     if (marketWindow != null)
-                        Logging.Log("MarketItemInfo", "Market already open no need to open the market", Logging.White);
+                        Logging.Log("MarketItemInfo:Process", "Market already open no need to open the market", Logging.White);
 
                     _state = MarketInfoState.OpenMarket;
                     break;
@@ -71,13 +71,13 @@ namespace OmniEveModules.Actions
                     if (marketWindow == null)
                     {
                         Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.OpenMarket);
-                        Logging.Log("MarketItemInfo", "Opening Market", Logging.White);
+                        Logging.Log("MarketItemInfo:Process", "Opening Market", Logging.White);
                         break;
                     }
 
                     if (!marketWindow.IsReady)
                     {
-                        Logging.Log("MarketItemInfo", "Market window is not ready", Logging.White);
+                        Logging.Log("MarketItemInfo:Process", "Market window is not ready", Logging.White);
                         break;
                     }
 
@@ -93,7 +93,7 @@ namespace OmniEveModules.Actions
 
                     if (marketWindow != null)
                     {
-                        Logging.Log("MarketItemInfo", "Load orders for TypeId - " + TypeId.ToString(), Logging.White);
+                        Logging.Log("MarketItemInfo:Process", "Load orders for TypeId - " + TypeId.ToString(), Logging.White);
 
                         if (marketWindow.DetailTypeId != TypeId)
                         {
@@ -105,7 +105,7 @@ namespace OmniEveModules.Actions
                     }
                     else
                     {
-                        Logging.Log("MarketItemInfo", "MarketWindow is not open, going back to open market state", Logging.White);
+                        Logging.Log("MarketItemInfo:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
                         _state = MarketInfoState.OpenMarket;
                     }
@@ -124,13 +124,13 @@ namespace OmniEveModules.Actions
                         if (marketWindow.DetailTypeId != TypeId)
                             _state = MarketInfoState.LoadItem;
 
-                        Logging.Log("MarketItemInfo", "Get list of orders for Item - " + TypeId.ToString(), Logging.White);
+                        Logging.Log("MarketItemInfo:Process", "Get list of orders for Item - " + TypeId.ToString(), Logging.White);
 
                         _marketInfoItem = new MarketItemInfo();
 
                         if (_marketInfoItem != null)
                         {
-                            Logging.Log("MarketItemInfo", "Get list of orders successful", Logging.White);
+                            Logging.Log("MarketItemInfo:Process", "Get list of orders successful", Logging.White);
 
                             _marketInfoItem.SellOrders = marketWindow.SellOrders;
                             _marketInfoItem.BuyOrders = marketWindow.BuyOrders;

@@ -77,7 +77,7 @@ namespace OmniEveModules.Actions
                     if (!marketWindow.IsReady)
                         break;
 
-                    Logging.Log("Buy", "Opening Market", Logging.White);
+                    Logging.Log("Sell:Process", "Opening Market", Logging.White);
                     _state = SellState.LoadItem;
 
                     break;
@@ -138,7 +138,7 @@ namespace OmniEveModules.Actions
                     DirectItem directItem = Cache.Instance.ItemHangar.Items.FirstOrDefault(i => (i.TypeId == Item));
                     if (directItem == null)
                     {
-                        Logging.Log("Sell", "Item " + Item + " no longer exists in the hanger", Logging.White);
+                        Logging.Log("Sell:Process", "Item " + Item + " no longer exists in the hanger", Logging.White);
                         break;
                     }
 
@@ -146,12 +146,12 @@ namespace OmniEveModules.Actions
                     if (Unit == 00)
                         Unit = directItem.Quantity;
 
-                    Logging.Log("Sell", "Starting QuickSell for " + Item, Logging.White);
+                    Logging.Log("Sell:Process", "Starting QuickSell for " + Item, Logging.White);
                     if (!directItem.QuickSell())
                     {
                         _lastAction = DateTime.UtcNow.AddSeconds(-5);
 
-                        Logging.Log("Sell", "QuickSell failed for " + Item + ", retrying in 5 seconds", Logging.White);
+                        Logging.Log("Sell:Process", "QuickSell failed for " + Item + ", retrying in 5 seconds", Logging.White);
                         break;
                     }
 
@@ -166,7 +166,7 @@ namespace OmniEveModules.Actions
                     // Mark as new execution
                     _lastAction = DateTime.UtcNow;
 
-                    Logging.Log("Sell", "Inspecting sell order for " + Item, Logging.White);
+                    Logging.Log("Sell:Process", "Inspecting sell order for " + Item, Logging.White);
                     _state = SellState.InspectOrder;
                     break;
 
@@ -178,7 +178,7 @@ namespace OmniEveModules.Actions
                     {
                         if ((!sellWindow.OrderId.HasValue || !sellWindow.Price.HasValue || !sellWindow.RemainingVolume.HasValue))
                         {
-                            Logging.Log("Sell", "No order available for " + Item, Logging.White);
+                            Logging.Log("Sell:Process", "No order available for " + Item, Logging.White);
 
                             sellWindow.Cancel();
                             _state = SellState.WaitingToFinishQuickSell;
@@ -187,7 +187,7 @@ namespace OmniEveModules.Actions
 
                         double price = sellWindow.Price.Value;
 
-                        Logging.Log("Sell", "Selling " + Unit + " of " + Item + " [Sell price: " + (price * Unit).ToString("#,##0.00") + "]", Logging.White);
+                        Logging.Log("Sell:Process", "Selling " + Unit + " of " + Item + " [Sell price: " + (price * Unit).ToString("#,##0.00") + "]", Logging.White);
                         sellWindow.Accept();
                         _state = SellState.WaitingToFinishQuickSell;
                     }

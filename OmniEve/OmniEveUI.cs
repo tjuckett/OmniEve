@@ -176,46 +176,53 @@ namespace OmniEve
             {
                 List<DirectOrder> orders = Cache.Instance.MySellOrders;
 
-                Logging.Log("ModifySellOrders", "Getting cached sell orders", Logging.Debug);
+                Logging.Log("OmniEveUI:ModifySellOrders", "Getting cached sell orders", Logging.Debug);
 
                 foreach (DataGridViewRow row in sellingGrid.Rows)
                 {
-                    if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
-                    { 
-                        long orderId = (long)row.Cells["Selling_OrderId"].Value;
-                        string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
-                        string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
+                    try
+                    {
+                        if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
+                        { 
+                            long orderId = (long)row.Cells["Selling_OrderId"].Value;
+                            string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
+                            string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
 
-                        // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
-                        decimal orderPrice = decimal.Parse(orderPriceStr);
-                        decimal marketPrice = decimal.Parse(marketPriceStr);
-                        decimal newPrice = marketPrice - 0.01m;
+                            // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
+                            decimal orderPrice = decimal.Parse(orderPriceStr);
+                            decimal marketPrice = decimal.Parse(marketPriceStr);
+                            decimal newPrice = marketPrice - 0.01m;
 
-                        if (orders != null)
-                        {
-                            Logging.Log("ModifySellOrders", "Getting order with OrderId - " + orderId, Logging.Debug);
-
-                            DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
-
-                            if (myOrder != null && marketPrice < orderPrice)
+                            if (orders != null)
                             {
-                                string newPriceStr = newPrice.ToString();
-                                double newPriceDbl = double.Parse(newPriceStr);
+                                Logging.Log("OmniEveUI:ModifySellOrders", "Getting order with OrderId - " + orderId, Logging.Debug);
 
-                                Logging.Log("ModifySellOrders", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
+                                DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
 
-                                ModifyOrder modifyOrder = new ModifyOrder();
-                                modifyOrder.OrderId = myOrder.OrderId;
-                                modifyOrder.IsBid = myOrder.IsBid;
-                                modifyOrder.Price = newPriceDbl;
-                                modifyOrder.OnModifyOrderActionFinished += ModifySellOrderFinished;
-                                _omniEve.AddAction(modifyOrder);
+                                if (myOrder != null && marketPrice < orderPrice)
+                                {
+                                    string newPriceStr = newPrice.ToString();
+                                    double newPriceDbl = double.Parse(newPriceStr);
+
+                                    Logging.Log("OmniEveUI:ModifySellOrders", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
+
+                                    ModifyOrder modifyOrder = new ModifyOrder();
+                                    modifyOrder.OrderId = myOrder.OrderId;
+                                    modifyOrder.IsBid = myOrder.IsBid;
+                                    modifyOrder.Price = newPriceDbl;
+                                    modifyOrder.OnModifyOrderActionFinished += ModifySellOrderFinished;
+                                    _omniEve.AddAction(modifyOrder);
+                                }
+                            }
+                            else
+                            {
+                                Logging.Log("OmniEveUI:ModifySellOrders", "No orders matching OrderId - " + orderId, Logging.Debug);
                             }
                         }
-                        else
-                        {
-                            Logging.Log("ModifySellOrders", "No orders matching OrderId - " + orderId, Logging.Debug);
-                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:ModifySellOrders", "Exception [" + ex + "]", Logging.Debug);
                     }
                 }
             }
@@ -241,46 +248,55 @@ namespace OmniEve
             {
                 List<DirectOrder> orders = Cache.Instance.MyBuyOrders;
 
-                Logging.Log("ModifyBuyOrders", "Getting cached buy orders", Logging.Debug);
+                Logging.Log("OmniEveUI:ModifyBuyOrders", "Getting cached buy orders", Logging.Debug);
 
                 foreach (DataGridViewRow row in buyingGrid.Rows)
                 {
-                    if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
+                    try
                     {
-                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
-                        string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
-                        string marketPriceStr = (string)row.Cells["Buying_MarketPrice"].Value;
-
-                        // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
-                        decimal orderPrice = decimal.Parse(orderPriceStr);
-                        decimal marketPrice = decimal.Parse(marketPriceStr);
-                        decimal newPrice = marketPrice + 0.01m;
-
-                        if (orders != null)
+                        if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
                         {
-                            Logging.Log("ModifyBuyOrders", "Getting order with OrderId - " + orderId, Logging.Debug);
+                            Logging.Log("OmniEveUI:ModifyBuyOrders", "Row selected, modifying order", Logging.Debug);
 
-                            DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
+                            long orderId = (long)row.Cells["Buying_OrderId"].Value;
+                            string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
+                            string marketPriceStr = (string)row.Cells["Buying_MarketPrice"].Value;
 
-                            if (myOrder != null && marketPrice > orderPrice)
+                            // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
+                            decimal orderPrice = decimal.Parse(orderPriceStr);
+                            decimal marketPrice = decimal.Parse(marketPriceStr);
+                            decimal newPrice = marketPrice + 0.01m;
+
+                            if (orders != null)
                             {
-                                string newPriceStr = newPrice.ToString();
-                                double newPriceDbl = double.Parse(newPriceStr);
+                                Logging.Log("OmniEveUI:ModifyBuyOrders", "Getting order with OrderId - " + orderId, Logging.Debug);
 
-                                Logging.Log("ModifyBuyOrders", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
+                                DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
 
-                                ModifyOrder modifyOrder = new ModifyOrder();
-                                modifyOrder.OrderId = myOrder.OrderId;
-                                modifyOrder.IsBid = myOrder.IsBid;
-                                modifyOrder.Price = newPriceDbl;
-                                modifyOrder.OnModifyOrderActionFinished += ModifyBuyOrderFinished;
-                                _omniEve.AddAction(modifyOrder);
+                                if (myOrder != null && marketPrice > orderPrice)
+                                {
+                                    string newPriceStr = newPrice.ToString();
+                                    double newPriceDbl = double.Parse(newPriceStr);
+
+                                    Logging.Log("OmniEveUI:ModifyBuyOrders", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
+
+                                    ModifyOrder modifyOrder = new ModifyOrder();
+                                    modifyOrder.OrderId = myOrder.OrderId;
+                                    modifyOrder.IsBid = myOrder.IsBid;
+                                    modifyOrder.Price = newPriceDbl;
+                                    modifyOrder.OnModifyOrderActionFinished += ModifyBuyOrderFinished;
+                                    _omniEve.AddAction(modifyOrder);
+                                }
+                            }
+                            else
+                            {
+                                Logging.Log("OmniEveUI:ModifyBuyOrders", "No orders matching OrderId - " + orderId, Logging.Debug);
                             }
                         }
-                        else
-                        {
-                            Logging.Log("ModifyBuyOrders", "No orders matching OrderId - " + orderId, Logging.Debug);
-                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:ModifyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
                     }
                 }
             }
@@ -324,7 +340,7 @@ namespace OmniEve
             }
             catch (Exception ex)
             {
-                Logging.Log("sellingRefresh", "Exception [" + ex + "]", Logging.Debug);
+                Logging.Log("OmniEveUI:RefreshOrdersButton", "Exception [" + ex + "]", Logging.Debug);
             }
         }
 
@@ -332,14 +348,14 @@ namespace OmniEve
         {
             try
             {
-                Logging.Log("Modifying Orders", "Modifying sell and buy orders", Logging.Debug);
+                Logging.Log("OmniEveUI:ModifyOrdersButton", "Modifying sell and buy orders", Logging.Debug);
 
                 ModifySellOrders();
                 ModifyBuyOrders();
             }
             catch (Exception ex)
             {
-                Logging.Log("Modifying Orders", "Exception [" + ex + "]", Logging.Debug);
+                Logging.Log("OmniEveUI:ModifyOrdersButton", "Exception [" + ex + "]", Logging.Debug);
             }
         }
     }

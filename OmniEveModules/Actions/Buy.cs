@@ -73,7 +73,7 @@ namespace OmniEveModules.Actions
                     if (!marketWindow.IsReady)
                         break;
 
-                    Logging.Log("Buy", "Opening Market", Logging.White);
+                    Logging.Log("Buy:Process", "Opening Market", Logging.White);
                     _state = BuyState.LoadItem;
 
                     break;
@@ -147,7 +147,7 @@ namespace OmniEveModules.Actions
                             {
                                 order.Buy(Unit, DirectOrderRange.Station);
                                 Unit = Unit - order.VolumeEntered;
-                                Logging.Log("Buy", "Missing " + Convert.ToString(Unit) + " units", Logging.White);
+                                Logging.Log("Buy:Process", "Missing " + Convert.ToString(Unit) + " units", Logging.White);
                                 _returnBuy = true;
                                 _state = BuyState.WaitForItems;
                             }
@@ -167,13 +167,13 @@ namespace OmniEveModules.Actions
 
                     if (_returnBuy)
                     {
-                        Logging.Log("Buy", "Return Buy", Logging.White);
+                        Logging.Log("Buy:Process", "Return Buy", Logging.White);
                         _returnBuy = false;
                         _state = BuyState.OpenMarket;
                         break;
                     }
 
-                    Logging.Log("Buy", "Done", Logging.White);
+                    Logging.Log("Buy:Process", "Done", Logging.White);
                     _state = BuyState.Done;
 
                     break;

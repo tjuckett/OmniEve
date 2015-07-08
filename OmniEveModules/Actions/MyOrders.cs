@@ -48,7 +48,7 @@ namespace OmniEveModules.Actions
 
                     // Don't close the market window if its already up
                     if (marketWindow != null)
-                        Logging.Log("MyOrders", "Market already open no need to open the market", Logging.White);
+                        Logging.Log("MyOrders:Process", "Market already open no need to open the market", Logging.White);
 
                     _state = MyOrdersState.OpenMarket;
                     break;
@@ -58,13 +58,13 @@ namespace OmniEveModules.Actions
                     if (marketWindow == null)
                     {
                         Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.OpenMarket);
-                        Logging.Log("MyOrders", "Opening Market", Logging.White);
+                        Logging.Log("MyOrders:Process", "Opening Market", Logging.White);
                         break;
                     }
 
                     if (!marketWindow.IsReady)
                     {
-                        Logging.Log("MyOrders", "Market window is not ready", Logging.White);
+                        Logging.Log("MyOrders:Process", "Market window is not ready", Logging.White);
                         break;
                     }
 
@@ -77,7 +77,7 @@ namespace OmniEveModules.Actions
 
                     if (marketWindow != null)
                     {
-                        Logging.Log("MyOrders", "Load orders", Logging.White);
+                        Logging.Log("MyOrders:Process", "Load orders", Logging.White);
 
                         marketWindow.LoadOrders();
 
@@ -86,7 +86,7 @@ namespace OmniEveModules.Actions
                     }
                     else
                     {
-                        Logging.Log("BuyOrders", "MarketWindow is not open, going back to open market state", Logging.White);
+                        Logging.Log("MyOrders:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
                         _state = MyOrdersState.OpenMarket;
                     }
@@ -102,20 +102,20 @@ namespace OmniEveModules.Actions
                     {
                         _lastAction = DateTime.UtcNow;
 
-                        Logging.Log("MyOrders", "Get list of my orders", Logging.White);
+                        Logging.Log("MyOrders:Process", "Get list of my orders", Logging.White);
 
                         List<DirectOrder> buyOrders = marketWindow.GetMyOrders(true).ToList();
                         List<DirectOrder> sellOrders = marketWindow.GetMyOrders(false).ToList();
 
                         if (sellOrders != null)
                         {
-                            Logging.Log("MyOrders", "Get list of my sell orders successful", Logging.White);
+                            Logging.Log("MyOrders:Process", "Get list of my sell orders successful", Logging.White);
                             Cache.Instance.MySellOrders = sellOrders;
                         }
 
                         if (buyOrders != null)
                         {
-                            Logging.Log("MyOrders", "Get list of my buy orders successful", Logging.White);
+                            Logging.Log("MyOrders:Process", "Get list of my buy orders successful", Logging.White);
                             Cache.Instance.MyBuyOrders = buyOrders;                            
                         }
 

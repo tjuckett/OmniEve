@@ -49,7 +49,7 @@ namespace OmniEveModules.Status
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("Cache.InSpace", "if (DirectEve.Session.IsInSpace && !DirectEve.Session.IsInStation && DirectEve.Session.IsReady) <---must have failed exception was [" + ex.Message + "]", Logging.Teal);
+                    Logging.Log("Status:InSpace", "if (DirectEve.Session.IsInSpace && !DirectEve.Session.IsInStation && DirectEve.Session.IsReady) <---must have failed exception was [" + ex.Message + "]", Logging.Teal);
                     return false;
                 }
             }
@@ -81,7 +81,7 @@ namespace OmniEveModules.Status
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log("Cache.InStation", "if (DirectEve.Session.IsInStation && !DirectEve.Session.IsInSpace && DirectEve.Session.IsReady) <---must have failed exception was [" + ex.Message + "]", Logging.Teal);
+                    Logging.Log("Status:InStation", "if (DirectEve.Session.IsInStation && !DirectEve.Session.IsInSpace && DirectEve.Session.IsReady) <---must have failed exception was [" + ex.Message + "]", Logging.Teal);
                     return false;
                 }
             }
@@ -106,31 +106,31 @@ namespace OmniEveModules.Status
                                 }
                                 else
                                 {
-                                    Logging.Log("Cache.InWarp", "We are not in warp.Cache.Instance.ActiveShip.Entity.Mode  is [" + Cache.Instance.DirectEve.ActiveShip.Entity.Mode + "]", Logging.Teal);
+                                    Logging.Log("Status:InWarp", "We are not in warp.Cache.Instance.ActiveShip.Entity.Mode  is [" + Cache.Instance.DirectEve.ActiveShip.Entity.Mode + "]", Logging.Teal);
                                     return false;
                                 }
                             }
                             else
                             {
-                                Logging.Log("Cache.InWarp", "Why are we checking for InWarp if Cache.Instance.ActiveShip.Entity is Null? (session change?)", Logging.Teal);
+                                Logging.Log("Status:InWarp", "Why are we checking for InWarp if Cache.Instance.ActiveShip.Entity is Null? (session change?)", Logging.Teal);
                                 return false;
                             }
                         }
                         else
                         {
-                            Logging.Log("Cache.InWarp", "Why are we checking for InWarp if Cache.Instance.ActiveShip is Null? (session change?)", Logging.Teal);
+                            Logging.Log("Status:InWarp", "Why are we checking for InWarp if Cache.Instance.ActiveShip is Null? (session change?)", Logging.Teal);
                             return false;
                         }
                     }
                     else
                     {
-                        Logging.Log("Cache.InWarp", "Why are we checking for InWarp while docked or between session changes?", Logging.Teal);
+                        Logging.Log("Status:InWarp", "Why are we checking for InWarp while docked or between session changes?", Logging.Teal);
                         return false;
                     }
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log("Cache.InWarp", "InWarp check failed, exception [" + exception + "]", Logging.Teal);
+                    Logging.Log("Status:InWarp", "InWarp check failed, exception [" + exception + "]", Logging.Teal);
                 }
 
                 return false;
@@ -166,7 +166,7 @@ namespace OmniEveModules.Status
             }
             catch (Exception exception)
             {
-                Logging.Log("Cache.IsApproaching", "Exception [" + exception + "]", Logging.Debug);
+                Logging.Log("Status:IsApproaching", "Exception [" + exception + "]", Logging.Debug);
                 return false;
             }
         }*/
@@ -200,7 +200,7 @@ namespace OmniEveModules.Status
             }
             catch (Exception exception)
             {
-                Logging.Log("Cache.IsApproaching", "Exception [" + exception + "]", Logging.Debug);
+                Logging.Log("Status:IsApproaching", "Exception [" + exception + "]", Logging.Debug);
                 return false;
             }
         }*/
@@ -223,7 +223,7 @@ namespace OmniEveModules.Status
             }
             catch (Exception exception)
             {
-                Logging.Log("Cache.IsApproachingOrOrbiting", "Exception [" + exception + "]", Logging.Debug);
+                Logging.Log("Status:IsApproachingOrOrbiting", "Exception [" + exception + "]", Logging.Debug);
                 return false;
             }
         }*/

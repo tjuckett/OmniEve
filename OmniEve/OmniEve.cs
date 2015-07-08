@@ -32,7 +32,7 @@ namespace OmniEve
 
             if (Cache.Instance.DirectEve == null)
             {
-                Logging.Log("Startup", "Error on Loading DirectEve, maybe server is down", Logging.Orange);
+                Logging.Log("OmniEve:OmniEve", "Error on Loading DirectEve, maybe server is down", Logging.Orange);
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace OmniEve
             }
             catch (Exception ex)
             {
-                Logging.Log("OmniEve", string.Format("DirectEVE.OnFrame: Exception {0}...", ex), Logging.White);
+                Logging.Log("OmniEve:OmniEve", string.Format("DirectEVE.OnFrame: Exception {0}...", ex), Logging.White);
             }
         }
 
@@ -111,68 +111,76 @@ namespace OmniEve
 
         private void EVEOnFrame(object sender, EventArgs e)
         {
-            if (!OnFrameValidate()) return;
+            try
+            { 
+                if (!OnFrameValidate()) return;
 
-            //Logging.Log("OmniEve", "OnFrame: this is OmniEve.cs [" + DateTime.UtcNow + "] by default the next InSpace pulse will be in [" + Time.Instance.OmniEvePulseInSpace_milliseconds + "]milliseconds", Logging.Teal);
+                //Logging.Log("OmniEve", "OnFrame: this is OmniEve.cs [" + DateTime.UtcNow + "] by default the next InSpace pulse will be in [" + Time.Instance.OmniEvePulseInSpace_milliseconds + "]milliseconds", Logging.Teal);
 
-            if (DateTime.UtcNow < _nextOmniEveAction)
-                Time.Instance.LastKnownGoodConnectedTime = DateTime.UtcNow;
+                if (DateTime.UtcNow < _nextOmniEveAction)
+                    Time.Instance.LastKnownGoodConnectedTime = DateTime.UtcNow;
 
-            // When in warp there's nothing we can do, so ignore everything
-            if (Status.Instance.InSpace && Status.Instance.InWarp) return;
+                // When in warp there's nothing we can do, so ignore everything
+                if (Status.Instance.InSpace && Status.Instance.InWarp) return;
 
-            switch (_state)
-            {
-                case OmniEveState.Idle:
-                    _state = OmniEveState.NextAction;
-                    break;
-                case OmniEveState.Cleanup:
-                    // Remove the eve frame and move to the close frame
-                    Cache.Instance.DirectEve.Dispose();
+                switch (_state)
+                {
+                    case OmniEveState.Idle:
+                        _state = OmniEveState.NextAction;
+                        break;
+                    case OmniEveState.Cleanup:
+                        // Remove the eve frame and move to the close frame
+                        Cache.Instance.DirectEve.Dispose();
 
-                    _state = OmniEveState.CloseOmniEve;
-                    Cache.Instance.DirectEve.OnFrame -= EVEOnFrame;
-                    break;
-                case OmniEveState.NextAction:
-                    lock(_actions)
-                    {
+                        _state = OmniEveState.CloseOmniEve;
+                        Cache.Instance.DirectEve.OnFrame -= EVEOnFrame;
+                        break;
+                    case OmniEveState.NextAction:
                         if (_actions.Count > 0 && _currentAction == null)
                         {
-                            Logging.Log("OmniEve", "OnFrame: Popping next action off the queue", Logging.Teal);
-
-                            _currentAction = _actions[0];
-                            _actions.RemoveAt(0);
+                            Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Popping next action off the queue", Logging.Teal);
+                            
+                            _currentAction = _actions.First();
+                            lock (_actions)
+                            {
+                                _actions.RemoveAt(0);
+                            }
+                            
                             _state = OmniEveState.InitAction;
                         }
-                    }
 
-                    break;
-                case OmniEveState.InitAction:
-                    if (_currentAction != null)
-                    {
-                        Logging.Log("OmniEve", "OnFrame: Initializing current action", Logging.Teal);
-                        _currentAction.Initialize();
-                        _state = OmniEveState.ProcessAction;
-                    }
-                    break;
-                case OmniEveState.ProcessAction:
-                    if(_currentAction != null)
-                    {
-                        _currentAction.Process();
-                        
-                        // If the current action is now done we can stop processing and go back to the idle state
-                        if (_currentAction.IsDone())
+                        break;
+                    case OmniEveState.InitAction:
+                        if (_currentAction != null)
                         {
-                            Logging.Log("OmniEve", "OnFrame: Current action is done, going back to idle state", Logging.Teal);
-                            _state = OmniEveState.Idle;
-                            _currentAction = null;
+                            Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Initializing current action", Logging.Teal);
+                            _currentAction.Initialize();
+                            _state = OmniEveState.ProcessAction;
                         }
-                    }
-                    break;
-                case OmniEveState.CloseOmniEve:
-                    break;
-                case OmniEveState.Error:
-                    break;
+                        break;
+                    case OmniEveState.ProcessAction:
+                        if(_currentAction != null)
+                        {
+                            _currentAction.Process();
+                        
+                            // If the current action is now done we can stop processing and go back to the idle state
+                            if (_currentAction.IsDone())
+                            {
+                                Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Current action is done, going back to idle state", Logging.Teal);
+                                _state = OmniEveState.Idle;
+                                _currentAction = null;
+                            }
+                        }
+                        break;
+                    case OmniEveState.CloseOmniEve:
+                        break;
+                    case OmniEveState.Error:
+                        break;
+                }
+            }
+            catch(Exception ex)
+            {
+                Logging.Log("OmniEve:EVEOnFrame", "Exception [" + ex + "]", Logging.Debug);
             }
         }
 
