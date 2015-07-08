@@ -80,7 +80,7 @@ namespace OmniEveModules.Logging
         //
         public static int ConsoleLogDaysOfLogsToKeep { get; set; }
 
-        public static ControlWriter ControlWriter { get; set; }
+        public static TextBoxWriter TextBoxWriter { get; set; }
 
 
         //public  void Log(string line)
@@ -109,9 +109,9 @@ namespace OmniEveModules.Logging
 
                 Logging.ExtConsole = Logging.redactedPlainLogLine;
 
-                if (ControlWriter != null)
+                if (TextBoxWriter != null)
                 {
-                    ControlWriter.Write(Logging.redactedPlainLogLine);
+                    TextBoxWriter.Write(Logging.redactedPlainLogLine);
                 }                
 
                 if (Logging.tryToLogToFile)

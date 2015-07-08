@@ -15,6 +15,9 @@ namespace OmniEveModules.Actions
 
     public class ModifyOrder : IAction
     {
+        public delegate void ModifyOrderActionFinished(long orderId, double price);
+        public event ModifyOrderActionFinished OnModifyOrderActionFinished;
+
         public long OrderId { get; set; }
         public bool IsBid { get; set; }
         public double Price { get; set; }
@@ -48,6 +51,9 @@ namespace OmniEveModules.Actions
                 case ModifyOrderState.Idle:
                     break;
                 case ModifyOrderState.Done:
+                    if (OnModifyOrderActionFinished != null)
+                        OnModifyOrderActionFinished(OrderId, Price);
+
                     _done = true;
                     break;
 
@@ -101,7 +107,7 @@ namespace OmniEveModules.Actions
 
                 case ModifyOrderState.Modify:
 
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 4)
                         break;
 
                     _lastAction = DateTime.UtcNow;

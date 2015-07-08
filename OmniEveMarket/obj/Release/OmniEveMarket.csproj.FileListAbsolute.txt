@@ -61,3 +61,15 @@ C:\Users\Tim\Google Drive\OmniEve\OmniEve\OmniEveMarket\bin\Release\OmniEveMarke
 C:\Users\Tim\Google Drive\OmniEve\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.exe
 C:\Users\Tim\Google Drive\OmniEve\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.pdb
 E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\OmniEveMarket.exe.config
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\OmniEveMarket.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\OmniEveMarket.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\MetroFramework.Design.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\MetroFramework.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\MetroFramework.Fonts.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.OmniEveMarketUI.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.Properties.Resources.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csproj.GenerateResource.Cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.pdb

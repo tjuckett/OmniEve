@@ -29,7 +29,7 @@ namespace OmniEve
 
             InitializeComponent();
 
-            Logging.ControlWriter = new ControlWriter(loggingRichTextBox);
+            Logging.TextBoxWriter = new TextBoxWriter(logTextBox);
         }
 
         private void MySellOrdersUpdated(List<DirectOrder> mySellOrders)
@@ -52,6 +52,7 @@ namespace OmniEve
 
                 sellingGrid.AllowUserToAddRows = true;
                 int index = sellingGrid.Rows.Add();
+                sellingGrid.Rows[index].Cells["Selling_Select"].Value = true;
                 sellingGrid.Rows[index].Cells["Selling_TypeId"].Value = order.TypeId;
                 sellingGrid.Rows[index].Cells["Selling_OrderId"].Value = order.OrderId;
                 sellingGrid.Rows[index].Cells["Selling_Name"].Value = name;
@@ -65,24 +66,22 @@ namespace OmniEve
                 if (_omniEve != null)
                 {
                     MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
+                    marketInfo.OnMarketInfoActionFinished += SellMarketInfoFinished;
                     marketInfo.TypeId = order.TypeId;
                     _omniEve.AddAction(marketInfo);
                 }
             }
         }
 
-        private void MarketInfoFinished(MarketItemInfo marketInfo)
+        private void SellMarketInfoFinished(MarketItemInfo marketInfo)
         {
-            List<DirectOrder> orders = marketInfo.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
-            DirectOrder order = orders.LastOrDefault();
+            List<DirectOrder> orders = marketInfo.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
+            DirectOrder order = orders.FirstOrDefault();
 
             if(order != null)
             {
                 foreach(DataGridViewRow row in sellingGrid.Rows)
                 {
-                    Logging.Log("OmniEveUI:MarketInfoFinished", "Searching for row with Type Id - " + marketInfo.TypeId, Logging.White);
-
                     if (int.Parse(row.Cells["Selling_TypeId"].Value.ToString()) == marketInfo.TypeId)
                     {
                         Logging.Log("OmniEveUI:MarketInfoFinished", "Row has been found, adding markinfo to row", Logging.White);
@@ -98,7 +97,7 @@ namespace OmniEve
             }
         }
 
-        /*private void MyBuyOrdersUpdated(List<DirectOrder> myBuyOrders)
+        private void MyBuyOrdersUpdated(List<DirectOrder> myBuyOrders)
         {
             Cache.Instance.OnMyBuyOrdersUpdated -= MyBuyOrdersUpdated;
 
@@ -109,76 +108,217 @@ namespace OmniEve
 
             foreach (DirectOrder order in myBuyOrders)
             {
-                DirectInvType deType;
-                Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
+                //DirectInvType deType;
+                //Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
+                string name = "";//deType.TypeName;
                 string quantity = order.VolumeRemaining.ToString() + "/" + order.VolumeEntered.ToString();
-                
-                int duration = order.Duration;
-                DateTime issuedOn = order.IssuedOn;
-                TimeSpan timeLeft = issuedOn.AddDays(duration).Subtract(DateTime.UtcNow);
 
-                Logging.Log("OmniEveUI", "Order Type - " + deType.TypeName
+                Logging.Log("OmniEveUI", "Order Type - " + name
                           + " Quantity - " + quantity
                           + " Price - " + order.Price
                           + " Station - " + order.StationId
                           + " Region - " + order.RegionId
                           + " Range - " + order.Range
-                          + " Min Volume - " + order.MinimumVolume 
-                          + " Duration - " + duration, Logging.White);
+                          + " Min Volume - " + order.MinimumVolume, Logging.White);
 
                 buyingGrid.AllowUserToAddRows = true;
                 int index = buyingGrid.Rows.Add();
+                buyingGrid.Rows[index].Cells["Buying_Select"].Value = true;
                 buyingGrid.Rows[index].Cells["Buying_TypeId"].Value = order.TypeId;
                 buyingGrid.Rows[index].Cells["Buying_OrderId"].Value = order.OrderId;
-                buyingGrid.Rows[index].Cells["Buying_Name"].Value = deType.TypeName;
+                buyingGrid.Rows[index].Cells["Buying_Name"].Value = name;
                 buyingGrid.Rows[index].Cells["Buying_Quantity"].Value = quantity;
-                buyingGrid.Rows[index].Cells["Buying_OrderPrice"].Value = order.Price;
-                buyingGrid.Rows[index].Cells["Buying_Station"].Value = order.StationId.ToString();
-                buyingGrid.Rows[index].Cells["Buying_Region"].Value = order.RegionId.ToString();
+                buyingGrid.Rows[index].Cells["Buying_OrderPrice"].Value = order.Price.ToString();
+                buyingGrid.Rows[index].Cells["Buying_Station"].Value = Cache.Instance.DirectEve.Stations[order.StationId].Name;
+                buyingGrid.Rows[index].Cells["Buying_Region"].Value = Cache.Instance.DirectEve.Regions[order.RegionId].Name;
                 buyingGrid.Rows[index].Cells["Buying_Range"].Value = order.Range.ToString();
                 buyingGrid.Rows[index].Cells["Buying_MinVolume"].Value = order.MinimumVolume.ToString();
-                buyingGrid.Rows[index].Cells["Buying_ExpiresIn"].Value = timeLeft.ToString();
                 buyingGrid.AllowUserToAddRows = false;
 
-                // Add an action for each sell order and get the updated market values
+                // Add an action for each Buy order and get the updated market values
                 if (_omniEve != null)
                 {
-                    Cache.Instance.OnBuyOrdersUpdated += BuyOrdersUpdated;
-                    BuyOrders buyOrders = new BuyOrders();
-                    buyOrders.Item = order.TypeId;
-                    _omniEve.AddAction(buyOrders);
+                    MarketInfo marketInfo = new MarketInfo();
+                    marketInfo.OnMarketInfoActionFinished += BuyMarketInfoFinished;
+                    marketInfo.TypeId = order.TypeId;
+                    _omniEve.AddAction(marketInfo);
                 }
             }
-        }*/
+        }
 
-        /*private void BuyOrdersUpdated(int item, List<DirectOrder> buyOrders)
+        private void BuyMarketInfoFinished(MarketItemInfo marketInfo)
         {
-            Cache.Instance.OnBuyOrdersUpdated -= BuyOrdersUpdated;
-
-            List<DirectOrder> orders = buyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
+            List<DirectOrder> orders = marketInfo.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
             DirectOrder order = orders.FirstOrDefault();
 
             if (order != null)
             {
                 foreach (DataGridViewRow row in buyingGrid.Rows)
                 {
-                    if ((int)row.Cells["Buying_TypeId"].Value == item)
+                    if (int.Parse(row.Cells["Buying_TypeId"].Value.ToString()) == marketInfo.TypeId)
                     {
-                        row.Cells["Buying_MarketPrice"].Value = order.Price;
+                        Logging.Log("OmniEveUI:MarketInfoFinished", "Row has been found, adding markinfo to row", Logging.White);
+
+                        row.Cells["Buying_MarketPrice"].Value = order.Price.ToString();
+                        if (double.Parse(row.Cells["Buying_OrderPrice"].Value.ToString()) < order.Price)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Red;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                        }
                     }
                 }
             }
-        }*/
+        }
 
-        private void sellingRefreshButton_Click(object sender, EventArgs e)
+        private void ModifySellOrders()
+        {
+            if (_omniEve != null)
+            {
+                List<DirectOrder> orders = Cache.Instance.MySellOrders;
+
+                Logging.Log("ModifySellOrders", "Getting cached sell orders", Logging.Debug);
+
+                foreach (DataGridViewRow row in sellingGrid.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
+                    { 
+                        long orderId = (long)row.Cells["Selling_OrderId"].Value;
+                        string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
+                        string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
+
+                        // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
+                        decimal orderPrice = decimal.Parse(orderPriceStr);
+                        decimal marketPrice = decimal.Parse(marketPriceStr);
+                        decimal newPrice = marketPrice - 0.01m;
+
+                        if (orders != null)
+                        {
+                            Logging.Log("ModifySellOrders", "Getting order with OrderId - " + orderId, Logging.Debug);
+
+                            DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
+
+                            if (myOrder != null && marketPrice < orderPrice)
+                            {
+                                string newPriceStr = newPrice.ToString();
+                                double newPriceDbl = double.Parse(newPriceStr);
+
+                                Logging.Log("ModifySellOrders", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
+
+                                ModifyOrder modifyOrder = new ModifyOrder();
+                                modifyOrder.OrderId = myOrder.OrderId;
+                                modifyOrder.IsBid = myOrder.IsBid;
+                                modifyOrder.Price = newPriceDbl;
+                                modifyOrder.OnModifyOrderActionFinished += ModifySellOrderFinished;
+                                _omniEve.AddAction(modifyOrder);
+                            }
+                        }
+                        else
+                        {
+                            Logging.Log("ModifySellOrders", "No orders matching OrderId - " + orderId, Logging.Debug);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ModifySellOrderFinished(long orderId, double price)
+        {
+            foreach (DataGridViewRow row in sellingGrid.Rows)
+            {
+                if ((long)row.Cells["Selling_OrderId"].Value == orderId)
+                {
+                    row.Cells["Selling_OrderPrice"].Value = price.ToString();
+                    row.Cells["Selling_MarketPrice"].Value = price.ToString();
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        private void ModifyBuyOrders()
+        {
+            if (_omniEve != null)
+            {
+                List<DirectOrder> orders = Cache.Instance.MyBuyOrders;
+
+                Logging.Log("ModifyBuyOrders", "Getting cached buy orders", Logging.Debug);
+
+                foreach (DataGridViewRow row in buyingGrid.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
+                    {
+                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
+                        string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
+                        string marketPriceStr = (string)row.Cells["Buying_MarketPrice"].Value;
+
+                        // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
+                        decimal orderPrice = decimal.Parse(orderPriceStr);
+                        decimal marketPrice = decimal.Parse(marketPriceStr);
+                        decimal newPrice = marketPrice + 0.01m;
+
+                        if (orders != null)
+                        {
+                            Logging.Log("ModifyBuyOrders", "Getting order with OrderId - " + orderId, Logging.Debug);
+
+                            DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
+
+                            if (myOrder != null && marketPrice > orderPrice)
+                            {
+                                string newPriceStr = newPrice.ToString();
+                                double newPriceDbl = double.Parse(newPriceStr);
+
+                                Logging.Log("ModifyBuyOrders", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
+
+                                ModifyOrder modifyOrder = new ModifyOrder();
+                                modifyOrder.OrderId = myOrder.OrderId;
+                                modifyOrder.IsBid = myOrder.IsBid;
+                                modifyOrder.Price = newPriceDbl;
+                                modifyOrder.OnModifyOrderActionFinished += ModifyBuyOrderFinished;
+                                _omniEve.AddAction(modifyOrder);
+                            }
+                        }
+                        else
+                        {
+                            Logging.Log("ModifyBuyOrders", "No orders matching OrderId - " + orderId, Logging.Debug);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ModifyBuyOrderFinished(long orderId, double price)
+        {
+            foreach (DataGridViewRow row in buyingGrid.Rows)
+            {
+                if ((long)row.Cells["Buying_OrderId"].Value == orderId)
+                {
+                    row.Cells["Buying_OrderPrice"].Value = price.ToString();
+                    row.Cells["Buying_MarketPrice"].Value = price.ToString();
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        private void OmniEveUI_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _omniEve.Cleanup = true;
+
+            Logging.TextBoxWriter = null;
+        }
+
+        private void refreshOrdersButton_Click(object sender, EventArgs e)
         {
             try
             {
                 if (_omniEve != null)
                 {
+                    sellingGrid.Rows.Clear();
+                    buyingGrid.Rows.Clear();
+
                     Cache.Instance.OnMySellOrdersUpdated += MySellOrdersUpdated;
+                    Cache.Instance.OnMyBuyOrdersUpdated += MyBuyOrdersUpdated;
                     MyOrders myOrders = new MyOrders();
-                    myOrders.IsBid = false;
                     _omniEve.AddAction(myOrders);
                 }
             }
@@ -188,124 +328,19 @@ namespace OmniEve
             }
         }
 
-        private void buyingRefreshButton_Click(object sender, EventArgs e)
+        private void modifyOrdersButton_Click(object sender, EventArgs e)
         {
             try
             {
-                if (_omniEve != null)
-                {
-                    /*Cache.Instance.OnMyBuyOrdersUpdated += MyBuyOrdersUpdated;
-                    MyOrders myOrders = new MyOrders();
-                    myOrders.IsBid = true;
-                    _omniEve.AddAction(myOrders);*/
-                }
+                Logging.Log("Modifying Orders", "Modifying sell and buy orders", Logging.Debug);
+
+                ModifySellOrders();
+                ModifyBuyOrders();
             }
             catch (Exception ex)
             {
-                Logging.Log("BuyingRefresh", "Exception [" + ex + "]", Logging.Debug);
+                Logging.Log("Modifying Orders", "Exception [" + ex + "]", Logging.Debug);
             }
-        }
-
-        private void sellingModifyButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (_omniEve != null)
-                {
-                    List<DirectOrder> orders = Cache.Instance.MySellOrders;
-
-                    Logging.Log("SellingModify", "0", Logging.Debug);
-
-                    foreach (DataGridViewRow row in sellingGrid.Rows)
-                    {
-                        Logging.Log("SellingModify", "Marker 1", Logging.Debug);
-
-                        long orderId = (long)row.Cells["Selling_OrderId"].Value;
-
-                        Logging.Log("SellingModify", "Marker 2", Logging.Debug);
-                        string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
-
-                        Logging.Log("SellingModify", "3", Logging.Debug);
-                        string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
-
-                        Logging.Log("SellingModify", "4", Logging.Debug);
-
-                        // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
-                        decimal orderPrice = decimal.Parse(orderPriceStr);
-                        decimal marketPrice = decimal.Parse(marketPriceStr);
-                        decimal newPrice = marketPrice - 0.01m;
-
-                        Logging.Log("SellingModify", "Getting cached sell orders", Logging.Debug);
-
-                        if (orders != null)
-                        {
-                            Logging.Log("SellingModify", "Getting order with OrderId - " + orderId, Logging.Debug);
-
-                            DirectOrder myOrder = orders.First(o => o.OrderId == orderId);
-
-                            if (myOrder != null && marketPrice < orderPrice)
-                            {
-                                string newPriceStr = newPrice.ToString();
-                                double newPriceDbl = double.Parse(newPriceStr);
-
-                                Logging.Log("SellingModify", "Modifying order with OrderId - " + myOrder.OrderId + " OldPrice - " + myOrder.Price + " MarketPrice - " + marketPrice + " NewPrice - " + newPriceDbl, Logging.Debug);
-
-                                ModifyOrder modifyOrder = new ModifyOrder();
-                                modifyOrder.OrderId = myOrder.OrderId;
-                                modifyOrder.IsBid = myOrder.IsBid;
-                                modifyOrder.Price = newPriceDbl;
-                                _omniEve.AddAction(modifyOrder);
-                            }
-                        }
-                        else
-                        {
-                            Logging.Log("SellingModify", "No orders matching OrderId - " + orderId, Logging.Debug);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Log("SellingModify", "Exception [" + ex + "]", Logging.Debug);
-            }
-        }
-
-        private void buyingModifyButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (_omniEve != null)
-                {
-                    foreach (DataGridViewRow row in buyingGrid.Rows)
-                    {
-                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
-                        double orderPrice = (double)row.Cells["Buying_OrderPrice"].Value;
-                        double marketPrice = (double)row.Cells["Buying_MarketPrice"].Value;
-
-                        DirectOrder order = Cache.Instance.MyBuyOrders.Where(o => o.OrderId == orderId).FirstOrDefault();
-
-                        if (order != null && marketPrice < orderPrice)
-                        {
-                            ModifyOrder modifyOrder = new ModifyOrder();
-                            modifyOrder.OrderId = order.OrderId;
-                            modifyOrder.IsBid = order.IsBid;
-                            modifyOrder.Price = (marketPrice + 0.01);
-                            _omniEve.AddAction(modifyOrder);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Log("BuyingModify", "Exception [" + ex + "]", Logging.Debug);
-            }
-        }
-
-        private void OmniEveUI_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            _omniEve.Cleanup = true;
-
-            Logging.ControlWriter = null;
         }
     }
 }

@@ -18,8 +18,6 @@ namespace OmniEveModules.Actions
         private DateTime _lastAction;
         private MyOrdersState _state = MyOrdersState.Idle;
 
-        public bool IsBid { get; set; }
-
         public void Initialize()
         {
             _state = MyOrdersState.Begin;
@@ -106,18 +104,22 @@ namespace OmniEveModules.Actions
 
                         Logging.Log("MyOrders", "Get list of my orders", Logging.White);
 
-                        List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
+                        List<DirectOrder> buyOrders = marketWindow.GetMyOrders(true).ToList();
+                        List<DirectOrder> sellOrders = marketWindow.GetMyOrders(false).ToList();
 
-                        if(orders != null)
+                        if (sellOrders != null)
                         {
-                            Logging.Log("MyOrders", "Get list of my orders successful", Logging.White);
-
-                            if (IsBid == false)
-                                Cache.Instance.MySellOrders = orders;
-                            else
-                                Cache.Instance.MyBuyOrders = orders;
-                            _state = MyOrdersState.Done;
+                            Logging.Log("MyOrders", "Get list of my sell orders successful", Logging.White);
+                            Cache.Instance.MySellOrders = sellOrders;
                         }
+
+                        if (buyOrders != null)
+                        {
+                            Logging.Log("MyOrders", "Get list of my buy orders successful", Logging.White);
+                            Cache.Instance.MyBuyOrders = buyOrders;                            
+                        }
+
+                        _state = MyOrdersState.Done;
                     }
                     else
                     {

@@ -44,24 +44,23 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OmniEveUI));
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.ordersPage = new MetroFramework.Controls.MetroTabPage();
+            this.refreshOrdersButton = new MetroFramework.Controls.MetroButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
-            this.loggingRichTextBox = new System.Windows.Forms.RichTextBox();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.buyingGrid = new MetroFramework.Controls.MetroGrid();
             this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
             this.sellingGrid = new MetroFramework.Controls.MetroGrid();
             this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
-            this.sellingModifyButton = new MetroFramework.Controls.MetroButton();
-            this.sellingRefreshButton = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
-            this.buyingModifyButton = new MetroFramework.Controls.MetroButton();
-            this.buyingRefreshButton = new MetroFramework.Controls.MetroButton();
+            this.modifyOrdersButton = new MetroFramework.Controls.MetroButton();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroPanel6 = new MetroFramework.Controls.MetroPanel();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
             this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.logTextBox = new MetroFramework.Controls.MetroTextBox();
+            this.Selling_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Selling_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Selling_OrderId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Selling_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -70,6 +69,7 @@
             this.Selling_MarketPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Selling_Station = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Selling_Region = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Buying_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Buying_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_OrderId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,6 +107,8 @@
             // 
             // ordersPage
             // 
+            this.ordersPage.Controls.Add(this.modifyOrdersButton);
+            this.ordersPage.Controls.Add(this.refreshOrdersButton);
             this.ordersPage.Controls.Add(this.tableLayoutPanel1);
             this.ordersPage.HorizontalScrollbarBarColor = true;
             this.ordersPage.HorizontalScrollbarHighlightOnWheel = false;
@@ -120,8 +122,22 @@
             this.ordersPage.VerticalScrollbarHighlightOnWheel = false;
             this.ordersPage.VerticalScrollbarSize = 0;
             // 
+            // refreshOrdersButton
+            // 
+            this.refreshOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refreshOrdersButton.Location = new System.Drawing.Point(1042, 513);
+            this.refreshOrdersButton.Name = "refreshOrdersButton";
+            this.refreshOrdersButton.Size = new System.Drawing.Size(109, 23);
+            this.refreshOrdersButton.TabIndex = 4;
+            this.refreshOrdersButton.Text = "Refresh Orders";
+            this.refreshOrdersButton.UseSelectable = true;
+            this.refreshOrdersButton.Click += new System.EventHandler(this.refreshOrdersButton_Click);
+            // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -131,24 +147,23 @@
             this.tableLayoutPanel1.Controls.Add(this.metroPanel4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.metroPanel5, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.metroPanel6, 0, 2);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1151, 536);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1151, 508);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // metroPanel1
             // 
-            this.metroPanel1.Controls.Add(this.loggingRichTextBox);
+            this.metroPanel1.Controls.Add(this.logTextBox);
             this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel1.HorizontalScrollbarBarColor = true;
             this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel1.HorizontalScrollbarSize = 10;
-            this.metroPanel1.Location = new System.Drawing.Point(100, 336);
+            this.metroPanel1.Location = new System.Drawing.Point(100, 308);
             this.metroPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel1.Name = "metroPanel1";
             this.metroPanel1.Size = new System.Drawing.Size(1051, 200);
@@ -157,17 +172,6 @@
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel1.VerticalScrollbarSize = 10;
             // 
-            // loggingRichTextBox
-            // 
-            this.loggingRichTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.loggingRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.loggingRichTextBox.Location = new System.Drawing.Point(0, 0);
-            this.loggingRichTextBox.Margin = new System.Windows.Forms.Padding(0);
-            this.loggingRichTextBox.Name = "loggingRichTextBox";
-            this.loggingRichTextBox.Size = new System.Drawing.Size(1051, 200);
-            this.loggingRichTextBox.TabIndex = 2;
-            this.loggingRichTextBox.Text = "";
-            // 
             // metroPanel2
             // 
             this.metroPanel2.Controls.Add(this.buyingGrid);
@@ -175,10 +179,10 @@
             this.metroPanel2.HorizontalScrollbarBarColor = true;
             this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel2.HorizontalScrollbarSize = 10;
-            this.metroPanel2.Location = new System.Drawing.Point(100, 168);
+            this.metroPanel2.Location = new System.Drawing.Point(100, 154);
             this.metroPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel2.Name = "metroPanel2";
-            this.metroPanel2.Size = new System.Drawing.Size(1051, 168);
+            this.metroPanel2.Size = new System.Drawing.Size(1051, 154);
             this.metroPanel2.TabIndex = 1;
             this.metroPanel2.VerticalScrollbarBarColor = true;
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
@@ -202,6 +206,7 @@
             this.buyingGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.buyingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.buyingGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Buying_Select,
             this.Buying_TypeId,
             this.Buying_OrderId,
             this.Buying_Name,
@@ -226,7 +231,6 @@
             this.buyingGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.buyingGrid.Location = new System.Drawing.Point(0, 0);
             this.buyingGrid.Name = "buyingGrid";
-            this.buyingGrid.ReadOnly = true;
             this.buyingGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
@@ -238,7 +242,7 @@
             this.buyingGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.buyingGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.buyingGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.buyingGrid.Size = new System.Drawing.Size(1051, 168);
+            this.buyingGrid.Size = new System.Drawing.Size(1051, 154);
             this.buyingGrid.TabIndex = 2;
             // 
             // metroPanel3
@@ -251,7 +255,7 @@
             this.metroPanel3.Location = new System.Drawing.Point(100, 0);
             this.metroPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel3.Name = "metroPanel3";
-            this.metroPanel3.Size = new System.Drawing.Size(1051, 168);
+            this.metroPanel3.Size = new System.Drawing.Size(1051, 154);
             this.metroPanel3.TabIndex = 2;
             this.metroPanel3.VerticalScrollbarBarColor = true;
             this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
@@ -275,6 +279,7 @@
             this.sellingGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.sellingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.sellingGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Selling_Select,
             this.Selling_TypeId,
             this.Selling_OrderId,
             this.Selling_Name,
@@ -297,7 +302,6 @@
             this.sellingGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.sellingGrid.Location = new System.Drawing.Point(0, 0);
             this.sellingGrid.Name = "sellingGrid";
-            this.sellingGrid.ReadOnly = true;
             this.sellingGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
@@ -309,13 +313,11 @@
             this.sellingGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.sellingGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.sellingGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.sellingGrid.Size = new System.Drawing.Size(1051, 168);
+            this.sellingGrid.Size = new System.Drawing.Size(1051, 154);
             this.sellingGrid.TabIndex = 2;
             // 
             // metroPanel4
             // 
-            this.metroPanel4.Controls.Add(this.sellingModifyButton);
-            this.metroPanel4.Controls.Add(this.sellingRefreshButton);
             this.metroPanel4.Controls.Add(this.metroLabel1);
             this.metroPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel4.HorizontalScrollbarBarColor = true;
@@ -324,31 +326,11 @@
             this.metroPanel4.Location = new System.Drawing.Point(0, 0);
             this.metroPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel4.Name = "metroPanel4";
-            this.metroPanel4.Size = new System.Drawing.Size(100, 168);
+            this.metroPanel4.Size = new System.Drawing.Size(100, 154);
             this.metroPanel4.TabIndex = 3;
             this.metroPanel4.VerticalScrollbarBarColor = true;
             this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel4.VerticalScrollbarSize = 10;
-            // 
-            // sellingModifyButton
-            // 
-            this.sellingModifyButton.Location = new System.Drawing.Point(4, 53);
-            this.sellingModifyButton.Name = "sellingModifyButton";
-            this.sellingModifyButton.Size = new System.Drawing.Size(93, 23);
-            this.sellingModifyButton.TabIndex = 4;
-            this.sellingModifyButton.Text = "Modify";
-            this.sellingModifyButton.UseSelectable = true;
-            this.sellingModifyButton.Click += new System.EventHandler(this.sellingModifyButton_Click);
-            // 
-            // sellingRefreshButton
-            // 
-            this.sellingRefreshButton.Location = new System.Drawing.Point(4, 23);
-            this.sellingRefreshButton.Name = "sellingRefreshButton";
-            this.sellingRefreshButton.Size = new System.Drawing.Size(93, 23);
-            this.sellingRefreshButton.TabIndex = 3;
-            this.sellingRefreshButton.Text = "Refresh";
-            this.sellingRefreshButton.UseSelectable = true;
-            this.sellingRefreshButton.Click += new System.EventHandler(this.sellingRefreshButton_Click);
             // 
             // metroLabel1
             // 
@@ -361,41 +343,30 @@
             // 
             // metroPanel5
             // 
-            this.metroPanel5.Controls.Add(this.buyingModifyButton);
-            this.metroPanel5.Controls.Add(this.buyingRefreshButton);
             this.metroPanel5.Controls.Add(this.metroLabel2);
             this.metroPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel5.HorizontalScrollbarBarColor = true;
             this.metroPanel5.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel5.HorizontalScrollbarSize = 10;
-            this.metroPanel5.Location = new System.Drawing.Point(0, 168);
+            this.metroPanel5.Location = new System.Drawing.Point(0, 154);
             this.metroPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel5.Name = "metroPanel5";
-            this.metroPanel5.Size = new System.Drawing.Size(100, 168);
+            this.metroPanel5.Size = new System.Drawing.Size(100, 154);
             this.metroPanel5.TabIndex = 4;
             this.metroPanel5.VerticalScrollbarBarColor = true;
             this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel5.VerticalScrollbarSize = 10;
             // 
-            // buyingModifyButton
+            // modifyOrdersButton
             // 
-            this.buyingModifyButton.Location = new System.Drawing.Point(4, 51);
-            this.buyingModifyButton.Name = "buyingModifyButton";
-            this.buyingModifyButton.Size = new System.Drawing.Size(93, 23);
-            this.buyingModifyButton.TabIndex = 5;
-            this.buyingModifyButton.Text = "Modify";
-            this.buyingModifyButton.UseSelectable = true;
-            this.buyingModifyButton.Click += new System.EventHandler(this.buyingModifyButton_Click);
-            // 
-            // buyingRefreshButton
-            // 
-            this.buyingRefreshButton.Location = new System.Drawing.Point(4, 22);
-            this.buyingRefreshButton.Name = "buyingRefreshButton";
-            this.buyingRefreshButton.Size = new System.Drawing.Size(93, 23);
-            this.buyingRefreshButton.TabIndex = 4;
-            this.buyingRefreshButton.Text = "Refresh";
-            this.buyingRefreshButton.UseSelectable = true;
-            this.buyingRefreshButton.Click += new System.EventHandler(this.buyingRefreshButton_Click);
+            this.modifyOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.modifyOrdersButton.Location = new System.Drawing.Point(943, 513);
+            this.modifyOrdersButton.Name = "modifyOrdersButton";
+            this.modifyOrdersButton.Size = new System.Drawing.Size(93, 23);
+            this.modifyOrdersButton.TabIndex = 5;
+            this.modifyOrdersButton.Text = " Modify Orders";
+            this.modifyOrdersButton.UseSelectable = true;
+            this.modifyOrdersButton.Click += new System.EventHandler(this.modifyOrdersButton_Click);
             // 
             // metroLabel2
             // 
@@ -413,7 +384,7 @@
             this.metroPanel6.HorizontalScrollbarBarColor = true;
             this.metroPanel6.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel6.HorizontalScrollbarSize = 10;
-            this.metroPanel6.Location = new System.Drawing.Point(0, 336);
+            this.metroPanel6.Location = new System.Drawing.Point(0, 308);
             this.metroPanel6.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel6.Name = "metroPanel6";
             this.metroPanel6.Size = new System.Drawing.Size(100, 200);
@@ -444,6 +415,26 @@
             this.marketTabPage.VerticalScrollbarBarColor = true;
             this.marketTabPage.VerticalScrollbarHighlightOnWheel = false;
             this.marketTabPage.VerticalScrollbarSize = 0;
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logTextBox.Lines = new string[0];
+            this.logTextBox.Location = new System.Drawing.Point(0, 0);
+            this.logTextBox.MaxLength = 32767;
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.PasswordChar = '\0';
+            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logTextBox.SelectedText = "";
+            this.logTextBox.Size = new System.Drawing.Size(1051, 200);
+            this.logTextBox.TabIndex = 2;
+            this.logTextBox.UseSelectable = true;
+            // 
+            // Selling_Select
+            // 
+            this.Selling_Select.HeaderText = "Select";
+            this.Selling_Select.Name = "Selling_Select";
             // 
             // Selling_TypeId
             // 
@@ -509,6 +500,11 @@
             this.Selling_Region.HeaderText = "Region";
             this.Selling_Region.Name = "Selling_Region";
             this.Selling_Region.ReadOnly = true;
+            // 
+            // Buying_Select
+            // 
+            this.Buying_Select.HeaderText = "Select";
+            this.Buying_Select.Name = "Buying_Select";
             // 
             // Buying_TypeId
             // 
@@ -617,17 +613,25 @@
         private MetroFramework.Controls.MetroPanel metroPanel3;
         private MetroFramework.Controls.MetroGrid sellingGrid;
         private MetroFramework.Controls.MetroPanel metroPanel4;
-        private MetroFramework.Controls.MetroButton sellingModifyButton;
-        private MetroFramework.Controls.MetroButton sellingRefreshButton;
         private MetroFramework.Controls.MetroLabel metroLabel1;
         private MetroFramework.Controls.MetroPanel metroPanel5;
-        private MetroFramework.Controls.MetroButton buyingModifyButton;
-        private MetroFramework.Controls.MetroButton buyingRefreshButton;
+        private MetroFramework.Controls.MetroButton modifyOrdersButton;
         private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroPanel metroPanel6;
         private MetroFramework.Controls.MetroTabPage marketTabPage;
         private MetroFramework.Controls.MetroLabel metroLabel3;
-        private System.Windows.Forms.RichTextBox loggingRichTextBox;
+        private MetroFramework.Controls.MetroButton refreshOrdersButton;
+        private MetroFramework.Controls.MetroTextBox logTextBox;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Selling_Select;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_TypeId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_MarketPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Station;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Buying_Select;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_TypeId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_OrderId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Name;
@@ -638,14 +642,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Region;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Range;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_MinVolume;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_TypeId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Quantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_MarketPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Station;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
 
     }
 }
