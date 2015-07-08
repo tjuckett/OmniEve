@@ -1,0 +1,804 @@
+23:08:38 [OmniEveLoader] OmniEveLoader has started
+23:08:38 [OmniEveLoader] OmniEveLoader Parameters we were passed [0] - [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini]
+23:08:38 [OmniEveLoader] Found [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini] loading OmniEve PreLogin Settings
+23:08:38 [OmniEveLoader] _pathToOmniEveEXE is [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+23:08:38 [OmniEveLoader] _appDomainNameToUse is [Q1]
+23:08:38 [OmniEveLoader] Starting OmniEve
+23:08:38 [OmniEveLoader] ------------------------------------------------------
+23:08:38 [OmniEveLoader] ------------------------------------------------------
+23:08:38 [OmniEveLoader] Main._pathToOmniEveEXE [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+23:08:38 [OmniEveLoader] ------------------------------------------------------
+23:08:38 [OmniEveLoader] ------------------------------------------------------
+23:08:38 [EXEBootStrapper] AppDomain [Q1] created
+23:08:38 [Startup] Starting Instance of DirectEVE using StandaloneFramework
+23:08:38 [Startup] DirectEVE should now be active: see above for any messages from DirectEVE
+23:08:39 [Startup] We have successfully logged in
+23:08:39 [Startup] We are logged in.
+23:08:39 [Startup] Launching OmniEve
+23:08:41 [Startup] Launching OmniEveUI
+23:08:44 [OmniEve] OnFrame: Popping next action off the queue
+23:08:44 [OmniEve] OnFrame: Initializing current action
+23:08:49 [MyOrders] Market already open no need to open the market
+23:08:50 [MyOrders] Load orders
+23:08:52 [MyOrders] Get list of my orders
+23:08:52 [MyOrders] Get list of my orders successful
+23:08:52 [OmniEveUI:MySellOrdersUpdated] Clearing existing grid of orders
+23:08:52 [OmniEveUI:MySellOrdersUpdated] Filling grid of updated orders
+23:08:52 [MySellOrders] Exception [System.NullReferenceException: Object reference not set to an instance of an object.
+ at OmniEve.OmniEveUI.MySellOrdersUpdated(List`1 mySellOrders)
+ at OmniEveModules.Caching.Cache.set_MySellOrders(List`1 value)]
+23:08:52 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:27:02 [OmniEveLoader] OmniEveLoader has started
+00:27:02 [OmniEveLoader] OmniEveLoader Parameters we were passed [0] - [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini]
+00:27:02 [OmniEveLoader] Found [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini] loading OmniEve PreLogin Settings
+00:27:02 [OmniEveLoader] _pathToOmniEveEXE is [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+00:27:02 [OmniEveLoader] _appDomainNameToUse is [Q1]
+00:27:02 [OmniEveLoader] Starting OmniEve
+00:27:02 [OmniEveLoader] ------------------------------------------------------
+00:27:02 [OmniEveLoader] ------------------------------------------------------
+00:27:02 [OmniEveLoader] Main._pathToOmniEveEXE [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+00:27:02 [OmniEveLoader] ------------------------------------------------------
+00:27:02 [OmniEveLoader] ------------------------------------------------------
+00:27:02 [EXEBootStrapper] AppDomain [Q1] created
+00:27:02 [Startup] Starting Instance of DirectEVE using StandaloneFramework
+00:27:02 [Startup] DirectEVE should now be active: see above for any messages from DirectEVE
+00:27:03 [Startup] We have successfully logged in
+00:27:03 [Startup] We are logged in.
+00:27:03 [Startup] Launching OmniEve
+00:27:05 [Startup] Launching OmniEveUI
+00:27:09 [OmniEve] OnFrame: Popping next action off the queue
+00:27:09 [OmniEve] OnFrame: Initializing current action
+00:27:13 [MyOrders] Market already open no need to open the market
+00:27:14 [MyOrders] Load orders
+00:27:16 [MyOrders] Get list of my orders
+00:27:16 [MyOrders] Get list of my orders successful
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Clearing existing grid of orders
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Filling grid of updated orders
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 49/142 Price - 5399949.31 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 105/461 Price - 214919.95 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 9/10 Price - 499998.95 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 27/42 Price - 499532.99 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 6/11 Price - 4999998.95 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 198200/1000000 Price - 44.89 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 98/146 Price - 21944.97 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 1000000/1000000 Price - 5.64 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 1034/1034 Price - 2944.97 Station - 60003760 Region - 10000002
+00:27:16 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 5444/39444 Price - 34.67 Station - 60003760 Region - 10000002
+00:27:16 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:27:17 [OmniEve] OnFrame: Popping next action off the queue
+00:27:17 [OmniEve] OnFrame: Initializing current action
+00:27:18 [MarketItemInfo] Market already open no need to open the market
+00:27:18 [MarketItemInfo] Load orders for TypeId - 3265
+00:27:24 [MarketItemInfo] Get list of orders for Item - 3265
+00:27:24 [MarketItemInfo] Get list of orders successful
+00:27:24 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:27:25 [OmniEve] OnFrame: Popping next action off the queue
+00:27:26 [OmniEve] OnFrame: Initializing current action
+00:27:26 [MarketItemInfo] Market already open no need to open the market
+00:27:26 [MarketItemInfo] Market window is not ready
+00:27:27 [MarketItemInfo] Market window is not ready
+00:27:27 [MarketItemInfo] Market window is not ready
+00:27:28 [MarketItemInfo] Market window is not ready
+00:27:28 [MarketItemInfo] Market window is not ready
+00:27:28 [MarketItemInfo] Market window is not ready
+00:27:29 [MarketItemInfo] Market window is not ready
+00:27:29 [MarketItemInfo] Market window is not ready
+00:27:30 [MarketItemInfo] Market window is not ready
+00:27:30 [MarketItemInfo] Market window is not ready
+00:27:30 [MarketItemInfo] Market window is not ready
+00:27:31 [MarketItemInfo] Market window is not ready
+00:27:31 [MarketItemInfo] Market window is not ready
+00:27:32 [MarketItemInfo] Market window is not ready
+00:27:32 [MarketItemInfo] Market window is not ready
+00:27:32 [MarketItemInfo] Market window is not ready
+00:27:33 [MarketItemInfo] Market window is not ready
+00:27:33 [MarketItemInfo] Market window is not ready
+00:27:34 [MarketItemInfo] Load orders for TypeId - 12822
+00:27:39 [MarketItemInfo] Get list of orders for Item - 12822
+00:27:39 [MarketItemInfo] Get list of orders successful
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:27:40 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:27:41 [OmniEve] OnFrame: Popping next action off the queue
+00:27:41 [OmniEve] OnFrame: Initializing current action
+00:27:41 [MarketItemInfo] Market already open no need to open the market
+00:27:42 [MarketItemInfo] Load orders for TypeId - 27079
+00:27:48 [MarketItemInfo] Get list of orders for Item - 27079
+00:27:48 [MarketItemInfo] Get list of orders successful
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:27:48 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:27:49 [OmniEve] OnFrame: Popping next action off the queue
+00:27:49 [OmniEve] OnFrame: Initializing current action
+00:27:50 [MarketItemInfo] Market already open no need to open the market
+00:27:50 [MarketItemInfo] Load orders for TypeId - 31300
+00:27:56 [MarketItemInfo] Get list of orders for Item - 31300
+00:27:56 [MarketItemInfo] Get list of orders successful
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:27:56 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:27:57 [OmniEve] OnFrame: Popping next action off the queue
+00:27:57 [OmniEve] OnFrame: Initializing current action
+00:27:58 [MarketItemInfo] Market already open no need to open the market
+00:27:59 [MarketItemInfo] Load orders for TypeId - 11450
+00:28:04 [MarketItemInfo] Get list of orders for Item - 11450
+00:28:04 [MarketItemInfo] Get list of orders successful
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:28:04 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:28:05 [OmniEve] OnFrame: Popping next action off the queue
+00:28:06 [OmniEve] OnFrame: Initializing current action
+00:28:06 [MarketItemInfo] Market already open no need to open the market
+00:28:07 [MarketItemInfo] Load orders for TypeId - 12633
+00:28:12 [MarketItemInfo] Get list of orders for Item - 12633
+00:28:12 [MarketItemInfo] Get list of orders successful
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:28:13 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:28:13 [OmniEve] OnFrame: Popping next action off the queue
+00:28:14 [OmniEve] OnFrame: Initializing current action
+00:28:14 [MarketItemInfo] Market already open no need to open the market
+00:28:15 [MarketItemInfo] Load orders for TypeId - 5365
+00:28:20 [MarketItemInfo] Get list of orders for Item - 5365
+00:28:20 [MarketItemInfo] Get list of orders successful
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:28:21 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:28:22 [OmniEve] OnFrame: Popping next action off the queue
+00:28:22 [OmniEve] OnFrame: Initializing current action
+00:28:22 [MarketItemInfo] Market already open no need to open the market
+00:28:23 [MarketItemInfo] Load orders for TypeId - 2306
+00:28:29 [MarketItemInfo] Get list of orders for Item - 2306
+00:28:29 [MarketItemInfo] Get list of orders successful
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:28:29 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:28:30 [OmniEve] OnFrame: Popping next action off the queue
+00:28:30 [OmniEve] OnFrame: Initializing current action
+00:28:31 [MarketItemInfo] Market already open no need to open the market
+00:28:31 [MarketItemInfo] Load orders for TypeId - 25611
+00:28:37 [MarketItemInfo] Get list of orders for Item - 25611
+00:28:37 [MarketItemInfo] Get list of orders successful
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:28:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:28:37 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:28:38 [OmniEve] OnFrame: Popping next action off the queue
+00:28:38 [OmniEve] OnFrame: Initializing current action
+00:28:39 [MarketItemInfo] Market already open no need to open the market
+00:28:40 [MarketItemInfo] Load orders for TypeId - 24471
+00:28:45 [MarketItemInfo] Get list of orders for Item - 24471
+00:28:45 [MarketItemInfo] Get list of orders successful
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:28:45 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:28:45 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:35:39 [OmniEveLoader] OmniEveLoader has started
+00:35:39 [OmniEveLoader] OmniEveLoader Parameters we were passed [0] - [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini]
+00:35:39 [OmniEveLoader] Found [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini] loading OmniEve PreLogin Settings
+00:35:39 [OmniEveLoader] _pathToOmniEveEXE is [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+00:35:39 [OmniEveLoader] _appDomainNameToUse is [Q1]
+00:35:39 [OmniEveLoader] Starting OmniEve
+00:35:39 [OmniEveLoader] ------------------------------------------------------
+00:35:39 [OmniEveLoader] ------------------------------------------------------
+00:35:39 [OmniEveLoader] Main._pathToOmniEveEXE [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+00:35:39 [OmniEveLoader] ------------------------------------------------------
+00:35:39 [OmniEveLoader] ------------------------------------------------------
+00:35:39 [EXEBootStrapper] AppDomain [Q1] created
+00:35:39 [Startup] Starting Instance of DirectEVE using StandaloneFramework
+00:35:39 [Startup] DirectEVE should now be active: see above for any messages from DirectEVE
+00:35:39 [Startup] We have successfully logged in
+00:35:39 [Startup] We are logged in.
+00:35:39 [Startup] Launching OmniEve
+00:35:42 [Startup] Launching OmniEveUI
+00:35:46 [OmniEve] OnFrame: Popping next action off the queue
+00:35:46 [OmniEve] OnFrame: Initializing current action
+00:35:50 [MyOrders] Market already open no need to open the market
+00:35:51 [MyOrders] Load orders
+00:35:53 [MyOrders] Get list of my orders
+00:35:53 [MyOrders] Get list of my orders successful
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Clearing existing grid of orders
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Filling grid of updated orders
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 49/142 Price - 5399949.31 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 105/461 Price - 214919.95 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 9/10 Price - 499998.95 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 27/42 Price - 499532.99 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 6/11 Price - 4999998.95 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 198200/1000000 Price - 44.89 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 98/146 Price - 21944.97 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 1000000/1000000 Price - 5.64 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 1034/1034 Price - 2944.97 Station - 60003760 Region - 10000002
+00:35:53 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 5444/39444 Price - 34.67 Station - 60003760 Region - 10000002
+00:35:53 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:35:53 [OmniEve] OnFrame: Popping next action off the queue
+00:35:54 [OmniEve] OnFrame: Initializing current action
+00:35:54 [MarketItemInfo] Market already open no need to open the market
+00:35:55 [MarketItemInfo] Load orders for TypeId - 3265
+00:35:57 [MarketItemInfo] Get list of orders for Item - 3265
+00:35:57 [MarketItemInfo] Get list of orders successful
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+00:35:58 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:35:58 [OmniEve] OnFrame: Popping next action off the queue
+00:35:59 [OmniEve] OnFrame: Initializing current action
+00:35:59 [MarketItemInfo] Market already open no need to open the market
+00:36:00 [MarketItemInfo] Load orders for TypeId - 12822
+00:36:02 [MarketItemInfo] Get list of orders for Item - 12822
+00:36:02 [MarketItemInfo] Get list of orders successful
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+00:36:02 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:03 [OmniEve] OnFrame: Popping next action off the queue
+00:36:04 [OmniEve] OnFrame: Initializing current action
+00:36:04 [MarketItemInfo] Market already open no need to open the market
+00:36:05 [MarketItemInfo] Load orders for TypeId - 27079
+00:36:07 [MarketItemInfo] Get list of orders for Item - 27079
+00:36:07 [MarketItemInfo] Get list of orders successful
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+00:36:07 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:08 [OmniEve] OnFrame: Popping next action off the queue
+00:36:09 [OmniEve] OnFrame: Initializing current action
+00:36:09 [MarketItemInfo] Market already open no need to open the market
+00:36:10 [MarketItemInfo] Load orders for TypeId - 31300
+00:36:12 [MarketItemInfo] Get list of orders for Item - 31300
+00:36:12 [MarketItemInfo] Get list of orders successful
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+00:36:12 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:13 [OmniEve] OnFrame: Popping next action off the queue
+00:36:13 [OmniEve] OnFrame: Initializing current action
+00:36:14 [MarketItemInfo] Market already open no need to open the market
+00:36:15 [MarketItemInfo] Load orders for TypeId - 11450
+00:36:17 [MarketItemInfo] Get list of orders for Item - 11450
+00:36:17 [MarketItemInfo] Get list of orders successful
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+00:36:17 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:18 [OmniEve] OnFrame: Popping next action off the queue
+00:36:18 [OmniEve] OnFrame: Initializing current action
+00:36:19 [MarketItemInfo] Market already open no need to open the market
+00:36:20 [MarketItemInfo] Load orders for TypeId - 12633
+00:36:22 [MarketItemInfo] Get list of orders for Item - 12633
+00:36:22 [MarketItemInfo] Get list of orders successful
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+00:36:22 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:23 [OmniEve] OnFrame: Popping next action off the queue
+00:36:23 [OmniEve] OnFrame: Initializing current action
+00:36:24 [MarketItemInfo] Market already open no need to open the market
+00:36:25 [MarketItemInfo] Load orders for TypeId - 5365
+00:36:27 [MarketItemInfo] Get list of orders for Item - 5365
+00:36:27 [MarketItemInfo] Get list of orders successful
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+00:36:27 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:28 [OmniEve] OnFrame: Popping next action off the queue
+00:36:28 [OmniEve] OnFrame: Initializing current action
+00:36:29 [MarketItemInfo] Market already open no need to open the market
+00:36:30 [MarketItemInfo] Load orders for TypeId - 2306
+00:36:32 [MarketItemInfo] Get list of orders for Item - 2306
+00:36:32 [MarketItemInfo] Get list of orders successful
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+00:36:32 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:33 [OmniEve] OnFrame: Popping next action off the queue
+00:36:33 [OmniEve] OnFrame: Initializing current action
+00:36:34 [MarketItemInfo] Market already open no need to open the market
+00:36:35 [MarketItemInfo] Load orders for TypeId - 25611
+00:36:37 [MarketItemInfo] Get list of orders for Item - 25611
+00:36:37 [MarketItemInfo] Get list of orders successful
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:37 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+00:36:37 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:36:38 [OmniEve] OnFrame: Popping next action off the queue
+00:36:38 [OmniEve] OnFrame: Initializing current action
+00:36:39 [MarketItemInfo] Market already open no need to open the market
+00:36:39 [MarketItemInfo] Load orders for TypeId - 24471
+00:36:42 [MarketItemInfo] Get list of orders for Item - 24471
+00:36:42 [MarketItemInfo] Get list of orders successful
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+00:36:42 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+00:36:42 [OmniEve] OnFrame: Current action is done, going back to idle state
+00:37:04 [SellingModify] Getting cached sell orders
+00:37:04 [SellingModify] Getting order with OrderId - 4169670971
+00:37:04 [SellingModify] Modifying order with OrderId - 4169670971 OldPrice - 5399949.31 MarketPrice - 5399949.3 NewPrice - 5399949.29
+00:37:04 [SellingModify] Getting cached sell orders
+00:37:04 [SellingModify] Getting order with OrderId - 4170813891
+00:37:04 [SellingModify] Modifying order with OrderId - 4170813891 OldPrice - 214919.95 MarketPrice - 214918.94 NewPrice - 214918.93
+00:37:04 [SellingModify] Getting cached sell orders
+00:37:04 [SellingModify] Getting order with OrderId - 4170854726
+00:37:04 [SellingModify] Getting cached sell orders
+00:37:04 [SellingModify] Getting order with OrderId - 4170858025
+00:37:04 [SellingModify] Modifying order with OrderId - 4170858025 OldPrice - 499532.99 MarketPrice - 499530 NewPrice - 499529.99
+00:37:04 [SellingModify] Getting cached sell orders
+00:37:04 [SellingModify] Getting order with OrderId - 4171433475
+00:37:04 [SellingModify] Modifying order with OrderId - 4171433475 OldPrice - 4999998.95 MarketPrice - 4999998.83 NewPrice - 4999998.82
+00:37:04 [SellingModify] Getting cached sell orders
+00:37:04 [OmniEve] OnFrame: Popping next action off the queue
+00:37:04 [SellingModify] Modifying order with OrderId - 4171436801 OldPrice - 44.89 MarketPrice - 44.79 NewPrice - 44.78
+09:00:28 [OmniEveLoader] OmniEveLoader has started
+09:00:28 [OmniEveLoader] OmniEveLoader Parameters we were passed [0] - [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini]
+09:00:28 [OmniEveLoader] Found [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\setting.ini] loading OmniEve PreLogin Settings
+09:00:28 [OmniEveLoader] _pathToOmniEveEXE is [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+09:00:28 [OmniEveLoader] _appDomainNameToUse is [Q1]
+09:00:28 [OmniEveLoader] Starting OmniEve
+09:00:28 [OmniEveLoader] ------------------------------------------------------
+09:00:28 [OmniEveLoader] ------------------------------------------------------
+09:00:28 [OmniEveLoader] Main._pathToOmniEveEXE [E:\CloudStation\Eve Bot\Inprogress\OmniEve\output\OmniEve.exe]
+09:00:28 [OmniEveLoader] ------------------------------------------------------
+09:00:28 [OmniEveLoader] ------------------------------------------------------
+09:00:28 [EXEBootStrapper] AppDomain [Q1] created
+09:00:28 [Startup] Starting Instance of DirectEVE using StandaloneFramework
+09:00:28 [Startup] DirectEVE should now be active: see above for any messages from DirectEVE
+09:00:28 [Startup] We have successfully logged in
+09:00:28 [Startup] We are logged in.
+09:00:28 [Startup] Launching OmniEve
+09:00:31 [Startup] Launching OmniEveUI
+09:00:33 [OmniEve] OnFrame: Popping next action off the queue
+09:00:33 [OmniEve] OnFrame: Initializing current action
+09:00:39 [MyOrders] Market already open no need to open the market
+09:00:40 [MyOrders] Load orders
+09:00:42 [MyOrders] Get list of my orders
+09:00:42 [MyOrders] Get list of my orders successful
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Clearing existing grid of orders
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Filling grid of updated orders
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 37/142 Price - 5399949.31 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 105/461 Price - 214917.99 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 9/10 Price - 499998.95 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 27/42 Price - 499528.98 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 6/11 Price - 4999998.66 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 198200/1000000 Price - 44.77 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 92/146 Price - 21944.97 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 1000000/1000000 Price - 5.6 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 1034/1034 Price - 2943.96 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 5444/39444 Price - 34.38 Station - 60003760 Region - 10000002
+09:00:42 [OmniEveUI:MySellOrdersUpdated] Order Name - Quantity - 50000/50000 Price - 750.01 Station - 60003760 Region - 10000002
+09:00:42 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:00:42 [OmniEve] OnFrame: Popping next action off the queue
+09:00:43 [OmniEve] OnFrame: Initializing current action
+09:00:43 [MarketItemInfo] Market already open no need to open the market
+09:00:44 [MarketItemInfo] Load orders for TypeId - 3265
+09:00:46 [MarketItemInfo] Get list of orders for Item - 3265
+09:00:46 [MarketItemInfo] Get list of orders successful
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 3265
+09:00:47 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:00:47 [OmniEve] OnFrame: Popping next action off the queue
+09:00:48 [OmniEve] OnFrame: Initializing current action
+09:00:48 [MarketItemInfo] Market already open no need to open the market
+09:00:49 [MarketItemInfo] Load orders for TypeId - 12822
+09:00:51 [MarketItemInfo] Get list of orders for Item - 12822
+09:00:51 [MarketItemInfo] Get list of orders successful
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12822
+09:00:52 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:00:52 [OmniEve] OnFrame: Popping next action off the queue
+09:00:53 [OmniEve] OnFrame: Initializing current action
+09:00:53 [MarketItemInfo] Market already open no need to open the market
+09:00:54 [MarketItemInfo] Load orders for TypeId - 27079
+09:00:56 [MarketItemInfo] Get list of orders for Item - 27079
+09:00:56 [MarketItemInfo] Get list of orders successful
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 27079
+09:00:57 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:00:57 [OmniEve] OnFrame: Popping next action off the queue
+09:00:58 [OmniEve] OnFrame: Initializing current action
+09:00:58 [MarketItemInfo] Market already open no need to open the market
+09:00:59 [MarketItemInfo] Load orders for TypeId - 31300
+09:01:01 [MarketItemInfo] Get list of orders for Item - 31300
+09:01:01 [MarketItemInfo] Get list of orders successful
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 31300
+09:01:02 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:02 [OmniEve] OnFrame: Popping next action off the queue
+09:01:03 [OmniEve] OnFrame: Initializing current action
+09:01:03 [MarketItemInfo] Market already open no need to open the market
+09:01:04 [MarketItemInfo] Load orders for TypeId - 11450
+09:01:06 [MarketItemInfo] Get list of orders for Item - 11450
+09:01:06 [MarketItemInfo] Get list of orders successful
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 11450
+09:01:07 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:07 [OmniEve] OnFrame: Popping next action off the queue
+09:01:08 [OmniEve] OnFrame: Initializing current action
+09:01:08 [MarketItemInfo] Market already open no need to open the market
+09:01:09 [MarketItemInfo] Load orders for TypeId - 12633
+09:01:11 [MarketItemInfo] Get list of orders for Item - 12633
+09:01:11 [MarketItemInfo] Get list of orders successful
+09:01:11 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:11 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 12633
+09:01:12 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:12 [OmniEve] OnFrame: Popping next action off the queue
+09:01:13 [OmniEve] OnFrame: Initializing current action
+09:01:13 [MarketItemInfo] Market already open no need to open the market
+09:01:14 [MarketItemInfo] Load orders for TypeId - 5365
+09:01:16 [MarketItemInfo] Get list of orders for Item - 5365
+09:01:16 [MarketItemInfo] Get list of orders successful
+09:01:16 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 5365
+09:01:17 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:17 [OmniEve] OnFrame: Popping next action off the queue
+09:01:18 [OmniEve] OnFrame: Initializing current action
+09:01:18 [MarketItemInfo] Market already open no need to open the market
+09:01:19 [MarketItemInfo] Load orders for TypeId - 2306
+09:01:21 [MarketItemInfo] Get list of orders for Item - 2306
+09:01:21 [MarketItemInfo] Get list of orders successful
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 2306
+09:01:22 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:22 [OmniEve] OnFrame: Popping next action off the queue
+09:01:23 [OmniEve] OnFrame: Initializing current action
+09:01:23 [MarketItemInfo] Market already open no need to open the market
+09:01:24 [MarketItemInfo] Load orders for TypeId - 25611
+09:01:26 [MarketItemInfo] Get list of orders for Item - 25611
+09:01:26 [MarketItemInfo] Get list of orders successful
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 25611
+09:01:27 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:27 [OmniEve] OnFrame: Popping next action off the queue
+09:01:28 [OmniEve] OnFrame: Initializing current action
+09:01:28 [MarketItemInfo] Market already open no need to open the market
+09:01:29 [MarketItemInfo] Load orders for TypeId - 24471
+09:01:31 [MarketItemInfo] Get list of orders for Item - 24471
+09:01:31 [MarketItemInfo] Get list of orders successful
+09:01:31 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:31 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:32 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 24471
+09:01:32 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:32 [OmniEve] OnFrame: Popping next action off the queue
+09:01:33 [OmniEve] OnFrame: Initializing current action
+09:01:33 [MarketItemInfo] Market already open no need to open the market
+09:01:34 [MarketItemInfo] Load orders for TypeId - 22971
+09:01:36 [MarketItemInfo] Get list of orders for Item - 22971
+09:01:36 [MarketItemInfo] Get list of orders successful
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Searching for row with Type Id - 22971
+09:01:36 [OmniEveUI:MarketInfoFinished] Row has been found, adding markinfo to row
+09:01:36 [OmniEve] OnFrame: Current action is done, going back to idle state
+09:01:46 [SellingModify] 0
+09:01:46 [SellingModify] Marker 1
+09:01:46 [SellingModify] Marker 2
+09:01:46 [SellingModify] 3
+09:01:46 [SellingModify] 4
+09:01:46 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4169670971
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4170813891
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4170854726
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4170858025
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4171433475
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4171436801
+09:01:47 [SellingModify] Modifying order with OrderId - 4171436801 OldPrice - 44.77 MarketPrice - 40.83 NewPrice - 40.82
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4175264642
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4176101383
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4176108105
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4176110143
+09:01:47 [SellingModify] Marker 1
+09:01:47 [SellingModify] Marker 2
+09:01:47 [SellingModify] 3
+09:01:47 [SellingModify] 4
+09:01:47 [SellingModify] Getting cached sell orders
+09:01:47 [SellingModify] Getting order with OrderId - 4177270948
+09:01:47 [SellingModify] Modifying order with OrderId - 4177270948 OldPrice - 750.01 MarketPrice - 750 NewPrice - 749.99

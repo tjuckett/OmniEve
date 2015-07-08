@@ -1,0 +1,33 @@
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Documents\Visual Studio 2013\Projects\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache
+E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
+E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
+E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
+E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
+E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
+E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
+C:\Users\Tim\Google Drive\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
+C:\Users\Tim\Google Drive\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
+C:\Users\Tim\Google Drive\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
+C:\Users\Tim\Google Drive\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
+C:\Users\Tim\Google Drive\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
+C:\Users\Tim\Google Drive\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
+C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
