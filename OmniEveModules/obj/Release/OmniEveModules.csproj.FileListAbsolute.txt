@@ -40,3 +40,13 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveMod
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFramework.Design.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFramework.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFramework.Fonts.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFramework.Design.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFramework.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFramework.Fonts.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb

@@ -52,3 +52,11 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoad
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\bin\Release\OmniEveLoader.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\bin\Release\OmniEveLoader.pdb
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\bin\Release\EasyHook.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\bin\Release\Interop.mscoree.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\Interop.mscoree.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.csproj.ResolveComReference.cache
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.pdb

@@ -121,6 +121,12 @@ namespace OmniEveModules.Actions
 
                     if (marketWindow != null)
                     {
+                        if (!marketWindow.IsReady)
+                        {
+                            Logging.Log("MarketItemInfo:Process", "Market window is not ready", Logging.White);
+                            break;
+                        }
+
                         if (marketWindow.DetailTypeId != TypeId)
                             _state = MarketInfoState.LoadItem;
 
