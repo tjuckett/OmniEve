@@ -77,12 +77,12 @@ namespace OmniEveModules.Actions
                     if (!marketWindow.IsReady)
                         break;
 
-                    _state = ModifyOrderState.Modify;
+                    _state = ModifyOrderState.LoadOrders;
                     break;
 
                 case ModifyOrderState.LoadOrders:
 
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
 
                     _lastAction = DateTime.UtcNow;
@@ -108,24 +108,32 @@ namespace OmniEveModules.Actions
                 case ModifyOrderState.Modify:
 
                     // We keep getting the popup saying we can't modify many orders in a minute, so this needs to be at 6 or higher, probably higher
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 6)
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
 
-                    _lastAction = DateTime.UtcNow;
+                    if (marketWindow != null)
+                    {
+                        _lastAction = DateTime.UtcNow;
+                        
+                        List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
+                        DirectOrder order = orders.First(o => o.OrderId == OrderId);
 
-                    List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
-                    DirectOrder order = orders.First(o => o.OrderId == OrderId);
+                        Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
 
-                    Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
+                        bool success = order.ModifyOrder(Price);
 
-                    bool success = order.ModifyOrder(Price);
+                        if(success)
+                            Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
+                        else
+                            Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
 
-                    if(success)
-                        Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
+                        _state = ModifyOrderState.Done;
+                    }
                     else
-                        Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
+                    {
+                        _state = ModifyOrderState.OpenMarket;
+                    }
 
-                    _state = ModifyOrderState.Done;
                     break;
             }
         }

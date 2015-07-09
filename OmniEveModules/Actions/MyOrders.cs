@@ -73,15 +73,18 @@ namespace OmniEveModules.Actions
 
                 case MyOrdersState.LoadOrders:
 
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
+                        break;
+
                     _lastAction = DateTime.UtcNow;
 
                     if (marketWindow != null)
                     {
                         Logging.Log("MyOrders:Process", "Load orders", Logging.White);
 
-                        marketWindow.LoadOrders();
+                        if(marketWindow.LoadOrders() == true)
+                            _state = MyOrdersState.CacheOrders;
 
-                        _state = MyOrdersState.CacheOrders;
                         break;
                     }
                     else

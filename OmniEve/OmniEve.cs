@@ -21,6 +21,7 @@ namespace OmniEve
         private object _listLock = new object();
         private List<IAction> _actions = new List<IAction>();
         private IAction _currentAction = null;
+        private int _currentActionIndex = 0;
         private static DateTime _nextOmniEveAction = DateTime.UtcNow.AddHours(-1);
 
         public bool Cleanup { get; set; }
@@ -52,23 +53,24 @@ namespace OmniEve
 
         public void AddAction(IAction action)
         {
-            lock (_listLock)
+            lock(_listLock)
             {
                 _actions.Add(action);
             }
         }
 
-        public void ClearActions()
+        public void CleanUpActions()
         {
             lock (_listLock)
             {
                 _actions.Clear();
+                _currentActionIndex = 0;
             }
         }
 
         public bool IsActionQueueEmpty()
         {
-            return _actions.Count() <= 0;
+            return _actions.Count() == _currentActionIndex;
         }
 
         public bool OnFrameValidate()
@@ -150,15 +152,12 @@ namespace OmniEve
                         Cache.Instance.DirectEve.OnFrame -= EVEOnFrame;
                         break;
                     case OmniEveState.NextAction:
-                        if (_actions.Count > 0 && _currentAction == null)
+                        if (_currentAction == null && _actions.Count > 0 && _currentActionIndex < _actions.Count())
                         {
                             Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Popping next action off the queue", Logging.Teal);
                             
-                            _currentAction = _actions.First();
-                            lock (_listLock)
-                            {
-                                _actions.RemoveAt(0);
-                            }
+                            _currentAction = _actions[_currentActionIndex];
+                            _currentActionIndex++;
                             
                             _state = OmniEveState.InitAction;
                         }
