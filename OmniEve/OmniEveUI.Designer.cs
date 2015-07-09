@@ -44,11 +44,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OmniEveUI));
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.ordersPage = new MetroFramework.Controls.MetroTabPage();
-            this.modifyOrdersButton = new MetroFramework.Controls.MetroButton();
-            this.refreshOrdersButton = new MetroFramework.Controls.MetroButton();
+            this.modifyButton = new MetroFramework.Controls.MetroButton();
+            this.refreshButton = new MetroFramework.Controls.MetroButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
-            this.logTextBox = new MetroFramework.Controls.MetroTextBox();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.buyingGrid = new MetroFramework.Controls.MetroGrid();
             this.Buying_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -74,41 +72,51 @@
             this.Selling_Station = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Selling_Region = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
-            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.sellingLabel = new MetroFramework.Controls.MetroLabel();
             this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
-            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
-            this.metroPanel6 = new MetroFramework.Controls.MetroPanel();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.buyingLabel = new MetroFramework.Controls.MetroLabel();
             this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.logginTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.logTextBox = new MetroFramework.Controls.MetroTextBox();
+            this.autoSecondsTextBox = new MetroFramework.Controls.MetroTextBox();
+            this.autoStartButton = new MetroFramework.Controls.MetroButton();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.autoStopButton = new MetroFramework.Controls.MetroButton();
+            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.metroTabControl1.SuspendLayout();
             this.ordersPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.metroPanel1.SuspendLayout();
             this.metroPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).BeginInit();
             this.metroPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sellingGrid)).BeginInit();
             this.metroPanel4.SuspendLayout();
             this.metroPanel5.SuspendLayout();
-            this.metroPanel6.SuspendLayout();
+            this.logginTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroTabControl1
             // 
             this.metroTabControl1.Controls.Add(this.ordersPage);
             this.metroTabControl1.Controls.Add(this.marketTabPage);
+            this.metroTabControl1.Controls.Add(this.logginTabPage);
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 2;
             this.metroTabControl1.Size = new System.Drawing.Size(1159, 578);
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.UseSelectable = true;
             // 
             // ordersPage
             // 
-            this.ordersPage.Controls.Add(this.modifyOrdersButton);
-            this.ordersPage.Controls.Add(this.refreshOrdersButton);
+            this.ordersPage.Controls.Add(this.metroLabel2);
+            this.ordersPage.Controls.Add(this.autoStopButton);
+            this.ordersPage.Controls.Add(this.metroLabel1);
+            this.ordersPage.Controls.Add(this.autoStartButton);
+            this.ordersPage.Controls.Add(this.autoSecondsTextBox);
+            this.ordersPage.Controls.Add(this.modifyButton);
+            this.ordersPage.Controls.Add(this.refreshButton);
             this.ordersPage.Controls.Add(this.tableLayoutPanel1);
             this.ordersPage.HorizontalScrollbarBarColor = true;
             this.ordersPage.HorizontalScrollbarHighlightOnWheel = false;
@@ -122,27 +130,27 @@
             this.ordersPage.VerticalScrollbarHighlightOnWheel = false;
             this.ordersPage.VerticalScrollbarSize = 0;
             // 
-            // modifyOrdersButton
+            // modifyButton
             // 
-            this.modifyOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.modifyOrdersButton.Location = new System.Drawing.Point(943, 513);
-            this.modifyOrdersButton.Name = "modifyOrdersButton";
-            this.modifyOrdersButton.Size = new System.Drawing.Size(93, 23);
-            this.modifyOrdersButton.TabIndex = 5;
-            this.modifyOrdersButton.Text = " Modify Orders";
-            this.modifyOrdersButton.UseSelectable = true;
-            this.modifyOrdersButton.Click += new System.EventHandler(this.modifyOrdersButton_Click);
+            this.modifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.modifyButton.Location = new System.Drawing.Point(1055, 513);
+            this.modifyButton.Name = "modifyButton";
+            this.modifyButton.Size = new System.Drawing.Size(93, 23);
+            this.modifyButton.TabIndex = 5;
+            this.modifyButton.Text = "Modify";
+            this.modifyButton.UseSelectable = true;
+            this.modifyButton.Click += new System.EventHandler(this.modifyButton_Click);
             // 
-            // refreshOrdersButton
+            // refreshButton
             // 
-            this.refreshOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.refreshOrdersButton.Location = new System.Drawing.Point(1042, 513);
-            this.refreshOrdersButton.Name = "refreshOrdersButton";
-            this.refreshOrdersButton.Size = new System.Drawing.Size(109, 23);
-            this.refreshOrdersButton.TabIndex = 4;
-            this.refreshOrdersButton.Text = "Refresh Orders";
-            this.refreshOrdersButton.UseSelectable = true;
-            this.refreshOrdersButton.Click += new System.EventHandler(this.refreshOrdersButton_Click);
+            this.refreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refreshButton.Location = new System.Drawing.Point(940, 513);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(109, 23);
+            this.refreshButton.TabIndex = 4;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseSelectable = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -152,51 +160,17 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.metroPanel1, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.metroPanel2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.metroPanel3, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.metroPanel4, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.metroPanel5, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.metroPanel6, 0, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1151, 508);
             this.tableLayoutPanel1.TabIndex = 3;
-            // 
-            // metroPanel1
-            // 
-            this.metroPanel1.Controls.Add(this.logTextBox);
-            this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel1.HorizontalScrollbarBarColor = true;
-            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.HorizontalScrollbarSize = 10;
-            this.metroPanel1.Location = new System.Drawing.Point(100, 308);
-            this.metroPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(1051, 200);
-            this.metroPanel1.TabIndex = 0;
-            this.metroPanel1.VerticalScrollbarBarColor = true;
-            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.VerticalScrollbarSize = 10;
-            // 
-            // logTextBox
-            // 
-            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logTextBox.Lines = new string[0];
-            this.logTextBox.Location = new System.Drawing.Point(0, 0);
-            this.logTextBox.MaxLength = 0;
-            this.logTextBox.Multiline = true;
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.PasswordChar = '\0';
-            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logTextBox.SelectedText = "";
-            this.logTextBox.Size = new System.Drawing.Size(1051, 200);
-            this.logTextBox.TabIndex = 2;
-            this.logTextBox.UseSelectable = true;
             // 
             // metroPanel2
             // 
@@ -205,10 +179,10 @@
             this.metroPanel2.HorizontalScrollbarBarColor = true;
             this.metroPanel2.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel2.HorizontalScrollbarSize = 10;
-            this.metroPanel2.Location = new System.Drawing.Point(100, 154);
+            this.metroPanel2.Location = new System.Drawing.Point(100, 254);
             this.metroPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel2.Name = "metroPanel2";
-            this.metroPanel2.Size = new System.Drawing.Size(1051, 154);
+            this.metroPanel2.Size = new System.Drawing.Size(1051, 254);
             this.metroPanel2.TabIndex = 1;
             this.metroPanel2.VerticalScrollbarBarColor = true;
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
@@ -270,7 +244,7 @@
             this.buyingGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.buyingGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.buyingGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.buyingGrid.Size = new System.Drawing.Size(1051, 154);
+            this.buyingGrid.Size = new System.Drawing.Size(1051, 254);
             this.buyingGrid.TabIndex = 2;
             // 
             // Buying_Select
@@ -356,7 +330,7 @@
             this.metroPanel3.Location = new System.Drawing.Point(100, 0);
             this.metroPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel3.Name = "metroPanel3";
-            this.metroPanel3.Size = new System.Drawing.Size(1051, 154);
+            this.metroPanel3.Size = new System.Drawing.Size(1051, 254);
             this.metroPanel3.TabIndex = 2;
             this.metroPanel3.VerticalScrollbarBarColor = true;
             this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
@@ -414,7 +388,7 @@
             this.sellingGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.sellingGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.sellingGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.sellingGrid.Size = new System.Drawing.Size(1051, 154);
+            this.sellingGrid.Size = new System.Drawing.Size(1051, 254);
             this.sellingGrid.TabIndex = 2;
             // 
             // Selling_Select
@@ -489,7 +463,7 @@
             // 
             // metroPanel4
             // 
-            this.metroPanel4.Controls.Add(this.metroLabel1);
+            this.metroPanel4.Controls.Add(this.sellingLabel);
             this.metroPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel4.HorizontalScrollbarBarColor = true;
             this.metroPanel4.HorizontalScrollbarHighlightOnWheel = false;
@@ -497,70 +471,45 @@
             this.metroPanel4.Location = new System.Drawing.Point(0, 0);
             this.metroPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel4.Name = "metroPanel4";
-            this.metroPanel4.Size = new System.Drawing.Size(100, 154);
+            this.metroPanel4.Size = new System.Drawing.Size(100, 254);
             this.metroPanel4.TabIndex = 3;
             this.metroPanel4.VerticalScrollbarBarColor = true;
             this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel4.VerticalScrollbarSize = 10;
             // 
-            // metroLabel1
+            // sellingLabel
             // 
-            this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(4, 0);
-            this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(47, 19);
-            this.metroLabel1.TabIndex = 2;
-            this.metroLabel1.Text = "Selling";
+            this.sellingLabel.AutoSize = true;
+            this.sellingLabel.Location = new System.Drawing.Point(4, 0);
+            this.sellingLabel.Name = "sellingLabel";
+            this.sellingLabel.Size = new System.Drawing.Size(47, 19);
+            this.sellingLabel.TabIndex = 2;
+            this.sellingLabel.Text = "Selling";
             // 
             // metroPanel5
             // 
-            this.metroPanel5.Controls.Add(this.metroLabel2);
+            this.metroPanel5.Controls.Add(this.buyingLabel);
             this.metroPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroPanel5.HorizontalScrollbarBarColor = true;
             this.metroPanel5.HorizontalScrollbarHighlightOnWheel = false;
             this.metroPanel5.HorizontalScrollbarSize = 10;
-            this.metroPanel5.Location = new System.Drawing.Point(0, 154);
+            this.metroPanel5.Location = new System.Drawing.Point(0, 254);
             this.metroPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.metroPanel5.Name = "metroPanel5";
-            this.metroPanel5.Size = new System.Drawing.Size(100, 154);
+            this.metroPanel5.Size = new System.Drawing.Size(100, 254);
             this.metroPanel5.TabIndex = 4;
             this.metroPanel5.VerticalScrollbarBarColor = true;
             this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel5.VerticalScrollbarSize = 10;
             // 
-            // metroLabel2
+            // buyingLabel
             // 
-            this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(4, 0);
-            this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(48, 19);
-            this.metroLabel2.TabIndex = 3;
-            this.metroLabel2.Text = "Buying";
-            // 
-            // metroPanel6
-            // 
-            this.metroPanel6.Controls.Add(this.metroLabel3);
-            this.metroPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel6.HorizontalScrollbarBarColor = true;
-            this.metroPanel6.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel6.HorizontalScrollbarSize = 10;
-            this.metroPanel6.Location = new System.Drawing.Point(0, 308);
-            this.metroPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel6.Name = "metroPanel6";
-            this.metroPanel6.Size = new System.Drawing.Size(100, 200);
-            this.metroPanel6.TabIndex = 5;
-            this.metroPanel6.VerticalScrollbarBarColor = true;
-            this.metroPanel6.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel6.VerticalScrollbarSize = 10;
-            // 
-            // metroLabel3
-            // 
-            this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(3, 0);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(57, 19);
-            this.metroLabel3.TabIndex = 4;
-            this.metroLabel3.Text = "Logging";
+            this.buyingLabel.AutoSize = true;
+            this.buyingLabel.Location = new System.Drawing.Point(4, 0);
+            this.buyingLabel.Name = "buyingLabel";
+            this.buyingLabel.Size = new System.Drawing.Size(48, 19);
+            this.buyingLabel.TabIndex = 3;
+            this.buyingLabel.Text = "Buying";
             // 
             // marketTabPage
             // 
@@ -576,6 +525,95 @@
             this.marketTabPage.VerticalScrollbarHighlightOnWheel = false;
             this.marketTabPage.VerticalScrollbarSize = 0;
             // 
+            // logginTabPage
+            // 
+            this.logginTabPage.Controls.Add(this.logTextBox);
+            this.logginTabPage.HorizontalScrollbarBarColor = true;
+            this.logginTabPage.HorizontalScrollbarHighlightOnWheel = false;
+            this.logginTabPage.HorizontalScrollbarSize = 0;
+            this.logginTabPage.Location = new System.Drawing.Point(4, 38);
+            this.logginTabPage.Name = "logginTabPage";
+            this.logginTabPage.Size = new System.Drawing.Size(1151, 536);
+            this.logginTabPage.TabIndex = 2;
+            this.logginTabPage.Text = "Logging";
+            this.logginTabPage.VerticalScrollbarBarColor = true;
+            this.logginTabPage.VerticalScrollbarHighlightOnWheel = false;
+            this.logginTabPage.VerticalScrollbarSize = 0;
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logTextBox.Lines = new string[0];
+            this.logTextBox.Location = new System.Drawing.Point(0, 0);
+            this.logTextBox.MaxLength = 0;
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.PasswordChar = '\0';
+            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logTextBox.SelectedText = "";
+            this.logTextBox.Size = new System.Drawing.Size(1151, 536);
+            this.logTextBox.TabIndex = 3;
+            this.logTextBox.UseSelectable = true;
+            // 
+            // autoSecondsTextBox
+            // 
+            this.autoSecondsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoSecondsTextBox.Lines = new string[] {
+        "600"};
+            this.autoSecondsTextBox.Location = new System.Drawing.Point(43, 513);
+            this.autoSecondsTextBox.MaxLength = 32767;
+            this.autoSecondsTextBox.Name = "autoSecondsTextBox";
+            this.autoSecondsTextBox.PasswordChar = '\0';
+            this.autoSecondsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.autoSecondsTextBox.SelectedText = "";
+            this.autoSecondsTextBox.Size = new System.Drawing.Size(75, 23);
+            this.autoSecondsTextBox.TabIndex = 6;
+            this.autoSecondsTextBox.Text = "600";
+            this.autoSecondsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.autoSecondsTextBox.UseSelectable = true;
+            // 
+            // autoStartButton
+            // 
+            this.autoStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoStartButton.Location = new System.Drawing.Point(124, 513);
+            this.autoStartButton.Name = "autoStartButton";
+            this.autoStartButton.Size = new System.Drawing.Size(75, 23);
+            this.autoStartButton.TabIndex = 7;
+            this.autoStartButton.Text = "Start";
+            this.autoStartButton.UseSelectable = true;
+            this.autoStartButton.Click += new System.EventHandler(this.autoStartButton_Click);
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.Location = new System.Drawing.Point(0, 513);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(37, 19);
+            this.metroLabel1.TabIndex = 8;
+            this.metroLabel1.Text = "Auto";
+            // 
+            // autoStopButton
+            // 
+            this.autoStopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoStopButton.Location = new System.Drawing.Point(205, 513);
+            this.autoStopButton.Name = "autoStopButton";
+            this.autoStopButton.Size = new System.Drawing.Size(75, 23);
+            this.autoStopButton.TabIndex = 9;
+            this.autoStopButton.Text = "Stop";
+            this.autoStopButton.UseSelectable = true;
+            this.autoStopButton.Click += new System.EventHandler(this.autoStopButton_Click);
+            // 
+            // metroLabel2
+            // 
+            this.metroLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.metroLabel2.AutoSize = true;
+            this.metroLabel2.Location = new System.Drawing.Point(882, 513);
+            this.metroLabel2.Name = "metroLabel2";
+            this.metroLabel2.Size = new System.Drawing.Size(52, 19);
+            this.metroLabel2.TabIndex = 10;
+            this.metroLabel2.Text = "Manual";
+            // 
             // OmniEveUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -588,8 +626,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OmniEveUI_FormClosing);
             this.metroTabControl1.ResumeLayout(false);
             this.ordersPage.ResumeLayout(false);
+            this.ordersPage.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.metroPanel1.ResumeLayout(false);
             this.metroPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).EndInit();
             this.metroPanel3.ResumeLayout(false);
@@ -598,8 +636,7 @@
             this.metroPanel4.PerformLayout();
             this.metroPanel5.ResumeLayout(false);
             this.metroPanel5.PerformLayout();
-            this.metroPanel6.ResumeLayout(false);
-            this.metroPanel6.PerformLayout();
+            this.logginTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -609,21 +646,17 @@
         private MetroFramework.Controls.MetroTabControl metroTabControl1;
         private MetroFramework.Controls.MetroTabPage ordersPage;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private MetroFramework.Controls.MetroPanel metroPanel1;
         private MetroFramework.Controls.MetroPanel metroPanel2;
         private MetroFramework.Controls.MetroGrid buyingGrid;
         private MetroFramework.Controls.MetroPanel metroPanel3;
         private MetroFramework.Controls.MetroGrid sellingGrid;
         private MetroFramework.Controls.MetroPanel metroPanel4;
-        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Controls.MetroLabel sellingLabel;
         private MetroFramework.Controls.MetroPanel metroPanel5;
-        private MetroFramework.Controls.MetroButton modifyOrdersButton;
-        private MetroFramework.Controls.MetroLabel metroLabel2;
-        private MetroFramework.Controls.MetroPanel metroPanel6;
+        private MetroFramework.Controls.MetroButton modifyButton;
+        private MetroFramework.Controls.MetroLabel buyingLabel;
         private MetroFramework.Controls.MetroTabPage marketTabPage;
-        private MetroFramework.Controls.MetroLabel metroLabel3;
-        private MetroFramework.Controls.MetroButton refreshOrdersButton;
-        private MetroFramework.Controls.MetroTextBox logTextBox;
+        private MetroFramework.Controls.MetroButton refreshButton;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Selling_Select;
         private System.Windows.Forms.DataGridViewTextBoxColumn Selling_TypeId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderId;
@@ -644,6 +677,13 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Region;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Range;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_MinVolume;
+        private MetroFramework.Controls.MetroTabPage logginTabPage;
+        private MetroFramework.Controls.MetroTextBox logTextBox;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Controls.MetroButton autoStartButton;
+        private MetroFramework.Controls.MetroTextBox autoSecondsTextBox;
+        private MetroFramework.Controls.MetroButton autoStopButton;
+        private MetroFramework.Controls.MetroLabel metroLabel2;
 
     }
 }

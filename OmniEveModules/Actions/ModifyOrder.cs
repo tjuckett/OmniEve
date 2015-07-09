@@ -107,7 +107,8 @@ namespace OmniEveModules.Actions
 
                 case ModifyOrderState.Modify:
 
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 4)
+                    // We keep getting the popup saying we can't modify many orders in a minute, so this needs to be at 6 or higher, probably higher
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 6)
                         break;
 
                     _lastAction = DateTime.UtcNow;

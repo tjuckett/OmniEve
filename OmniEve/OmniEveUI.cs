@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Xml;
 using System.Windows.Forms;
 using MetroFramework.Forms;
@@ -21,7 +22,16 @@ namespace OmniEve
 
     public partial class OmniEveUI : MetroForm
     {
+        private enum Mode
+        {
+            Idle,
+            Automatic,
+            Manual
+        }
+
         private OmniEve _omniEve = null;
+        private Mode _mode = Mode.Idle;
+        private System.Timers.Timer _timer = new System.Timers.Timer();
         
         public OmniEveUI(OmniEve omniEve)
         {
@@ -71,6 +81,9 @@ namespace OmniEve
                     _omniEve.AddAction(marketInfo);
                 }
             }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void SellMarketInfoFinished(MarketItemInfo marketInfo)
@@ -95,6 +108,14 @@ namespace OmniEve
                     }
                 }
             }
+
+            if(_mode == Mode.Automatic && _omniEve.IsActionQueueEmpty() == true)
+            {
+                ModifySellOrders();
+            }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void MyBuyOrdersUpdated(List<DirectOrder> myBuyOrders)
@@ -144,6 +165,9 @@ namespace OmniEve
                     _omniEve.AddAction(marketInfo);
                 }
             }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void BuyMarketInfoFinished(MarketItemInfo marketInfo)
@@ -168,6 +192,14 @@ namespace OmniEve
                     }
                 }
             }
+
+            if (_mode == Mode.Automatic && _omniEve.IsActionQueueEmpty() == true)
+            {
+                ModifyBuyOrders();
+            }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void ModifySellOrders()
@@ -187,6 +219,12 @@ namespace OmniEve
                             long orderId = (long)row.Cells["Selling_OrderId"].Value;
                             string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
                             string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
+
+                            if(marketPriceStr == null || marketPriceStr.Count() <= 0)
+                            {
+                                Logging.Log("OmniEveUI:ModifySellOrders", "Can't modify order, the market price is empty or hasn't been filled out yet for OrderId - " + orderId, Logging.Debug);
+                                continue;
+                            }
 
                             // To get around the double percision problem we first convert the strings to decimals, do the modification, then convert to double
                             decimal orderPrice = decimal.Parse(orderPriceStr);
@@ -226,6 +264,9 @@ namespace OmniEve
                     }
                 }
             }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void ModifySellOrderFinished(long orderId, double price)
@@ -240,6 +281,9 @@ namespace OmniEve
                     row.DefaultCellStyle.ForeColor = Color.Black;
                 }
             }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void ModifyBuyOrders()
@@ -300,6 +344,9 @@ namespace OmniEve
                     }
                 }
             }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
         }
 
         private void ModifyBuyOrderFinished(long orderId, double price)
@@ -314,6 +361,84 @@ namespace OmniEve
                     row.DefaultCellStyle.ForeColor = Color.Black;
                 }
             }
+
+            if (EnableControls() == true)
+                _mode = Mode.Idle;
+        }
+
+        private bool EnableControls()
+        {
+            bool enableControls = false;
+
+            if (_mode == Mode.Manual)
+            {
+                enableControls = (_omniEve != null && _omniEve.IsActionQueueEmpty() == true);
+            }
+            else if (_mode == Mode.Automatic)
+            {
+                enableControls = (_timer.Enabled == false);
+            }
+
+            if (enableControls == true)
+            {
+                refreshButton.Enabled = true;
+                modifyButton.Enabled = true;
+                autoStartButton.Enabled = true;
+                autoStopButton.Enabled = true;
+                autoSecondsTextBox.Enabled = true;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void DisableControls()
+        {
+            if (_mode == Mode.Manual)
+            {
+                refreshButton.Enabled = false;
+                modifyButton.Enabled = false;
+                autoStartButton.Enabled = false;
+                autoStopButton.Enabled = false;
+                autoSecondsTextBox.Enabled = false;
+            }
+            else if (_mode == Mode.Automatic)
+            {
+                refreshButton.Enabled = false;
+                modifyButton.Enabled = false;
+                autoStartButton.Enabled = false;
+                autoSecondsTextBox.Enabled = false;
+            }
+        }
+
+        private void AutoTimerElapsed(Object source, ElapsedEventArgs e)
+        {
+            // Only refresh orders when the action queue is empty, otherwise wait till the next time or lengthen the time between events
+            if(_omniEve != null && _omniEve.IsActionQueueEmpty() == true)
+            {
+                RefreshOrders();
+            }
+        }
+
+        private void RefreshOrders()
+        {
+            if (_omniEve != null)
+            {
+                sellingGrid.Rows.Clear();
+                buyingGrid.Rows.Clear();
+
+                Cache.Instance.OnMySellOrdersUpdated += MySellOrdersUpdated;
+                Cache.Instance.OnMyBuyOrdersUpdated += MyBuyOrdersUpdated;
+                MyOrders myOrders = new MyOrders();
+                _omniEve.AddAction(myOrders);
+            }
+        }
+
+        public void ModifyOrders()
+        {
+            ModifySellOrders();
+            ModifyBuyOrders();
         }
 
         private void OmniEveUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -323,20 +448,14 @@ namespace OmniEve
             Logging.TextBoxWriter = null;
         }
 
-        private void refreshOrdersButton_Click(object sender, EventArgs e)
+        private void refreshButton_Click(object sender, EventArgs e)
         {
             try
             {
-                if (_omniEve != null)
-                {
-                    sellingGrid.Rows.Clear();
-                    buyingGrid.Rows.Clear();
+                _mode = Mode.Manual;
 
-                    Cache.Instance.OnMySellOrdersUpdated += MySellOrdersUpdated;
-                    Cache.Instance.OnMyBuyOrdersUpdated += MyBuyOrdersUpdated;
-                    MyOrders myOrders = new MyOrders();
-                    _omniEve.AddAction(myOrders);
-                }
+                RefreshOrders();
+                DisableControls();
             }
             catch (Exception ex)
             {
@@ -344,18 +463,57 @@ namespace OmniEve
             }
         }
 
-        private void modifyOrdersButton_Click(object sender, EventArgs e)
+        private void modifyButton_Click(object sender, EventArgs e)
         {
             try
             {
                 Logging.Log("OmniEveUI:ModifyOrdersButton", "Modifying sell and buy orders", Logging.Debug);
 
-                ModifySellOrders();
-                ModifyBuyOrders();
+                _mode = Mode.Manual;
+
+                ModifyOrders();
+
+                DisableControls();
             }
             catch (Exception ex)
             {
                 Logging.Log("OmniEveUI:ModifyOrdersButton", "Exception [" + ex + "]", Logging.Debug);
+            }
+        }
+
+        private void autoStopButton_Click(object sender, EventArgs e)
+        {
+            try 
+            {
+                _mode = Mode.Idle;
+
+                _timer.Stop();
+                _timer.Elapsed -= AutoTimerElapsed;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("OmniEveUI:AutoStopButton", "Exception [" + ex + "]", Logging.Debug);
+            }
+        }
+
+        private void autoStartButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _mode = Mode.Automatic;
+
+                _timer.Interval = int.Parse(autoSecondsTextBox.Text) * 1000;
+                _timer.Elapsed += AutoTimerElapsed;
+                _timer.AutoReset = true;
+                _timer.Start();
+
+                RefreshOrders();
+
+                DisableControls();
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("OmniEveUI:AutoStartButton", "Exception [" + ex + "]", Logging.Debug);
             }
         }
     }

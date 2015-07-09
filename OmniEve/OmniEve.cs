@@ -18,6 +18,7 @@ namespace OmniEve
     {
         private DateTime _lastPulse;
         private OmniEveState _state = OmniEveState.Idle;
+        private object _listLock = new object();
         private List<IAction> _actions = new List<IAction>();
         private IAction _currentAction = null;
         private static DateTime _nextOmniEveAction = DateTime.UtcNow.AddHours(-1);
@@ -51,10 +52,23 @@ namespace OmniEve
 
         public void AddAction(IAction action)
         {
-            lock (_actions)
+            lock (_listLock)
             {
                 _actions.Add(action);
             }
+        }
+
+        public void ClearActions()
+        {
+            lock (_listLock)
+            {
+                _actions.Clear();
+            }
+        }
+
+        public bool IsActionQueueEmpty()
+        {
+            return _actions.Count() <= 0;
         }
 
         public bool OnFrameValidate()
@@ -141,7 +155,7 @@ namespace OmniEve
                             Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Popping next action off the queue", Logging.Teal);
                             
                             _currentAction = _actions.First();
-                            lock (_actions)
+                            lock (_listLock)
                             {
                                 _actions.RemoveAt(0);
                             }
