@@ -53,12 +53,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Item.cs" />
     <Compile Include="OmniEveMarketUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="OmniEveMarketUI.Designer.cs">
       <DependentUpon>OmniEveMarketUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="PriceHistory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="OmniEveMarketUI.resx">

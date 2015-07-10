@@ -103,10 +103,12 @@ namespace OmniEve
                 sellingGrid.AllowUserToAddRows = false;
 
                 // Add an action for each sell order and get the updated market values
-                if (_omniEve != null)
+                if (_omniEve != null && 
+                    (sellingGrid.Rows[index].Cells["Selling_MarketPrice"].Value == null || 
+                     sellingGrid.Rows[index].Cells["Selling_MarketPrice"].Value.ToString().Count() <= 0))
                 {
                     MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += SellMarketInfoFinished;
+                    marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
                     marketInfo.TypeId = order.TypeId;
                     _omniEve.AddAction(marketInfo);
                 }
@@ -115,14 +117,24 @@ namespace OmniEve
             CheckState();
         }
 
-        private void SellMarketInfoFinished(MarketItemInfo marketInfo)
+        private void MarketInfoFinished(MarketItemInfo marketInfo)
         {
-            List<DirectOrder> orders = marketInfo.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
-            DirectOrder order = orders.FirstOrDefault();
+            List<DirectOrder> sellOrders = marketInfo.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
+            List<DirectOrder> buyOrders = marketInfo.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
+            DirectOrder sellOrder = sellOrders.FirstOrDefault();
+            DirectOrder buyOrder = buyOrders.FirstOrDefault();
 
-            if(order != null)
+            UpdateMarketInfoSellOrder(marketInfo, sellOrder);
+            UpdateMarketInfoBuyOrder(marketInfo, buyOrder);
+
+            CheckState();
+        }
+
+        private void UpdateMarketInfoSellOrder(MarketItemInfo marketInfo, DirectOrder sellOrder)
+        {
+            if (sellOrder != null)
             {
-                foreach(DataGridViewRow row in sellingGrid.Rows)
+                foreach (DataGridViewRow row in sellingGrid.Rows)
                 {
                     if (int.Parse(row.Cells["Selling_TypeId"].Value.ToString()) == marketInfo.TypeId)
                     {
@@ -130,13 +142,13 @@ namespace OmniEve
 
                         long orderId = (long)row.Cells["Selling_OrderId"].Value;
                         string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
-                        string marketPriceStr = order.Price.ToString();
+                        string marketPriceStr = sellOrder.Price.ToString();
 
                         row.Cells["Selling_MarketPrice"].Value = marketPriceStr;
                         double orderPrice = double.Parse(orderPriceStr);
-                        if (orderPrice > order.Price)
+                        if (orderPrice > sellOrder.Price)
                         {
-                            double priceDifference = orderPrice - order.Price;
+                            double priceDifference = orderPrice - sellOrder.Price;
                             double priceDifferencePct = priceDifference / orderPrice;
 
                             if (priceDifferencePct < 0.05 && priceDifference < 5000000)
@@ -157,8 +169,47 @@ namespace OmniEve
                     }
                 }
             }
+        }
 
-            CheckState();
+        private void UpdateMarketInfoBuyOrder(MarketItemInfo marketInfo, DirectOrder buyOrder)
+        {
+            if (buyOrder != null)
+            {
+                foreach (DataGridViewRow row in buyingGrid.Rows)
+                {
+                    if (int.Parse(row.Cells["Buying_TypeId"].Value.ToString()) == marketInfo.TypeId)
+                    {
+                        Logging.Log("OmniEveUI:MarketInfoFinished", "Row has been found, adding market info to row", Logging.White);
+
+                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
+                        string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
+                        string marketPriceStr = buyOrder.Price.ToString();
+
+                        row.Cells["Buying_MarketPrice"].Value = marketPriceStr;
+                        double orderPrice = double.Parse(orderPriceStr);
+                        if (orderPrice < buyOrder.Price)
+                        {
+                            double priceDifference = buyOrder.Price - orderPrice;
+                            double priceDifferencePct = priceDifference / orderPrice;
+
+                            if (priceDifferencePct < 0.05 && priceDifference < 5000000)
+                            {
+                                row.Cells["Buying_Select"].Value = true;
+                                row.DefaultCellStyle.BackColor = Color.Red;
+                                row.DefaultCellStyle.ForeColor = Color.Black;
+
+                                if (_mode == Mode.Automatic)
+                                    ModifyBuyOrder(orderId, orderPriceStr, marketPriceStr);
+                            }
+                            else
+                            {
+                                row.DefaultCellStyle.BackColor = Color.Yellow;
+                                row.DefaultCellStyle.ForeColor = Color.Black;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         private void MyBuyOrdersUpdated(List<DirectOrder> myBuyOrders)
@@ -200,58 +251,14 @@ namespace OmniEve
                 buyingGrid.AllowUserToAddRows = false;
 
                 // Add an action for each Buy order and get the updated market values
-                if (_omniEve != null)
+                if (_omniEve != null && 
+                    (buyingGrid.Rows[index].Cells["Buying_MarketPrice"].Value == null || 
+                     buyingGrid.Rows[index].Cells["Buying_MarketPrice"].Value.ToString().Count() <= 0))
                 {
                     MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += BuyMarketInfoFinished;
+                    marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
                     marketInfo.TypeId = order.TypeId;
                     _omniEve.AddAction(marketInfo);
-                }
-            }
-
-            CheckState();
-        }
-
-        private void BuyMarketInfoFinished(MarketItemInfo marketInfo)
-        {
-            List<DirectOrder> orders = marketInfo.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
-            DirectOrder order = orders.FirstOrDefault();
-
-            if (order != null)
-            {
-                foreach (DataGridViewRow row in buyingGrid.Rows)
-                {
-                    if (int.Parse(row.Cells["Buying_TypeId"].Value.ToString()) == marketInfo.TypeId)
-                    {
-                        Logging.Log("OmniEveUI:MarketInfoFinished", "Row has been found, adding market info to row", Logging.White);
-
-                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
-                        string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
-                        string marketPriceStr = order.Price.ToString();
-
-                        row.Cells["Buying_MarketPrice"].Value = marketPriceStr;
-                        double orderPrice = double.Parse(orderPriceStr);
-                        if (orderPrice < order.Price)
-                        {
-                            double priceDifference = order.Price - orderPrice;
-                            double priceDifferencePct = priceDifference / orderPrice;
-
-                            if (priceDifferencePct < 0.05 && priceDifference < 5000000)
-                            { 
-                                row.Cells["Buying_Select"].Value = true;
-                                row.DefaultCellStyle.BackColor = Color.Red;
-                                row.DefaultCellStyle.ForeColor = Color.Black;
-
-                                if (_mode == Mode.Automatic)
-                                    ModifyBuyOrder(orderId, orderPriceStr, marketPriceStr);
-                            }
-                            else
-                            {
-                                row.DefaultCellStyle.BackColor = Color.Yellow;
-                                row.DefaultCellStyle.ForeColor = Color.Black;
-                            }
-                        }
-                    }
                 }
             }
 

@@ -60,3 +60,4 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\Interop.mscoree.
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.csproj.ResolveComReference.cache
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.dll
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.pdb
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveLoader\obj\Release\OmniEveLoader.csprojResolveAssemblyReference.cache

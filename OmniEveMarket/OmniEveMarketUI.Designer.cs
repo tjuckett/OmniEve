@@ -44,14 +44,15 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
             this.cancelMarketDataButton = new MetroFramework.Controls.MetroButton();
@@ -103,6 +104,7 @@
             this.CreateBuyOrders_MinSellOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CreateBuyOrders_MaxBuyOrder = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CreateBuyOrders_Profit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CreateBuyOrders_TotalProfit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.CreateBuyOrders_ProfitMargin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.metroPanel1.SuspendLayout();
@@ -415,15 +417,16 @@
             this.CreateBuyOrders_MinSellOrder,
             this.CreateBuyOrders_MaxBuyOrder,
             this.CreateBuyOrders_Profit,
+            this.CreateBuyOrders_TotalProfit,
             this.CreateBuyOrders_ProfitMargin});
-            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle23.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle23.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle23.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            dataGridViewCellStyle23.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle23.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.createBuyOrdersGrid.DefaultCellStyle = dataGridViewCellStyle23;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle24.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.createBuyOrdersGrid.DefaultCellStyle = dataGridViewCellStyle24;
             this.createBuyOrdersGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.createBuyOrdersGrid.EnableHeadersVisualStyles = false;
             this.createBuyOrdersGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
@@ -431,14 +434,14 @@
             this.createBuyOrdersGrid.Location = new System.Drawing.Point(0, 0);
             this.createBuyOrdersGrid.Name = "createBuyOrdersGrid";
             this.createBuyOrdersGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle24.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle24.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle24.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle24.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.createBuyOrdersGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle24;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle25.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle25.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle25.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle25.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.createBuyOrdersGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle25;
             this.createBuyOrdersGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.createBuyOrdersGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.createBuyOrdersGrid.Size = new System.Drawing.Size(1341, 338);
@@ -742,11 +745,19 @@
             this.CreateBuyOrders_Profit.HeaderText = "Profit";
             this.CreateBuyOrders_Profit.Name = "CreateBuyOrders_Profit";
             // 
+            // CreateBuyOrders_TotalProfit
+            // 
+            dataGridViewCellStyle22.Format = "C2";
+            dataGridViewCellStyle22.NullValue = null;
+            this.CreateBuyOrders_TotalProfit.DefaultCellStyle = dataGridViewCellStyle22;
+            this.CreateBuyOrders_TotalProfit.HeaderText = "Total Profit";
+            this.CreateBuyOrders_TotalProfit.Name = "CreateBuyOrders_TotalProfit";
+            // 
             // CreateBuyOrders_ProfitMargin
             // 
-            dataGridViewCellStyle22.Format = "p";
-            dataGridViewCellStyle22.NullValue = null;
-            this.CreateBuyOrders_ProfitMargin.DefaultCellStyle = dataGridViewCellStyle22;
+            dataGridViewCellStyle23.Format = "p";
+            dataGridViewCellStyle23.NullValue = null;
+            this.CreateBuyOrders_ProfitMargin.DefaultCellStyle = dataGridViewCellStyle23;
             this.CreateBuyOrders_ProfitMargin.HeaderText = "Profit Margin";
             this.CreateBuyOrders_ProfitMargin.Name = "CreateBuyOrders_ProfitMargin";
             // 
@@ -824,6 +835,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn CreateBuyOrders_MinSellOrder;
         private System.Windows.Forms.DataGridViewTextBoxColumn CreateBuyOrders_MaxBuyOrder;
         private System.Windows.Forms.DataGridViewTextBoxColumn CreateBuyOrders_Profit;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CreateBuyOrders_TotalProfit;
         private System.Windows.Forms.DataGridViewTextBoxColumn CreateBuyOrders_ProfitMargin;
 
 

@@ -70,28 +70,6 @@ namespace OmniEveMarket
             public List<Order> BuyOrders { get; set; }
         }
 
-        public class PriceHistory
-        {
-            public string Date { get; set; }
-            public decimal MinPrice { get; set; }
-            public decimal MaxPrice { get; set; }
-            public decimal AvgPrice { get; set; }
-            public long VolumeMovement { get; set; }
-            public long OrdersMovement { get; set; }
-        }
-
-        public class History
-        {
-            public History() { PriceHistory = new List<PriceHistory>(); }
-
-            public List<PriceHistory> PriceHistory { get; set; }
-            public decimal AvgMinPrice { get; set; }
-            public decimal AvgMaxPrice { get; set; }
-            public decimal AvgPrice { get; set; }
-            public long AvgOrders { get; set; }
-            public long AvgVolume { get; set; }
-        }
-
         public class Order
         {
             public int Region { get; set; }
@@ -134,7 +112,7 @@ namespace OmniEveMarket
             public BuySellOrdersAnalysis BuySellOrdersAnalysis { get; set; }
             public CreateBuyOrdersAnalysis CreateBuyOrdersAnalysis { get; set; }
             public MarketStats MarketStats { get; set; }
-            public History History { get; set; }
+            public PriceHistory PriceHistory { get; set; }
         }
 
         enum NodeType { region, station, station_name, security, range, price, vol_remain, min_volume, expires, reported_time, none };
@@ -399,7 +377,7 @@ namespace OmniEveMarket
             }
         }
 
-        public History GetHistory(int typeId)
+        public PriceHistory GetPriceHistory(int typeId)
         {
             try
             {
@@ -425,7 +403,7 @@ namespace OmniEveMarket
 
                 string[] historyLines = resString.Split(new char[] {'\n'});
 
-                History history = new History();
+                PriceHistory priceHistory = new PriceHistory();
 
                 if(historyLines.Count() <= 0)
                     return null;
@@ -443,33 +421,33 @@ namespace OmniEveMarket
                     { 
                         string[] variables = line.Split(new char[] {'\t'});
 
-                        PriceHistory priceHistory = new PriceHistory();
+                        PriceHistory.Day day = new PriceHistory.Day();
 
-                        priceHistory.AvgPrice = decimal.Parse(variables[5]);
-                        priceHistory.MaxPrice = decimal.Parse(variables[4]);
-                        priceHistory.MinPrice = decimal.Parse(variables[3]);
-                        priceHistory.OrdersMovement = long.Parse(variables[7]);
-                        priceHistory.VolumeMovement = long.Parse(variables[6]);
+                        day.AvgPrice = decimal.Parse(variables[5]);
+                        day.MaxPrice = decimal.Parse(variables[4]);
+                        day.MinPrice = decimal.Parse(variables[3]);
+                        day.OrdersMovement = long.Parse(variables[7]);
+                        day.VolumeMovement = long.Parse(variables[6]);
 
-                        totalAvgPrice += priceHistory.AvgPrice;
-                        totalMaxPrice += priceHistory.MaxPrice;
-                        totalMinPrice += priceHistory.MinPrice;
-                        totalOrdersMovement += priceHistory.OrdersMovement;
-                        totalVolumeMovement += priceHistory.VolumeMovement;
+                        totalAvgPrice += day.AvgPrice;
+                        totalMaxPrice += day.MaxPrice;
+                        totalMinPrice += day.MinPrice;
+                        totalOrdersMovement += day.OrdersMovement;
+                        totalVolumeMovement += day.VolumeMovement;
 
-                        history.PriceHistory.Add(priceHistory);
+                        priceHistory.Days.Add(day);
 
                         priceHistoryCount++;
                     }
                 }
 
-                history.AvgVolume = (priceHistoryCount > 0) ? totalVolumeMovement / priceHistoryCount : 0;
-                history.AvgPrice = (priceHistoryCount > 0) ? totalAvgPrice / priceHistoryCount : 0;
-                history.AvgOrders = (priceHistoryCount > 0) ? totalOrdersMovement / priceHistoryCount : 0;
-                history.AvgMinPrice = (priceHistoryCount > 0) ? totalMinPrice / priceHistoryCount : 0;
-                history.AvgMaxPrice = (priceHistoryCount > 0) ? totalVolumeMovement / priceHistoryCount : 0;
+                priceHistory.AvgVolume = (priceHistoryCount > 0) ? totalVolumeMovement / priceHistoryCount : 0;
+                priceHistory.AvgPrice = (priceHistoryCount > 0) ? totalAvgPrice / priceHistoryCount : 0;
+                priceHistory.AvgOrders = (priceHistoryCount > 0) ? totalOrdersMovement / priceHistoryCount : 0;
+                priceHistory.AvgMinPrice = (priceHistoryCount > 0) ? totalMinPrice / priceHistoryCount : 0;
+                priceHistory.AvgMaxPrice = (priceHistoryCount > 0) ? totalVolumeMovement / priceHistoryCount : 0;
 
-                return history;
+                return priceHistory;
             }
             catch (Exception ex)
             {
@@ -546,7 +524,7 @@ namespace OmniEveMarket
             }
         }
 
-        public CreateBuyOrdersAnalysis AnaylzeCreateBuyOrders(List<Order> sellOrders, List<Order> buyOrders, long avgVolumeMovement)
+        public CreateBuyOrdersAnalysis AnaylzeCreateBuyOrders(List<Order> sellOrders, List<Order> buyOrders)
         {
             try
             {
@@ -561,15 +539,9 @@ namespace OmniEveMarket
                     decimal priceDiff = minSellOrder.Price - newBuyPrice;
                     decimal totalFees = minSellOrder.Price * ((_brokersFee + _salesTax) / 100.0m);
 
-                    decimal profitMargin = 0;
-                    decimal profit = 0;
+                    decimal profit = priceDiff - totalFees;
+                    decimal profitMargin = profit / newBuyPrice;
 
-                    if (avgVolumeMovement != 0)
-                    {
-                        profit = (priceDiff * avgVolumeMovement) - totalFees;
-                        profitMargin = profit / (newBuyPrice * avgVolumeMovement);
-                    }
-                    
                     analysis.BuyPrice = newBuyPrice;
                     analysis.Profit = profit;
                     analysis.ProfitMargin = profitMargin;
@@ -625,22 +597,22 @@ namespace OmniEveMarket
                 {
                     return true;
                 }
-                else if (_priceHistory == true && itemData.History != null)
+                else if (_priceHistory == true && itemData.PriceHistory != null)
                 {
                     int priceHistoryMatch = 0;
 
-                    foreach (PriceHistory history in itemData.History.PriceHistory)
+                    foreach (PriceHistory.Day day in itemData.PriceHistory.Days)
                     {
-                        if (itemData.BuySellOrdersAnalysis.SellOrdersBought < history.OrdersMovement &&
-                            itemData.BuySellOrdersAnalysis.VolumeBought < history.VolumeMovement &&
-                            itemData.BuySellOrdersAnalysis.SellPrice > history.MaxPrice * 0.9m &&
-                            itemData.BuySellOrdersAnalysis.SellPrice < history.MaxPrice * 1.1m)
+                        if (itemData.BuySellOrdersAnalysis.SellOrdersBought < day.OrdersMovement &&
+                            itemData.BuySellOrdersAnalysis.VolumeBought < day.VolumeMovement &&
+                            itemData.BuySellOrdersAnalysis.SellPrice > day.MaxPrice * 0.9m &&
+                            itemData.BuySellOrdersAnalysis.SellPrice < day.MaxPrice * 1.1m)
                         {
                             priceHistoryMatch++;    
                         }
                     }
 
-                    if (itemData.History.PriceHistory.Count() > 0 && priceHistoryMatch / itemData.History.PriceHistory.Count() > 0.5)
+                    if (itemData.PriceHistory.Days.Count() > 0 && priceHistoryMatch / itemData.PriceHistory.Days.Count() > 0.5)
                         return true;
                 }
             }
@@ -663,26 +635,26 @@ namespace OmniEveMarket
                     {
                         return true;
                     }
-                    else if(_priceHistory == true && itemData.History.PriceHistory != null)
+                    else if (_priceHistory == true && itemData.PriceHistory.Days != null)
                     {
                         int priceHistoryMinMatch = 0;
                         int priceHistoryMaxMatch = 0;
 
-                        foreach (PriceHistory history in itemData.History.PriceHistory)
+                        foreach (PriceHistory.Day day in itemData.PriceHistory.Days)
                         {
-                            if (itemData.CreateBuyOrdersAnalysis.BuyPrice > history.MinPrice * 0.8m)
+                            if (itemData.CreateBuyOrdersAnalysis.BuyPrice > day.MinPrice * 0.8m)
                             {
                                 priceHistoryMinMatch++;
                             }
-                            if (itemData.CreateBuyOrdersAnalysis.SellPrice < history.MaxPrice * 1.2m)
+                            if (itemData.CreateBuyOrdersAnalysis.SellPrice < day.MaxPrice * 1.2m)
                             {
                                 priceHistoryMaxMatch++;
                             }
                         }
 
-                        if (itemData.History.PriceHistory.Count() > 0 && 
-                            priceHistoryMinMatch / itemData.History.PriceHistory.Count() > 0.5 &&
-                            priceHistoryMaxMatch / itemData.History.PriceHistory.Count() > 0.5)
+                        if (itemData.PriceHistory.Days.Count() > 0 &&
+                            priceHistoryMinMatch / itemData.PriceHistory.Days.Count() > 0.5 &&
+                            priceHistoryMaxMatch / itemData.PriceHistory.Days.Count() > 0.5)
                             return true;
                     }
                 }
@@ -755,11 +727,11 @@ namespace OmniEveMarket
             buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Profit"].Value = itemData.BuySellOrdersAnalysis.Profit;
             buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_ProfitMargin"].Value = itemData.BuySellOrdersAnalysis.ProfitMargin;
 
-            if (itemData.History != null)
+            if (itemData.PriceHistory != null)
             {
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersMovement"].Value = itemData.History.AvgOrders;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeMovement"].Value = itemData.History.AvgVolume;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_AvgPrice"].Value = itemData.History.AvgPrice;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersMovement"].Value = itemData.PriceHistory.AvgOrders;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeMovement"].Value = itemData.PriceHistory.AvgVolume;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_AvgPrice"].Value = itemData.PriceHistory.AvgPrice;
             }
         }
 
@@ -779,10 +751,11 @@ namespace OmniEveMarket
                 createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Profit"].Value = itemData.CreateBuyOrdersAnalysis.Profit;
                 createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_ProfitMargin"].Value = itemData.CreateBuyOrdersAnalysis.ProfitMargin;
 
-                if (itemData.History != null)
+                if (itemData.PriceHistory != null)
                 {
-                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_OrdersMovement"].Value = itemData.History.AvgOrders;
-                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_VolumeMovement"].Value = itemData.History.AvgVolume;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TotalProfit"].Value = itemData.PriceHistory.AvgVolume * itemData.CreateBuyOrdersAnalysis.Profit;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_OrdersMovement"].Value = itemData.PriceHistory.AvgOrders;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_VolumeMovement"].Value = itemData.PriceHistory.AvgVolume;
                 }
             }
             catch (Exception ex)
@@ -1015,16 +988,14 @@ namespace OmniEveMarket
                     }
 
                     MarketStats marketStats = GetMarketStats(typeId);
-                    QuickLook quicklook = GetQuickLook(typeId);
-                    History history = GetHistory(typeId);
+                    QuickLook quickLook = GetQuickLook(typeId);
+                    PriceHistory priceHistory = GetPriceHistory(typeId);
 
-                    long volumeMovement = (history != null) ? history.AvgVolume : 0;
-
-                    BuySellOrdersAnalysis buySellOrdersAnalysis = AnaylzeBuySellOrders(quicklook.SellOrders);
-                    CreateBuyOrdersAnalysis createBuyOrdesAnalysis = AnaylzeCreateBuyOrders(quicklook.SellOrders, quicklook.BuyOrders, volumeMovement);
+                    BuySellOrdersAnalysis buySellOrdersAnalysis = AnaylzeBuySellOrders(quickLook.SellOrders);
+                    CreateBuyOrdersAnalysis createBuyOrdesAnalysis = AnaylzeCreateBuyOrders(quickLook.SellOrders, quickLook.BuyOrders);
 
                     itemData.MarketStats = marketStats;
-                    itemData.History = history;
+                    itemData.PriceHistory = priceHistory;
                     itemData.BuySellOrdersAnalysis = buySellOrdersAnalysis;
                     itemData.CreateBuyOrdersAnalysis = createBuyOrdesAnalysis;
                     itemData.TypeId = typeId;
