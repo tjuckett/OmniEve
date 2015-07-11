@@ -95,8 +95,6 @@ namespace OmniEveModules.Caching
             set { _itemHangar = value; }
         }
 
-        public delegate void MyBuyOrdersUpdated(List<DirectOrder> myBuyOrders);
-        public event MyBuyOrdersUpdated OnMyBuyOrdersUpdated;
         public List<DirectOrder> MyBuyOrders
         {
             get
@@ -117,8 +115,6 @@ namespace OmniEveModules.Caching
                 try
                 {
                     _myBuyOrders = value;
-                    if (OnMyBuyOrdersUpdated != null)
-                        OnMyBuyOrdersUpdated(_myBuyOrders);
                 }
                 catch (Exception ex)
                 {
@@ -127,8 +123,6 @@ namespace OmniEveModules.Caching
             }
         }
 
-        public delegate void MySellOrdersUpdated(List<DirectOrder> mySellOrders);
-        public event MySellOrdersUpdated OnMySellOrdersUpdated;
         public List<DirectOrder> MySellOrders
         {
             get
@@ -149,8 +143,6 @@ namespace OmniEveModules.Caching
                 try
                 {
                     _mySellOrders = value;
-                    if (OnMySellOrdersUpdated != null)
-                        OnMySellOrdersUpdated(_mySellOrders);
                 }
                 catch (Exception ex)
                 {

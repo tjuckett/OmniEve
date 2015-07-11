@@ -15,8 +15,14 @@ namespace OmniEveModules.Actions
 
     public class MyOrders : IAction
     {
+        public delegate void MyOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders);
+        public event MyOrdersActionFinished OnMyOrdersActionFinished;
+
         private DateTime _lastAction;
         private MyOrdersState _state = MyOrdersState.Idle;
+        private bool _done = false;
+        private List<DirectOrder> _myBuyOrders = null;
+        private List<DirectOrder> _mySellOrders = null;
 
         public void Initialize()
         {
@@ -25,7 +31,7 @@ namespace OmniEveModules.Actions
 
         public bool IsDone()
         {
-            return _state == MyOrdersState.Done;
+            return _done == true;
         }
 
         public void Process()
@@ -41,7 +47,12 @@ namespace OmniEveModules.Actions
             switch (_state)
             {
                 case MyOrdersState.Idle:
+                    break;
                 case MyOrdersState.Done:
+                    if (OnMyOrdersActionFinished != null)
+                        OnMyOrdersActionFinished(_mySellOrders, _myBuyOrders);
+
+                    _done = true;
                     break;
 
                 case MyOrdersState.Begin:
@@ -107,19 +118,19 @@ namespace OmniEveModules.Actions
 
                         Logging.Log("MyOrders:Process", "Get list of my orders", Logging.White);
 
-                        List<DirectOrder> buyOrders = marketWindow.GetMyOrders(true).ToList();
-                        List<DirectOrder> sellOrders = marketWindow.GetMyOrders(false).ToList();
+                        _myBuyOrders = marketWindow.GetMyOrders(true).ToList();
+                        _mySellOrders = marketWindow.GetMyOrders(false).ToList();
 
-                        if (sellOrders != null)
+                        if (_mySellOrders != null)
                         {
                             Logging.Log("MyOrders:Process", "Get list of my sell orders successful", Logging.White);
-                            Cache.Instance.MySellOrders = sellOrders;
+                            Cache.Instance.MySellOrders = _mySellOrders;
                         }
 
-                        if (buyOrders != null)
+                        if (_myBuyOrders != null)
                         {
                             Logging.Log("MyOrders:Process", "Get list of my buy orders successful", Logging.White);
-                            Cache.Instance.MyBuyOrders = buyOrders;                            
+                            Cache.Instance.MyBuyOrders = _myBuyOrders;                            
                         }
 
                         _state = MyOrdersState.Done;

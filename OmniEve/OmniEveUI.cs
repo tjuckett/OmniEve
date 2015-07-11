@@ -71,24 +71,26 @@ namespace OmniEve
 
             return true;
         }
-
-        private void MySellOrdersUpdated(List<DirectOrder> mySellOrders)
+        
+        private void MyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
         {
-            Cache.Instance.OnMySellOrdersUpdated -= MySellOrdersUpdated;
-
-            Logging.Log("OmniEveUI:MySellOrdersUpdated", "Clearing existing grid of orders", Logging.White);
+            Logging.Log("OmniEveUI:MyOrdersFinished", "Clearing existing buy and sell grids of orders", Logging.White);
             sellingGrid.Rows.Clear();
+            buyingGrid.Rows.Clear();
 
-            Logging.Log("OmniEveUI:MySellOrdersUpdated", "Filling grid of updated orders", Logging.White);
+            // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
+            // an item twice if we have a buy and sell order, just include it once.
+            List<int> marketInfoTypeIds = new List<int>();
 
+            Logging.Log("OmniEveUI:MyOrdersFinished", "Filling selling grid of updated orders", Logging.White);
             foreach (DirectOrder order in mySellOrders)
             {
                 //DirectInvType deType;
                 //Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
                 string name = "";//deType.TypeName;
                 string quantity = order.VolumeRemaining.ToString() + "/" + order.VolumeEntered.ToString();
-                
-                Logging.Log("OmniEveUI:MySellOrdersUpdated", "Order Name - " + name + " Quantity - " + quantity + " Price - " + order.Price + " Station - " + order.StationId + " Region - " + order.RegionId, Logging.White);
+
+                Logging.Log("OmniEveUI:MyOrdersFinished", "Order Name - " + name + " Quantity - " + quantity + " Price - " + order.Price + " Station - " + order.StationId + " Region - " + order.RegionId, Logging.White);
 
                 sellingGrid.AllowUserToAddRows = true;
                 int index = sellingGrid.Rows.Add();
@@ -102,17 +104,57 @@ namespace OmniEve
                 sellingGrid.Rows[index].Cells["Selling_Region"].Value = Cache.Instance.DirectEve.Regions[order.RegionId].Name;
                 sellingGrid.AllowUserToAddRows = false;
 
-                // Add an action for each sell order and get the updated market values
-                if (_omniEve != null && 
-                    (sellingGrid.Rows[index].Cells["Selling_MarketPrice"].Value == null || 
-                     sellingGrid.Rows[index].Cells["Selling_MarketPrice"].Value.ToString().Count() <= 0))
-                {
+                // We add all the sell orders because we haven't added the buy orders yet.
+                marketInfoTypeIds.Add(order.TypeId);
+            }
+
+            Logging.Log("OmniEveUI:MyOrdersFinished", "Filling buying grid of updated orders", Logging.White);
+            foreach (DirectOrder order in myBuyOrders)
+            {
+                //DirectInvType deType;
+                //Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
+                string name = "";//deType.TypeName;
+                string quantity = order.VolumeRemaining.ToString() + "/" + order.VolumeEntered.ToString();
+
+                Logging.Log("OmniEveUI", "Order Type - " + name
+                          + " Quantity - " + quantity
+                          + " Price - " + order.Price
+                          + " Station - " + order.StationId
+                          + " Region - " + order.RegionId
+                          + " Range - " + order.Range
+                          + " Min Volume - " + order.MinimumVolume, Logging.White);
+
+                buyingGrid.AllowUserToAddRows = true;
+                int index = buyingGrid.Rows.Add();
+                buyingGrid.Rows[index].Cells["Buying_Select"].Value = false;
+                buyingGrid.Rows[index].Cells["Buying_TypeId"].Value = order.TypeId;
+                buyingGrid.Rows[index].Cells["Buying_OrderId"].Value = order.OrderId;
+                buyingGrid.Rows[index].Cells["Buying_Name"].Value = name;
+                buyingGrid.Rows[index].Cells["Buying_Quantity"].Value = quantity;
+                buyingGrid.Rows[index].Cells["Buying_OrderPrice"].Value = order.Price.ToString();
+                buyingGrid.Rows[index].Cells["Buying_Station"].Value = Cache.Instance.DirectEve.Stations[order.StationId].Name;
+                buyingGrid.Rows[index].Cells["Buying_Region"].Value = Cache.Instance.DirectEve.Regions[order.RegionId].Name;
+                buyingGrid.Rows[index].Cells["Buying_Range"].Value = order.Range.ToString();
+                buyingGrid.Rows[index].Cells["Buying_MinVolume"].Value = order.MinimumVolume.ToString();
+                buyingGrid.AllowUserToAddRows = false;
+
+                // If the type id isn't already in the list of ids to get market info for then add it
+                if(marketInfoTypeIds.FirstOrDefault(o=>o==order.TypeId) == 0)
+                    marketInfoTypeIds.Add(order.TypeId);
+            }
+
+            // Add an action for each sell order and get the updated market values
+            if (_omniEve != null)
+            {
+                foreach(int typeId in marketInfoTypeIds)
+                { 
                     MarketInfo marketInfo = new MarketInfo();
                     marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
-                    marketInfo.TypeId = order.TypeId;
+                    marketInfo.TypeId = typeId;
                     _omniEve.AddAction(marketInfo);
                 }
             }
+
 
             CheckState();
         }
@@ -210,59 +252,6 @@ namespace OmniEve
                     }
                 }
             }
-        }
-
-        private void MyBuyOrdersUpdated(List<DirectOrder> myBuyOrders)
-        {
-            Cache.Instance.OnMyBuyOrdersUpdated -= MyBuyOrdersUpdated;
-
-            Logging.Log("OmniEveUI:MyBuyOrdersUpdated", "Clearing existing grid of orders", Logging.White);
-            buyingGrid.Rows.Clear();
-
-            Logging.Log("OmniEveUI:MyBuyOrdersUpdated", "Filling grid of updated orders", Logging.White);
-
-            foreach (DirectOrder order in myBuyOrders)
-            {
-                //DirectInvType deType;
-                //Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
-                string name = "";//deType.TypeName;
-                string quantity = order.VolumeRemaining.ToString() + "/" + order.VolumeEntered.ToString();
-
-                Logging.Log("OmniEveUI", "Order Type - " + name
-                          + " Quantity - " + quantity
-                          + " Price - " + order.Price
-                          + " Station - " + order.StationId
-                          + " Region - " + order.RegionId
-                          + " Range - " + order.Range
-                          + " Min Volume - " + order.MinimumVolume, Logging.White);
-
-                buyingGrid.AllowUserToAddRows = true;
-                int index = buyingGrid.Rows.Add();
-                buyingGrid.Rows[index].Cells["Buying_Select"].Value = false;
-                buyingGrid.Rows[index].Cells["Buying_TypeId"].Value = order.TypeId;
-                buyingGrid.Rows[index].Cells["Buying_OrderId"].Value = order.OrderId;
-                buyingGrid.Rows[index].Cells["Buying_Name"].Value = name;
-                buyingGrid.Rows[index].Cells["Buying_Quantity"].Value = quantity;
-                buyingGrid.Rows[index].Cells["Buying_OrderPrice"].Value = order.Price.ToString();
-                buyingGrid.Rows[index].Cells["Buying_Station"].Value = Cache.Instance.DirectEve.Stations[order.StationId].Name;
-                buyingGrid.Rows[index].Cells["Buying_Region"].Value = Cache.Instance.DirectEve.Regions[order.RegionId].Name;
-                buyingGrid.Rows[index].Cells["Buying_Range"].Value = order.Range.ToString();
-                buyingGrid.Rows[index].Cells["Buying_MinVolume"].Value = order.MinimumVolume.ToString();
-                buyingGrid.AllowUserToAddRows = false;
-
-                // Add an action for each Buy order and get the updated market values
-                if (_omniEve != null && 
-                    (buyingGrid.Rows[index].Cells["Buying_MarketPrice"].Value == null || 
-                     buyingGrid.Rows[index].Cells["Buying_MarketPrice"].Value.ToString().Count() <= 0))
-                {
-                    MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
-                    marketInfo.TypeId = order.TypeId;
-                    _omniEve.AddAction(marketInfo);
-                }
-            }
-
-            CheckState();
         }
 
         private void ModifySellOrder(long orderId, string orderPriceStr, string marketPriceStr)
@@ -479,9 +468,8 @@ namespace OmniEve
                 sellingGrid.Rows.Clear();
                 buyingGrid.Rows.Clear();
 
-                Cache.Instance.OnMySellOrdersUpdated += MySellOrdersUpdated;
-                Cache.Instance.OnMyBuyOrdersUpdated += MyBuyOrdersUpdated;
                 MyOrders myOrders = new MyOrders();
+                myOrders.OnMyOrdersActionFinished += MyOrdersFinished;
                 _omniEve.AddAction(myOrders);
             }
         }
