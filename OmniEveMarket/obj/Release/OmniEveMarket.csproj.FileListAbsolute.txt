@@ -85,3 +85,5 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.cs
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.exe
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.pdb
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csprojResolveAssemblyReference.cache
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.dll
+C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.xml

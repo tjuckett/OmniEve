@@ -9,10 +9,12 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
 using MetroFramework.Forms;
 using MetroFramework.Controls;
+using Newtonsoft.Json;
 
 namespace OmniEveMarket
 {
@@ -33,89 +35,14 @@ namespace OmniEveMarket
         private bool _optionsChanged = false;
         private bool _cancelMarketLoad = false;
 
-        private List<ItemData> _itemData = new List<ItemData>();
-        private List<ItemData> _updatedItems = new List<ItemData>();
-        private List<ItemData> _uiUpdatedItems = new List<ItemData>();
-        private List<Item> _allItems = new List<Item>();
+        private List<Item> _items = new List<Item>();
+        private List<Item> _updatedItems = new List<Item>();
+        private List<Item> _uiUpdatedItems = new List<Item>();
 
+        private int _crestRequests = 0;
+        private System.Timers.Timer _crestTimer = new System.Timers.Timer();
+        
         BackgroundWorker backgroundWorker = new BackgroundWorker();
-
-        public class Item
-        {
-            public string Name { get; set; }
-            public int TypeId { get; set; }
-        }
-
-        public struct MarketStat
-        {
-            public long Volume { get; set; }
-            public double Avg { get; set; }
-            public double Max { get; set; }
-            public double Min { get; set; }
-            public double Stddev { get; set; }
-            public double Median { get; set; }
-            public double Percentile { get; set; }
-        }
-
-        public class MarketStats
-        {
-            public MarketStat Buy = new MarketStat();
-            public MarketStat Sell = new MarketStat();
-            public MarketStat All = new MarketStat();
-        }
-
-        public class QuickLook
-        {
-            public List<Order> SellOrders { get; set; }
-            public List<Order> BuyOrders { get; set; }
-        }
-
-        public class Order
-        {
-            public int Region { get; set; }
-            public int Station { get; set; }
-            public string StationName { get; set; }
-            public double Security { get; set; }
-            public int Range { get; set; }
-            public decimal Price { get; set; }
-            public int VolRemain { get; set; }
-            public int MinVolume { get; set; }
-            public string Expires { get; set; }
-            public string ReportedTime { get; set; }
-        }
-
-        public class BuySellOrdersAnalysis
-        {
-            public int SellOrderCount { get; set; }
-            public int SellOrdersBought { get; set; }
-            public decimal TotalSpent { get; set; }
-            public decimal ProfitMargin { get; set; }
-            public decimal Profit { get; set; }
-            public decimal SellPrice { get; set; }
-            public long VolumeBought { get; set; }
-        }
-
-        public class CreateBuyOrdersAnalysis
-        {
-            public decimal ProfitMargin { get; set; }
-            public decimal Profit { get; set; }
-            public decimal BuyPrice { get; set; }
-            public decimal SellPrice { get; set; }
-        }
-
-        public class ItemData
-        {
-            public string Name { get; set; }
-            public int TypeId { get; set; }
-            public bool Updated { get; set; }
-
-            public BuySellOrdersAnalysis BuySellOrdersAnalysis { get; set; }
-            public CreateBuyOrdersAnalysis CreateBuyOrdersAnalysis { get; set; }
-            public MarketStats MarketStats { get; set; }
-            public PriceHistory PriceHistory { get; set; }
-        }
-
-        enum NodeType { region, station, station_name, security, range, price, vol_remain, min_volume, expires, reported_time, none };
 
         public OmniEveMarketUI()
         {
@@ -129,12 +56,6 @@ namespace OmniEveMarket
             _minProfit = Properties.Settings.Default.MinProfit;
             _profitMarginPct = Properties.Settings.Default.ProfitMarginPct;
             _priceHistory = Properties.Settings.Default.PriceHistory;
-
-            marketItemsFileTextBox.Text = Properties.Settings.Default.MarketDataFile;
-            marketItemsFileTextBox.TextChanged += marketItemsTextChanged;
-
-            typeIdsFileTextBox.Text = Properties.Settings.Default.TypeIdsFile;
-            typeIdsFileTextBox.TextChanged += typeIdsTextChanged;
 
             salesTaxTextBox.Text = _salesTax.ToString();
             salesTaxTextBox.TextChanged += salesTaxTextChanged;
@@ -160,301 +81,55 @@ namespace OmniEveMarket
             backgroundWorker.WorkerReportsProgress = true;
         }
 
-        private void LoadAllItemIds()
+        private void IncrementCrestRequests()
         {
-            _allItems.Clear();
-
-            List<string> lines = File.ReadLines(typeIdsFileTextBox.Text).ToList();
-            foreach (string line in lines)
+            if (_crestRequests == 0)
             {
-                string[] variables = line.Split(new char[] {' '}, 2);
-                Item item = new Item();
-                item.TypeId = int.Parse(variables[0]);
-                item.Name = variables[1].TrimStart();
-
-                _allItems.Add(item);
+                _crestTimer.Interval = 1000;
+                _crestTimer.Elapsed += CrestTimerElapsed;
+                _crestTimer.AutoReset = false;
+                _crestTimer.Start();
             }
+
+            while (CanMakeCrestRequest() == false) { /* Sit and wait till we can make a crest request*/ }
+            
+            _crestRequests++;
         }
 
-        private void LoadItems()
+        private bool CanMakeCrestRequest()
         {
-            try
-            {
-                if (marketItemsFileTextBox.Text.Count() > 0 && typeIdsFileTextBox.Text.Count() > 0)
-                {
-                    LoadAllItemIds();
-
-                    _itemData.Clear();
-
-                    List<string> lines = File.ReadLines(marketItemsFileTextBox.Text).ToList();
-                    foreach (string line in lines)
-                    {
-                        int typeId = GetTypeIdByName(line.Trim());
-                        string name = line.Trim();
-
-                        ItemData itemData = new ItemData();
-                        itemData.TypeId = typeId;
-                        itemData.Name = name;
-                        _itemData.Add(itemData);
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-                if(ShowDebugMessages == true)
-                    MessageBox.Show(ex.Message);
-            }
+            return _crestRequests < 29;
         }
 
-        private MarketStats GetMarketStats(int typeId)
+        private void LoadMarketTypes(string url)
         {
-            try
-            { 
-                string url = "http://api.eve-central.com/api/marketstat?typeid=" + typeId.ToString() + "&usesystem=30000142";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebResponse response = null;
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse response = null;
-
-                try
-                {
-                    response = (HttpWebResponse)request.GetResponse();
-                }
-                catch (Exception ex)
-                {
-                    if (ShowDebugMessages == true)
-                        MessageBox.Show(ex.Message);
-                    return null;
-                }
-
-                Stream resStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(resStream, Encoding.UTF8);
-                string resString = reader.ReadToEnd();
-
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(resString);
-
-                MarketStats marketStats = new MarketStats();
-
-                marketStats.Sell.Volume = long.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/volume").InnerText);
-                marketStats.Sell.Avg = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/avg").InnerText);
-                marketStats.Sell.Max = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/max").InnerText);
-                marketStats.Sell.Min = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/min").InnerText);
-                marketStats.Sell.Stddev = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/stddev").InnerText);
-                marketStats.Sell.Median = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/median").InnerText);
-                marketStats.Sell.Percentile = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/sell/percentile").InnerText);
-
-                marketStats.Buy.Volume = long.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/volume").InnerText);
-                marketStats.Buy.Avg = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/avg").InnerText);
-                marketStats.Buy.Max = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/max").InnerText);
-                marketStats.Buy.Min = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/min").InnerText);
-                marketStats.Buy.Stddev = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/stddev").InnerText);
-                marketStats.Buy.Median = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/median").InnerText);
-                marketStats.Buy.Percentile = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/buy/percentile").InnerText);
-
-                marketStats.All.Volume = long.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/volume").InnerText);
-                marketStats.All.Avg = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/avg").InnerText);
-                marketStats.All.Max = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/max").InnerText);
-                marketStats.All.Min = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/min").InnerText);
-                marketStats.All.Stddev = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/stddev").InnerText);
-                marketStats.All.Median = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/median").InnerText);
-                marketStats.All.Percentile = double.Parse(doc.DocumentElement.SelectSingleNode("/evec_api/marketstat/type/all/percentile").InnerText);
-
-                return marketStats;
-            }
-            catch(Exception ex)
-            {
-                if (ShowDebugMessages == true)
-                    MessageBox.Show(ex.Message);
-                return null;
-            }
-        }
-
-        private QuickLook GetQuickLook(int typeId)
-        {
+            IncrementCrestRequests();
 
             try
             {
-                string url = "http://api.eve-central.com/api/quicklook?typeid=" + typeId.ToString() + "&usesystem=30000142";
-
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse response = null;
-
-                try
-                {
-                    response = (HttpWebResponse)request.GetResponse();
-                }
-                catch (Exception ex)
-                {
-                    if (ShowDebugMessages == true)
-                        MessageBox.Show(ex.Message);
-                    return null;
-                }
-
-                Stream resStream = response.GetResponseStream();
-
-                XmlTextReader xmlReader = new XmlTextReader(resStream);
-
-                bool isSellOrder = false;
-                Order order = null;
-
-                List<Order> sellOrders = new List<Order>();
-                List<Order> buyOrders = new List<Order>();
-
-                NodeType nodeType = NodeType.none;
-
-                while(xmlReader.Read())
-                {
-                    switch (xmlReader.NodeType)
-                    {
-                        case XmlNodeType.Element: // The node is an element.
-                            if(xmlReader.Name == "sell_orders") isSellOrder = true;
-                            else if(xmlReader.Name == "buy_orders") isSellOrder = false;
-                            else if(xmlReader.Name == "order") order = new Order();
-                            else if (xmlReader.Name == "region") nodeType = NodeType.region;
-                            else if (xmlReader.Name == "station") nodeType = NodeType.station;
-                            else if (xmlReader.Name == "station_name") nodeType = NodeType.station_name;
-                            else if (xmlReader.Name == "security") nodeType = NodeType.security;
-                            else if (xmlReader.Name == "range") nodeType = NodeType.range;
-                            else if (xmlReader.Name == "price") nodeType = NodeType.price;
-                            else if (xmlReader.Name == "vol_remain") nodeType = NodeType.vol_remain;
-                            else if (xmlReader.Name == "min_volume") nodeType = NodeType.min_volume;
-                            else if (xmlReader.Name == "expires") nodeType = NodeType.expires;
-                            else if (xmlReader.Name == "reported_time") nodeType = NodeType.reported_time;
-                            break;
-                        case XmlNodeType.Text: //Display the text in each element.
-                            if(order != null)
-                            {
-                                if (nodeType == NodeType.region)
-                                    order.Region = int.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.station)
-                                    order.Station = int.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.station_name)
-                                    order.StationName = xmlReader.Value;
-                                if (nodeType == NodeType.security)
-                                    order.Security = double.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.range)
-                                    order.Range = int.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.price)
-                                    order.Price = decimal.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.vol_remain)
-                                    order.VolRemain = int.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.min_volume)
-                                    order.MinVolume = int.Parse(xmlReader.Value);
-                                if (nodeType == NodeType.expires)
-                                    order.Expires = xmlReader.Value;
-                                if (nodeType == NodeType.reported_time)
-                                    order.ReportedTime = xmlReader.Value;
-                            }
-                            break;
-                        case XmlNodeType.EndElement: //Display the end of the element.
-                            if (xmlReader.Name == "order")
-                            {
-                                if (isSellOrder == true)
-                                    sellOrders.Add(order);
-                                else
-                                    buyOrders.Add(order);
-
-                                order = null;
-                            }
-
-                            nodeType = NodeType.none;
-                            break;
-                    }
-                }
-
-                QuickLook quickLook = new QuickLook();
-
-                quickLook.SellOrders = sellOrders.OrderBy(o => o.Price).ToList();
-                quickLook.BuyOrders = buyOrders.OrderByDescending(o => o.Price).ToList();
-
-                return quickLook;
+                response = (HttpWebResponse)request.GetResponse();
             }
             catch (Exception ex)
             {
                 if (ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
-                return null;
+                return;
             }
-        }
 
-        public PriceHistory GetPriceHistory(int typeId)
-        {
-            try
-            {
-                string url = "http://api.eve-marketdata.com/api/item_history2.txt?char_name=Caidin Moss&region_ids=10000002&type_ids=" + typeId.ToString();
+            Stream resStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(resStream, Encoding.UTF8);
+            string resString = reader.ReadToEnd();
 
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse response = null;
+            JsonTypesPage page = JsonConvert.DeserializeObject<JsonTypesPage>(resString);
 
-                try
-                {
-                    response = (HttpWebResponse)request.GetResponse();
-                }
-                catch (Exception ex)
-                {
-                    if (ShowDebugMessages == true)
-                        MessageBox.Show(ex.Message);
-                    return null;
-                }
+            foreach (JsonTypesItem jsonItem in page.Items)
+                _items.Add(new Item(jsonItem.Type.Id, jsonItem.Type.Name));
 
-                Stream resStream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(resStream, Encoding.UTF8);
-                string resString = reader.ReadToEnd();
-
-                string[] historyLines = resString.Split(new char[] {'\n'});
-
-                PriceHistory priceHistory = new PriceHistory();
-
-                if(historyLines.Count() <= 0)
-                    return null;
-
-                int priceHistoryCount = 0;
-                long totalOrdersMovement = 0;
-                long totalVolumeMovement = 0;
-                decimal totalAvgPrice = 0.0m;
-                decimal totalMaxPrice = 0.0m;
-                decimal totalMinPrice = 0.0m;
-
-                foreach (string line in historyLines)
-                {
-                    if(line.Count() > 0)
-                    { 
-                        string[] variables = line.Split(new char[] {'\t'});
-
-                        PriceHistory.Day day = new PriceHistory.Day();
-
-                        day.AvgPrice = decimal.Parse(variables[5]);
-                        day.MaxPrice = decimal.Parse(variables[4]);
-                        day.MinPrice = decimal.Parse(variables[3]);
-                        day.OrdersMovement = long.Parse(variables[7]);
-                        day.VolumeMovement = long.Parse(variables[6]);
-
-                        totalAvgPrice += day.AvgPrice;
-                        totalMaxPrice += day.MaxPrice;
-                        totalMinPrice += day.MinPrice;
-                        totalOrdersMovement += day.OrdersMovement;
-                        totalVolumeMovement += day.VolumeMovement;
-
-                        priceHistory.Days.Add(day);
-
-                        priceHistoryCount++;
-                    }
-                }
-
-                priceHistory.AvgVolume = (priceHistoryCount > 0) ? totalVolumeMovement / priceHistoryCount : 0;
-                priceHistory.AvgPrice = (priceHistoryCount > 0) ? totalAvgPrice / priceHistoryCount : 0;
-                priceHistory.AvgOrders = (priceHistoryCount > 0) ? totalOrdersMovement / priceHistoryCount : 0;
-                priceHistory.AvgMinPrice = (priceHistoryCount > 0) ? totalMinPrice / priceHistoryCount : 0;
-                priceHistory.AvgMaxPrice = (priceHistoryCount > 0) ? totalVolumeMovement / priceHistoryCount : 0;
-
-                return priceHistory;
-            }
-            catch (Exception ex)
-            {
-                if (ShowDebugMessages == true)
-                    MessageBox.Show(ex.Message);
-                return null;
-            }
+            if(page.Next != null && page.Next.Href.Count() >= 0)
+                LoadMarketTypes(page.Next.Href);
         }
 
         public void EnableSorting(MetroGrid grid)
@@ -462,103 +137,6 @@ namespace OmniEveMarket
             foreach (DataGridViewColumn column in grid.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.Automatic;
-            }
-        }
-
-        public BuySellOrdersAnalysis AnaylzeBuySellOrders(List<Order> sellOrders)
-        {
-            try
-            {
-                BuySellOrdersAnalysis analysis = new BuySellOrdersAnalysis();
-
-                List<Order> ordersBought = new List<Order>();
-
-                analysis.SellOrderCount = sellOrders.Count;
-                
-                for (int index = 0; index < sellOrders.Count - 1; ++index)
-                {
-                    Order order = sellOrders[index];
-                    Order nextOrder = sellOrders[index + 1];
-
-                    decimal newPrice = nextOrder.Price - 0.01m;
-                    decimal priceDiff = newPrice - order.Price;
-                    decimal totalFees = newPrice * ((_brokersFee + _salesTax) / 100.0m);
-
-                    long volumeBought = order.VolRemain;
-                    decimal totalSpent = order.Price * order.VolRemain;
-                    decimal profit = (priceDiff * order.VolRemain) - totalFees;
-
-                    foreach (Order boughtOrder in ordersBought)
-                    {
-                        decimal newPriceDiff = newPrice - boughtOrder.Price;
-
-                        volumeBought += boughtOrder.VolRemain;
-                        totalSpent += boughtOrder.Price * boughtOrder.VolRemain;
-                        profit += (newPriceDiff * boughtOrder.VolRemain) - totalFees;
-                    }
-
-                    decimal profitMargin = profit / totalSpent;
-
-                    ordersBought.Add(order);
-
-                    analysis.SellOrdersBought = ordersBought.Count;
-                    analysis.Profit = profit;
-                    analysis.ProfitMargin = profitMargin;
-                    analysis.TotalSpent = totalSpent;
-                    analysis.VolumeBought = volumeBought;
-                    analysis.SellPrice = newPrice;
-
-                    if (profitMargin > 0.05m)
-                    {
-                        break;
-                    }
-                }
-
-                return analysis;
-            }
-            catch(Exception ex)
-            {
-                if (ShowDebugMessages == true)
-                    MessageBox.Show(ex.Message);
-                return null;
-            }
-        }
-
-        public CreateBuyOrdersAnalysis AnaylzeCreateBuyOrders(List<Order> sellOrders, List<Order> buyOrders)
-        {
-            try
-            {
-                CreateBuyOrdersAnalysis analysis = new CreateBuyOrdersAnalysis();
-
-                Order minSellOrder = sellOrders.FirstOrDefault();
-                Order maxBuyOrder = buyOrders.FirstOrDefault();
-
-                if (minSellOrder != null && maxBuyOrder != null)
-                {
-                    decimal newBuyPrice = maxBuyOrder.Price + 0.01m;
-                    decimal priceDiff = minSellOrder.Price - newBuyPrice;
-                    decimal totalFees = minSellOrder.Price * ((_brokersFee + _salesTax) / 100.0m);
-
-                    decimal profit = priceDiff - totalFees;
-                    decimal profitMargin = profit / newBuyPrice;
-
-                    analysis.BuyPrice = newBuyPrice;
-                    analysis.Profit = profit;
-                    analysis.ProfitMargin = profitMargin;
-                    analysis.SellPrice = minSellOrder.Price;
-
-                    return analysis;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ShowDebugMessages == true)
-                    MessageBox.Show(ex.Message);
-                return null;
             }
         }
 
@@ -582,105 +160,28 @@ namespace OmniEveMarket
             _priceHistory = Properties.Settings.Default.PriceHistory;
         }
 
-        public bool ShouldBuySellOrder(ItemData itemData)
-        {
-            if (itemData == null || itemData.BuySellOrdersAnalysis == null || itemData.MarketStats == null)
-                return false;
-
-            if (itemData.BuySellOrdersAnalysis.SellOrdersBought < (itemData.BuySellOrdersAnalysis.SellOrderCount * 0.35) &&
-                itemData.BuySellOrdersAnalysis.VolumeBought < (itemData.MarketStats.Sell.Volume * 0.35) &&
-                itemData.BuySellOrdersAnalysis.ProfitMargin > (_profitMarginPct / 100.0m) &&
-                itemData.BuySellOrdersAnalysis.Profit > _minProfit &&
-                (itemData.BuySellOrdersAnalysis.TotalSpent < _iskLimit || _iskLimit == 0.0m))
-            {
-                if (_priceHistory == false)
-                {
-                    return true;
-                }
-                else if (_priceHistory == true && itemData.PriceHistory != null)
-                {
-                    int priceHistoryMatch = 0;
-
-                    foreach (PriceHistory.Day day in itemData.PriceHistory.Days)
-                    {
-                        if (itemData.BuySellOrdersAnalysis.SellOrdersBought < day.OrdersMovement &&
-                            itemData.BuySellOrdersAnalysis.VolumeBought < day.VolumeMovement &&
-                            itemData.BuySellOrdersAnalysis.SellPrice > day.MaxPrice * 0.9m &&
-                            itemData.BuySellOrdersAnalysis.SellPrice < day.MaxPrice * 1.1m)
-                        {
-                            priceHistoryMatch++;    
-                        }
-                    }
-
-                    if (itemData.PriceHistory.Days.Count() > 0 && priceHistoryMatch / itemData.PriceHistory.Days.Count() > 0.5)
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool ShouldCreateBuyOrder(ItemData itemData)
+        
+        public void FindSellOrdersToBuy(bool clearExistingOrders)
         {
             try
             {
-                if (itemData == null || itemData.CreateBuyOrdersAnalysis == null || itemData.MarketStats == null)
-                    return false;
+                if (backgroundWorker.IsBusy == true)
+                    return;
 
-                if (itemData.MarketStats.Sell.Min > itemData.MarketStats.Buy.Max &&
-                    itemData.CreateBuyOrdersAnalysis.ProfitMargin > (_profitMarginPct / 100.0m) &&
-                    itemData.CreateBuyOrdersAnalysis.Profit > _minProfit)
+                GetSavedSettings();
+
+                if (clearExistingOrders == true)
+                    ClearSellOrdersToBuy();
+
+                foreach (Item item in _items)
                 {
-                    if (_priceHistory == false)
-                    {
-                        return true;
-                    }
-                    else if (_priceHistory == true && itemData.PriceHistory.Days != null)
-                    {
-                        int priceHistoryMinMatch = 0;
-                        int priceHistoryMaxMatch = 0;
-
-                        foreach (PriceHistory.Day day in itemData.PriceHistory.Days)
-                        {
-                            if (itemData.CreateBuyOrdersAnalysis.BuyPrice > day.MinPrice * 0.8m)
-                            {
-                                priceHistoryMinMatch++;
-                            }
-                            if (itemData.CreateBuyOrdersAnalysis.SellPrice < day.MaxPrice * 1.2m)
-                            {
-                                priceHistoryMaxMatch++;
-                            }
-                        }
-
-                        if (itemData.PriceHistory.Days.Count() > 0 &&
-                            priceHistoryMinMatch / itemData.PriceHistory.Days.Count() > 0.5 &&
-                            priceHistoryMaxMatch / itemData.PriceHistory.Days.Count() > 0.5)
-                            return true;
-                    }
+                    CheckAndBuySellOrder(item);
                 }
             }
             catch (Exception ex)
             {
                 if (ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
-            }
-
-            return false;
-        }
-
-        public void FindSellOrdersToBuy(bool clearExistingOrders)
-        {
-            if (backgroundWorker.IsBusy == true)
-                return;
-
-            GetSavedSettings();
-
-            if (clearExistingOrders == true)
-                ClearSellOrdersToBuy();
-
-            foreach (ItemData itemData in _itemData)
-            {
-                CheckAndBuySellOrder(itemData);
             }
         }
 
@@ -696,9 +197,9 @@ namespace OmniEveMarket
                 if (clearExistingOrders == true)
                     ClearBuyOrdersToCreate();
 
-                foreach (ItemData itemData in _itemData)
+                foreach (Item item in _items)
                 {
-                    CheckAndCreateBuyOrder(itemData);
+                    CheckAndCreateBuyOrder(item);
                 }
             }
             catch(Exception ex)
@@ -708,54 +209,62 @@ namespace OmniEveMarket
             }
         }
 
-        public void BuySellOrder(ItemData itemData)
-        {
-            if (itemData == null || itemData.BuySellOrdersAnalysis == null || itemData.MarketStats == null)
-                return;
-
-            int rowIndex = buySellOrdersGrid.Rows.Add();
-
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Name"].Value = itemData.Name;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TypeId"].Value = itemData.TypeId;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_InitialBuyPrice"].Value = itemData.MarketStats.Sell.Min;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellVolume"].Value = itemData.MarketStats.Sell.Volume;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellOrders"].Value = itemData.BuySellOrdersAnalysis.SellOrderCount;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_FinalSellPrice"].Value = itemData.BuySellOrdersAnalysis.SellPrice;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersBought"].Value = itemData.BuySellOrdersAnalysis.SellOrdersBought;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeBought"].Value = itemData.BuySellOrdersAnalysis.VolumeBought;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TotalSpent"].Value = itemData.BuySellOrdersAnalysis.TotalSpent;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Profit"].Value = itemData.BuySellOrdersAnalysis.Profit;
-            buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_ProfitMargin"].Value = itemData.BuySellOrdersAnalysis.ProfitMargin;
-
-            if (itemData.PriceHistory != null)
-            {
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersMovement"].Value = itemData.PriceHistory.AvgOrders;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeMovement"].Value = itemData.PriceHistory.AvgVolume;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_AvgPrice"].Value = itemData.PriceHistory.AvgPrice;
-            }
-        }
-
-        public void CreateBuyOrder(ItemData itemData)
+        public void BuySellOrder(Item item)
         {
             try
             {
-                if (itemData == null || itemData.CreateBuyOrdersAnalysis == null || itemData.MarketStats == null)
+                if (item == null || item.BuySellOrders == null || item.MarketStats == null)
+                    return;
+
+                int rowIndex = buySellOrdersGrid.Rows.Add();
+
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Name"].Value = item.Name;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TypeId"].Value = item.TypeId;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_InitialBuyPrice"].Value = item.MarketStats.Sell.Min;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellVolume"].Value = item.MarketStats.Sell.Volume;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellOrders"].Value = item.BuySellOrders.SellOrderCount;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_FinalSellPrice"].Value = item.BuySellOrders.SellPrice;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersBought"].Value = item.BuySellOrders.SellOrdersBought;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeBought"].Value = item.BuySellOrders.VolumeBought;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TotalSpent"].Value = item.BuySellOrders.TotalSpent;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Profit"].Value = item.BuySellOrders.Profit;
+                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_ProfitMargin"].Value = item.BuySellOrders.ProfitMargin;
+
+                if (item.PriceHistory != null)
+                {
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersMovement"].Value = item.PriceHistory.AvgOrders;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeMovement"].Value = item.PriceHistory.AvgVolume;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_AvgPrice"].Value = item.PriceHistory.AvgPrice;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ShowDebugMessages == true)
+                    MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void CreateBuyOrder(Item item)
+        {
+            try
+            {
+                if (item == null || item.CreateBuyOrder == null || item.MarketStats == null)
                     return;
 
                 int rowIndex = createBuyOrdersGrid.Rows.Add();
 
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Name"].Value = itemData.Name;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TypeId"].Value = itemData.TypeId;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MinSellOrder"].Value = itemData.MarketStats.Sell.Min;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MaxBuyOrder"].Value = itemData.MarketStats.Buy.Max;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Profit"].Value = itemData.CreateBuyOrdersAnalysis.Profit;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_ProfitMargin"].Value = itemData.CreateBuyOrdersAnalysis.ProfitMargin;
+                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Name"].Value = item.Name;
+                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TypeId"].Value = item.TypeId;
+                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MinSellOrder"].Value = item.MarketStats.Sell.Min;
+                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MaxBuyOrder"].Value = item.MarketStats.Buy.Max;
+                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Profit"].Value = item.CreateBuyOrder.Profit;
+                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_ProfitMargin"].Value = item.CreateBuyOrder.ProfitMargin;
 
-                if (itemData.PriceHistory != null)
+                if (item.PriceHistory != null)
                 {
-                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TotalProfit"].Value = itemData.PriceHistory.AvgVolume * itemData.CreateBuyOrdersAnalysis.Profit;
-                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_OrdersMovement"].Value = itemData.PriceHistory.AvgOrders;
-                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_VolumeMovement"].Value = itemData.PriceHistory.AvgVolume;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TotalProfit"].Value = item.PriceHistory.AvgVolume * item.CreateBuyOrder.Profit;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_OrdersMovement"].Value = item.PriceHistory.AvgOrders;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_VolumeMovement"].Value = item.PriceHistory.AvgVolume;
                 }
             }
             catch (Exception ex)
@@ -765,28 +274,63 @@ namespace OmniEveMarket
             }
         }
 
-        public void CheckAndBuySellOrder(ItemData itemData)
+        public void CheckAndBuySellOrder(Item item)
         {
-            if (itemData == null)
-                return;
-
-            if (ShouldBuySellOrder(itemData) == true)
-            {
-                BuySellOrder(itemData);
-            }
+            if (item != null && item.ShouldBuySellOrder(_minProfit, _profitMarginPct, _iskLimit, _priceHistory) == true)
+                BuySellOrder(item);
         }
 
-        public void CheckAndCreateBuyOrder(ItemData itemData)
+        public void CheckAndCreateBuyOrder(Item item)
+        {
+            if (item != null && item.ShouldCreateBuyOrder(_minProfit, _profitMarginPct, _iskLimit, _priceHistory) == true)
+                CreateBuyOrder(item);
+        }
+
+        private void CrestTimerElapsed(Object source, ElapsedEventArgs e)
+        {
+            _crestRequests = 0;
+        }
+
+        private void ShowBuyersAndSellers(int typeId)
         {
             try
             {
-                if (itemData == null)
-                    return;
+                sellersGrid.Rows.Clear();
+                buyersGrid.Rows.Clear();
 
-                if (ShouldCreateBuyOrder(itemData) == true)
-                {
-                    CreateBuyOrder(itemData);
-                }
+                Item item = _items.Find(i => i.TypeId == typeId);
+
+                QuickLook quickLook = item.QuickLook;
+                List<Order> sellers = quickLook.SellOrders;
+                List<Order> buyers = quickLook.BuyOrders;
+
+                foreach (Order order in sellers)
+                    sellersGrid.Rows.Add(order.VolRemain.ToString(), order.Price.ToString());
+
+                foreach (Order order in buyers)
+                    buyersGrid.Rows.Add(order.VolRemain.ToString(), order.Price.ToString());
+            }
+            catch(Exception ex)
+            {
+                if (ShowDebugMessages == true)
+                    MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void ShowPriceHistory(int typeId)
+        {
+            try
+            {
+                priceHistoryGrid.Rows.Clear();
+
+                Item item = _items.Find(i => i.TypeId == typeId);
+
+                PriceHistory priceHistory = item.PriceHistory;
+
+                List<PriceHistory.Day> lastNinety = priceHistory.Days.Take(90).ToList();
+
+                foreach (PriceHistory.Day day in lastNinety)
+                    priceHistoryGrid.Rows.Add(day.Date.ToString(), day.OrderCount.ToString(), day.Volume.ToString(), day.MinPrice.ToString(), day.MaxPrice.ToString(), day.AvgPrice.ToString());
             }
             catch (Exception ex)
             {
@@ -794,51 +338,7 @@ namespace OmniEveMarket
                     MessageBox.Show(ex.Message);
             }
         }
-
-        public int GetTypeIdByName(string name)
-        {
-            Item item = _allItems.FirstOrDefault(i=>i.Name == name);
-
-            if(item != null)
-            {
-                return item.TypeId;
-            }
-
-            return 0;
-        }
         
-        private void browseMarketDataButton_Click(object sender, EventArgs e)
-        {
-            DialogResult result = _openfileDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                marketItemsFileTextBox.Text = _openfileDialog.FileName;
-            }
-        }
-
-        private void typeIdsBrowseButton_Click(object sender, EventArgs e)
-        {
-            DialogResult result = _openfileDialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                typeIdsFileTextBox.Text = _openfileDialog.FileName;
-            }
-        }
-
-        private void marketItemsTextChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.MarketDataFile = ((MetroTextBox)sender).Text;
-            Properties.Settings.Default.Save();
-        }
-
-        private void typeIdsTextChanged(object sender, EventArgs e)
-        {
-            Properties.Settings.Default.TypeIdsFile = ((MetroTextBox)sender).Text;
-            Properties.Settings.Default.Save();
-        }
-
         private void salesTaxTextChanged(object sender, EventArgs e)
         {
             decimal salesTax = 0.0m;
@@ -957,6 +457,8 @@ namespace OmniEveMarket
 
         private void cancelMarketDataButton_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Marker 3");
+
             if (backgroundWorker.IsBusy == true)
                 _cancelMarketLoad = true;
         }
@@ -968,49 +470,67 @@ namespace OmniEveMarket
 
         private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            LoadItems();
-
-            int itemCount = _itemData.Count();
-            int itemsDone = 0;
-            
-            foreach (ItemData itemData in _itemData)
+            try
             {
-                if (_cancelMarketLoad == true)
-                    return;
+                LoadMarketTypes("https://public-crest.eveonline.com/market/types/");
 
-                if (itemData.TypeId != 0)
+                int itemCount = _items.Count();
+                int itemsDone = 0;
+
+                foreach (Item item in _items)
                 {
-                    int typeId = itemData.TypeId;
-                        
-                    if(typeId == 0)
+                    if (_cancelMarketLoad == true)
+                        return;
+
+                    if (item.TypeId != 0)
                     {
-                        continue;
+                        int typeId = item.TypeId;
+
+                        if (typeId == 0)
+                        {
+                            continue;
+                        }
+
+                        MarketStats marketStats = new MarketStats(typeId);
+                        marketStats.LoadFromEveCentral();
+
+                        QuickLook quickLook = new QuickLook(typeId);
+                        quickLook.LoadFromEveCentral();
+
+                        PriceHistory priceHistory = new PriceHistory(typeId);
+                        IncrementCrestRequests();
+                        priceHistory.LoadFromEveCrest();
+
+                        Analysis.BuySellOrders buySellOrders = new Analysis.BuySellOrders(_salesTax, _brokersFee);
+                        buySellOrders.AnalyzeOrders(quickLook.SellOrders);
+
+                        Analysis.CreateBuyOrder createBuyOrder = new Analysis.CreateBuyOrder(_salesTax, _brokersFee);
+                        createBuyOrder.AnalyzeOrders(quickLook.SellOrders, quickLook.BuyOrders);
+
+                        item.MarketStats = marketStats;
+                        item.PriceHistory = priceHistory;
+                        item.QuickLook = quickLook;
+                        item.BuySellOrders = buySellOrders;
+                        item.CreateBuyOrder = createBuyOrder;
+                        item.TypeId = typeId;
+                        item.Updated = true;
+
+                        lock (_updatedItems)
+                        {
+                            _updatedItems.Add(item);
+                        }
                     }
 
-                    MarketStats marketStats = GetMarketStats(typeId);
-                    QuickLook quickLook = GetQuickLook(typeId);
-                    PriceHistory priceHistory = GetPriceHistory(typeId);
+                    itemsDone++;
+                    int percentDone = (int)(((decimal)itemsDone / (decimal)itemCount) * 100.0m);
 
-                    BuySellOrdersAnalysis buySellOrdersAnalysis = AnaylzeBuySellOrders(quickLook.SellOrders);
-                    CreateBuyOrdersAnalysis createBuyOrdesAnalysis = AnaylzeCreateBuyOrders(quickLook.SellOrders, quickLook.BuyOrders);
-
-                    itemData.MarketStats = marketStats;
-                    itemData.PriceHistory = priceHistory;
-                    itemData.BuySellOrdersAnalysis = buySellOrdersAnalysis;
-                    itemData.CreateBuyOrdersAnalysis = createBuyOrdesAnalysis;
-                    itemData.TypeId = typeId;
-                    itemData.Updated = true;
-
-                    lock (_updatedItems)
-                    { 
-                        _updatedItems.Add(itemData);
-                    }
+                    backgroundWorker.ReportProgress(percentDone);
                 }
-
-                itemsDone++;
-                int percentDone = (int)(((decimal)itemsDone / (decimal)itemCount) * 100.0m);
-
-                backgroundWorker.ReportProgress(percentDone);
+            }
+            catch(Exception ex)
+            {
+                if (ShowDebugMessages == true)
+                    MessageBox.Show(ex.Message);
             }
         }
 
@@ -1020,28 +540,28 @@ namespace OmniEveMarket
             {
                 lock (_updatedItems)
                 {
-                    foreach(ItemData updatedItemData in _updatedItems)
+                    foreach(Item updatedItem in _updatedItems)
                     {
-                        _uiUpdatedItems.Add(updatedItemData);
+                        _uiUpdatedItems.Add(updatedItem);
                     }
 
                     _updatedItems.Clear();
                 }
 
-                ItemData itemData = null;
+                Item item = null;
                 
                 if(_uiUpdatedItems.Count > 0)
                 { 
-                    itemData = _uiUpdatedItems[0];
+                    item = _uiUpdatedItems[0];
                     _uiUpdatedItems.RemoveAt(0);
                 }
 
-                if (itemData != null && itemData.Updated == true)
+                if (item != null && item.Updated == true)
                 {
-                    CheckAndBuySellOrder(itemData);
-                    CheckAndCreateBuyOrder(itemData);
+                    CheckAndBuySellOrder(item);
+                    CheckAndCreateBuyOrder(item);
 
-                    itemData.Updated = false;
+                    item.Updated = false;
                 }
             }
             catch(Exception ex)
@@ -1064,6 +584,24 @@ namespace OmniEveMarket
             }
 
             MessageBox.Show("Complete");
+        }
+
+        private void createBuyOrdersGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MetroGrid grid = (MetroGrid)sender;
+            int typeId = int.Parse(grid.CurrentRow.Cells["CreateBuyOrders_TypeId"].Value.ToString());
+
+            ShowBuyersAndSellers(typeId);
+            ShowPriceHistory(typeId);
+        }
+
+        private void buySellOrdersGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            MetroGrid grid = (MetroGrid)sender;
+            int typeId = int.Parse(grid.CurrentRow.Cells["BuySellOrders_TypeId"].Value.ToString());
+
+            ShowBuyersAndSellers(typeId);
+            ShowPriceHistory(typeId);
         }
     }
 }

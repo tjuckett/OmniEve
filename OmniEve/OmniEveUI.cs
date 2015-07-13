@@ -12,6 +12,7 @@ using System.Timers;
 using System.Xml;
 using System.Windows.Forms;
 using MetroFramework.Forms;
+using MetroFramework.Controls;
 
 namespace OmniEve
 {
@@ -85,9 +86,8 @@ namespace OmniEve
             Logging.Log("OmniEveUI:MyOrdersFinished", "Filling selling grid of updated orders", Logging.White);
             foreach (DirectOrder order in mySellOrders)
             {
-                //DirectInvType deType;
-                //Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
-                string name = "";//deType.TypeName;
+                DirectTypes directTypes = Cache.Instance.DirectEve.Types;
+                string name = directTypes.GetName(order.TypeId);
                 string quantity = order.VolumeRemaining.ToString() + "/" + order.VolumeEntered.ToString();
 
                 Logging.Log("OmniEveUI:MyOrdersFinished", "Order Name - " + name + " Quantity - " + quantity + " Price - " + order.Price + " Station - " + order.StationId + " Region - " + order.RegionId, Logging.White);
@@ -111,9 +111,7 @@ namespace OmniEve
             Logging.Log("OmniEveUI:MyOrdersFinished", "Filling buying grid of updated orders", Logging.White);
             foreach (DirectOrder order in myBuyOrders)
             {
-                //DirectInvType deType;
-                //Cache.Instance.DirectEve.InvTypes.TryGetValue(order.TypeId, out deType);
-                string name = "";//deType.TypeName;
+                string name = Cache.Instance.DirectEve.Types.GetName(order.TypeId);
                 string quantity = order.VolumeRemaining.ToString() + "/" + order.VolumeEntered.ToString();
 
                 Logging.Log("OmniEveUI", "Order Type - " + name
@@ -551,6 +549,38 @@ namespace OmniEve
             catch (Exception ex)
             {
                 Logging.Log("OmniEveUI:AutoStartButton", "Exception [" + ex + "]", Logging.Debug);
+            }
+        }
+
+        private void sellingGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_mode == Mode.Idle)
+            {
+                _mode = Mode.Manual;
+
+                MetroGrid grid = (MetroGrid)sender;
+                MarketInfo marketInfo = new MarketInfo();
+                marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
+                marketInfo.TypeId = int.Parse(grid.CurrentRow.Cells["Selling_TypeId"].Value.ToString());
+                _omniEve.AddAction(marketInfo);
+
+                CheckState();
+            }
+        }
+
+        private void buyingGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (_mode == Mode.Idle)
+            {
+                _mode = Mode.Manual;
+
+                MetroGrid grid = (MetroGrid)sender;
+                MarketInfo marketInfo = new MarketInfo();
+                marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
+                marketInfo.TypeId = int.Parse(grid.CurrentRow.Cells["Buying_TypeId"].Value.ToString());
+                _omniEve.AddAction(marketInfo);
+
+                CheckState();
             }
         }
     }
