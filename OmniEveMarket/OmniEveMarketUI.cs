@@ -20,8 +20,6 @@ namespace OmniEveMarket
 {
     public partial class OmniEveMarketUI : MetroForm
     {
-        private bool ShowDebugMessages = true;
-
         private List<MetroGrid> _grids = new List<MetroGrid>();
 
         private OpenFileDialog _openfileDialog;
@@ -114,7 +112,7 @@ namespace OmniEveMarket
             }
             catch (Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
                 return;
             }
@@ -180,7 +178,7 @@ namespace OmniEveMarket
             }
             catch (Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -204,7 +202,7 @@ namespace OmniEveMarket
             }
             catch(Exception ex)
             {
-                if(ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -239,7 +237,7 @@ namespace OmniEveMarket
             }
             catch (Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -269,7 +267,7 @@ namespace OmniEveMarket
             }
             catch (Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -312,7 +310,7 @@ namespace OmniEveMarket
             }
             catch(Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -334,7 +332,7 @@ namespace OmniEveMarket
             }
             catch (Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -529,7 +527,7 @@ namespace OmniEveMarket
             }
             catch(Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
         }
@@ -566,7 +564,7 @@ namespace OmniEveMarket
             }
             catch(Exception ex)
             {
-                if (ShowDebugMessages == true)
+                if (Logging.ShowDebugMessages == true)
                     MessageBox.Show(ex.Message);
             }
             

@@ -83,19 +83,19 @@
             this.Buying_Region = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_Range = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_MinVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.inventoryPage = new MetroFramework.Controls.MetroTabPage();
             this.logginTabPage = new MetroFramework.Controls.MetroTabPage();
             this.logTextBox = new MetroFramework.Controls.MetroTextBox();
-            this.inventoryPage = new MetroFramework.Controls.MetroTabPage();
-            this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
+            this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
             this.inventoryGrid = new MetroFramework.Controls.MetroGrid();
-            this.Inventory_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Size = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Slot = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Inventory_Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Slot = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Size = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.refreshInventoryButton = new MetroFramework.Controls.MetroButton();
+            this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
             this.metroTabControl1.SuspendLayout();
             this.ordersPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -105,10 +105,10 @@
             this.metroPanel1.SuspendLayout();
             this.metroPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).BeginInit();
-            this.logginTabPage.SuspendLayout();
             this.inventoryPage.SuspendLayout();
-            this.metroPanel5.SuspendLayout();
+            this.logginTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).BeginInit();
+            this.metroPanel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroTabControl1
@@ -594,19 +594,20 @@
             this.Buying_MinVolume.Name = "Buying_MinVolume";
             this.Buying_MinVolume.ReadOnly = true;
             // 
-            // marketTabPage
+            // inventoryPage
             // 
-            this.marketTabPage.HorizontalScrollbarBarColor = true;
-            this.marketTabPage.HorizontalScrollbarHighlightOnWheel = false;
-            this.marketTabPage.HorizontalScrollbarSize = 0;
-            this.marketTabPage.Location = new System.Drawing.Point(4, 38);
-            this.marketTabPage.Name = "marketTabPage";
-            this.marketTabPage.Size = new System.Drawing.Size(1151, 536);
-            this.marketTabPage.TabIndex = 1;
-            this.marketTabPage.Text = "Market";
-            this.marketTabPage.VerticalScrollbarBarColor = true;
-            this.marketTabPage.VerticalScrollbarHighlightOnWheel = false;
-            this.marketTabPage.VerticalScrollbarSize = 0;
+            this.inventoryPage.Controls.Add(this.metroPanel5);
+            this.inventoryPage.HorizontalScrollbarBarColor = true;
+            this.inventoryPage.HorizontalScrollbarHighlightOnWheel = false;
+            this.inventoryPage.HorizontalScrollbarSize = 10;
+            this.inventoryPage.Location = new System.Drawing.Point(4, 38);
+            this.inventoryPage.Name = "inventoryPage";
+            this.inventoryPage.Size = new System.Drawing.Size(1151, 536);
+            this.inventoryPage.TabIndex = 3;
+            this.inventoryPage.Text = "Inventory";
+            this.inventoryPage.VerticalScrollbarBarColor = true;
+            this.inventoryPage.VerticalScrollbarHighlightOnWheel = false;
+            this.inventoryPage.VerticalScrollbarSize = 10;
             // 
             // logginTabPage
             // 
@@ -638,37 +639,19 @@
             this.logTextBox.TabIndex = 3;
             this.logTextBox.UseSelectable = true;
             // 
-            // inventoryPage
+            // marketTabPage
             // 
-            this.inventoryPage.Controls.Add(this.metroPanel5);
-            this.inventoryPage.HorizontalScrollbarBarColor = true;
-            this.inventoryPage.HorizontalScrollbarHighlightOnWheel = false;
-            this.inventoryPage.HorizontalScrollbarSize = 10;
-            this.inventoryPage.Location = new System.Drawing.Point(4, 38);
-            this.inventoryPage.Name = "inventoryPage";
-            this.inventoryPage.Size = new System.Drawing.Size(1151, 536);
-            this.inventoryPage.TabIndex = 3;
-            this.inventoryPage.Text = "Inventory";
-            this.inventoryPage.VerticalScrollbarBarColor = true;
-            this.inventoryPage.VerticalScrollbarHighlightOnWheel = false;
-            this.inventoryPage.VerticalScrollbarSize = 10;
-            // 
-            // metroPanel5
-            // 
-            this.metroPanel5.Controls.Add(this.refreshInventoryButton);
-            this.metroPanel5.Controls.Add(this.inventoryGrid);
-            this.metroPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel5.HorizontalScrollbarBarColor = true;
-            this.metroPanel5.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel5.HorizontalScrollbarSize = 0;
-            this.metroPanel5.Location = new System.Drawing.Point(0, 0);
-            this.metroPanel5.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel5.Name = "metroPanel5";
-            this.metroPanel5.Size = new System.Drawing.Size(1151, 536);
-            this.metroPanel5.TabIndex = 2;
-            this.metroPanel5.VerticalScrollbarBarColor = true;
-            this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel5.VerticalScrollbarSize = 0;
+            this.marketTabPage.HorizontalScrollbarBarColor = true;
+            this.marketTabPage.HorizontalScrollbarHighlightOnWheel = false;
+            this.marketTabPage.HorizontalScrollbarSize = 0;
+            this.marketTabPage.Location = new System.Drawing.Point(4, 38);
+            this.marketTabPage.Name = "marketTabPage";
+            this.marketTabPage.Size = new System.Drawing.Size(1151, 536);
+            this.marketTabPage.TabIndex = 1;
+            this.marketTabPage.Text = "Market";
+            this.marketTabPage.VerticalScrollbarBarColor = true;
+            this.marketTabPage.VerticalScrollbarHighlightOnWheel = false;
+            this.marketTabPage.VerticalScrollbarSize = 0;
             // 
             // inventoryGrid
             // 
@@ -680,6 +663,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.inventoryGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.inventoryGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.inventoryGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.inventoryGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.inventoryGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -726,35 +710,35 @@
             this.inventoryGrid.Size = new System.Drawing.Size(1151, 507);
             this.inventoryGrid.TabIndex = 2;
             // 
-            // Inventory_Name
+            // Inventory_Volume
             // 
-            this.Inventory_Name.HeaderText = "Name";
-            this.Inventory_Name.Name = "Inventory_Name";
-            // 
-            // Inventory_Quantity
-            // 
-            this.Inventory_Quantity.HeaderText = "Quantity";
-            this.Inventory_Quantity.Name = "Inventory_Quantity";
-            // 
-            // Inventory_Group
-            // 
-            this.Inventory_Group.HeaderText = "Group";
-            this.Inventory_Group.Name = "Inventory_Group";
-            // 
-            // Inventory_Size
-            // 
-            this.Inventory_Size.HeaderText = "Size";
-            this.Inventory_Size.Name = "Inventory_Size";
+            this.Inventory_Volume.HeaderText = "Volume";
+            this.Inventory_Volume.Name = "Inventory_Volume";
             // 
             // Inventory_Slot
             // 
             this.Inventory_Slot.HeaderText = "Slot";
             this.Inventory_Slot.Name = "Inventory_Slot";
             // 
-            // Inventory_Volume
+            // Inventory_Size
             // 
-            this.Inventory_Volume.HeaderText = "Volume";
-            this.Inventory_Volume.Name = "Inventory_Volume";
+            this.Inventory_Size.HeaderText = "Size";
+            this.Inventory_Size.Name = "Inventory_Size";
+            // 
+            // Inventory_Group
+            // 
+            this.Inventory_Group.HeaderText = "Group";
+            this.Inventory_Group.Name = "Inventory_Group";
+            // 
+            // Inventory_Quantity
+            // 
+            this.Inventory_Quantity.HeaderText = "Quantity";
+            this.Inventory_Quantity.Name = "Inventory_Quantity";
+            // 
+            // Inventory_Name
+            // 
+            this.Inventory_Name.HeaderText = "Name";
+            this.Inventory_Name.Name = "Inventory_Name";
             // 
             // refreshInventoryButton
             // 
@@ -766,6 +750,23 @@
             this.refreshInventoryButton.Text = "Refresh";
             this.refreshInventoryButton.UseSelectable = true;
             this.refreshInventoryButton.Click += new System.EventHandler(this.refreshInventoryButton_Click);
+            // 
+            // metroPanel5
+            // 
+            this.metroPanel5.Controls.Add(this.refreshInventoryButton);
+            this.metroPanel5.Controls.Add(this.inventoryGrid);
+            this.metroPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel5.HorizontalScrollbarBarColor = true;
+            this.metroPanel5.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel5.HorizontalScrollbarSize = 0;
+            this.metroPanel5.Location = new System.Drawing.Point(0, 0);
+            this.metroPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.metroPanel5.Name = "metroPanel5";
+            this.metroPanel5.Size = new System.Drawing.Size(1151, 536);
+            this.metroPanel5.TabIndex = 2;
+            this.metroPanel5.VerticalScrollbarBarColor = true;
+            this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel5.VerticalScrollbarSize = 0;
             // 
             // OmniEveUI
             // 
@@ -789,10 +790,10 @@
             this.metroPanel1.PerformLayout();
             this.metroPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).EndInit();
-            this.logginTabPage.ResumeLayout(false);
             this.inventoryPage.ResumeLayout(false);
-            this.metroPanel5.ResumeLayout(false);
+            this.logginTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).EndInit();
+            this.metroPanel5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -842,6 +843,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
         private MetroFramework.Controls.MetroTabPage inventoryPage;
         private MetroFramework.Controls.MetroPanel metroPanel5;
+        private MetroFramework.Controls.MetroButton refreshInventoryButton;
         private MetroFramework.Controls.MetroGrid inventoryGrid;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Quantity;
@@ -849,7 +851,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Size;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Slot;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Volume;
-        private MetroFramework.Controls.MetroButton refreshInventoryButton;
 
     }
 }

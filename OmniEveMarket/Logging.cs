@@ -8,6 +8,6 @@ namespace OmniEveMarket
 {
     public class Logging
     {
-        public static bool ShowDebugMessages = true;
+        public static bool ShowDebugMessages = false;
     }
 }

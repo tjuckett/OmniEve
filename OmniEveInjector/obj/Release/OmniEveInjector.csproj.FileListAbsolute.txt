@@ -76,7 +76,6 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\EasyHook.
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.Design.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.Fonts.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csprojResolveAssemblyReference.cache
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.InjectorUI.resources
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.Properties.Resources.resources
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csproj.GenerateResource.Cache

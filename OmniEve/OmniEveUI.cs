@@ -657,7 +657,13 @@ namespace OmniEve
 
         private void refreshInventoryButton_Click(object sender, EventArgs e)
         {
-            Cache.Instance.DirectEve.OpenInventory();
+            if (_mode == Mode.Idle)
+            {
+                _mode = Mode.Manual;
+
+                Inventory inventory = new Inventory();
+                _omniEve.AddAction(inventory);
+            }
         }
     }
 }

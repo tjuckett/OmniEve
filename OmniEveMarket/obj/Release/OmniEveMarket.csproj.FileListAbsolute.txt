@@ -67,7 +67,6 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\OmniEveMark
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\MetroFramework.Design.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\MetroFramework.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\MetroFramework.Fonts.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csprojResolveAssemblyReference.cache
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.OmniEveMarketUI.resources
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.Properties.Resources.resources
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csproj.GenerateResource.Cache
@@ -87,3 +86,5 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.pd
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csprojResolveAssemblyReference.cache
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.dll
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.xml
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.xml
