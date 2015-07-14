@@ -28,11 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -41,6 +36,14 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OmniEveUI));
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.ordersPage = new MetroFramework.Controls.MetroTabPage();
@@ -53,6 +56,21 @@
             this.refreshButton = new MetroFramework.Controls.MetroButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
+            this.sellingGrid = new MetroFramework.Controls.MetroGrid();
+            this.Selling_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Selling_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_OrderId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_OrderPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_MarketPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_Station = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Selling_Region = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
+            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+            this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
             this.buyingGrid = new MetroFramework.Controls.MetroGrid();
             this.Buying_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Buying_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,45 +83,44 @@
             this.Buying_Region = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_Range = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_MinVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.metroPanel3 = new MetroFramework.Controls.MetroPanel();
-            this.sellingGrid = new MetroFramework.Controls.MetroGrid();
-            this.Selling_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Selling_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_OrderId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_OrderPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_MarketPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_Station = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Selling_Region = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
             this.logginTabPage = new MetroFramework.Controls.MetroTabPage();
             this.logTextBox = new MetroFramework.Controls.MetroTextBox();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
-            this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
-            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
-            this.metroPanel4 = new MetroFramework.Controls.MetroPanel();
+            this.inventoryPage = new MetroFramework.Controls.MetroTabPage();
+            this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
+            this.inventoryGrid = new MetroFramework.Controls.MetroGrid();
+            this.Inventory_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Size = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Slot = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.refreshInventoryButton = new MetroFramework.Controls.MetroButton();
             this.metroTabControl1.SuspendLayout();
             this.ordersPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.metroPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).BeginInit();
-            this.metroPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sellingGrid)).BeginInit();
-            this.logginTabPage.SuspendLayout();
+            this.metroPanel3.SuspendLayout();
             this.metroPanel1.SuspendLayout();
             this.metroPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).BeginInit();
+            this.logginTabPage.SuspendLayout();
+            this.inventoryPage.SuspendLayout();
+            this.metroPanel5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // metroTabControl1
             // 
             this.metroTabControl1.Controls.Add(this.ordersPage);
-            this.metroTabControl1.Controls.Add(this.marketTabPage);
+            this.metroTabControl1.Controls.Add(this.inventoryPage);
             this.metroTabControl1.Controls.Add(this.logginTabPage);
+            this.metroTabControl1.Controls.Add(this.marketTabPage);
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 1;
             this.metroTabControl1.Size = new System.Drawing.Size(1159, 578);
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.UseSelectable = true;
@@ -250,6 +267,199 @@
             this.metroPanel2.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel2.VerticalScrollbarSize = 10;
             // 
+            // sellingGrid
+            // 
+            this.sellingGrid.AllowUserToAddRows = false;
+            this.sellingGrid.AllowUserToResizeRows = false;
+            this.sellingGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.sellingGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sellingGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.sellingGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.sellingGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.sellingGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.sellingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.sellingGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Selling_Select,
+            this.Selling_TypeId,
+            this.Selling_OrderId,
+            this.Selling_Name,
+            this.Selling_Quantity,
+            this.Selling_OrderPrice,
+            this.Selling_MarketPrice,
+            this.Selling_Station,
+            this.Selling_Region});
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.sellingGrid.DefaultCellStyle = dataGridViewCellStyle7;
+            this.sellingGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sellingGrid.EnableHeadersVisualStyles = false;
+            this.sellingGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.sellingGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.sellingGrid.Location = new System.Drawing.Point(0, 0);
+            this.sellingGrid.Name = "sellingGrid";
+            this.sellingGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.sellingGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            this.sellingGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.sellingGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.sellingGrid.Size = new System.Drawing.Size(1149, 231);
+            this.sellingGrid.TabIndex = 2;
+            this.sellingGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.sellingGrid_CellDoubleClick);
+            // 
+            // Selling_Select
+            // 
+            this.Selling_Select.HeaderText = "Select";
+            this.Selling_Select.Name = "Selling_Select";
+            // 
+            // Selling_TypeId
+            // 
+            dataGridViewCellStyle2.Format = "N0";
+            dataGridViewCellStyle2.NullValue = null;
+            this.Selling_TypeId.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Selling_TypeId.HeaderText = "TypeId";
+            this.Selling_TypeId.Name = "Selling_TypeId";
+            this.Selling_TypeId.ReadOnly = true;
+            this.Selling_TypeId.Visible = false;
+            // 
+            // Selling_OrderId
+            // 
+            dataGridViewCellStyle3.Format = "N0";
+            dataGridViewCellStyle3.NullValue = null;
+            this.Selling_OrderId.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Selling_OrderId.HeaderText = "OrderId";
+            this.Selling_OrderId.Name = "Selling_OrderId";
+            this.Selling_OrderId.ReadOnly = true;
+            this.Selling_OrderId.Visible = false;
+            // 
+            // Selling_Name
+            // 
+            this.Selling_Name.HeaderText = "Name";
+            this.Selling_Name.Name = "Selling_Name";
+            this.Selling_Name.ReadOnly = true;
+            // 
+            // Selling_Quantity
+            // 
+            dataGridViewCellStyle4.Format = "N0";
+            dataGridViewCellStyle4.NullValue = null;
+            this.Selling_Quantity.DefaultCellStyle = dataGridViewCellStyle4;
+            this.Selling_Quantity.HeaderText = "Quantity";
+            this.Selling_Quantity.Name = "Selling_Quantity";
+            this.Selling_Quantity.ReadOnly = true;
+            // 
+            // Selling_OrderPrice
+            // 
+            dataGridViewCellStyle5.Format = "C2";
+            dataGridViewCellStyle5.NullValue = null;
+            this.Selling_OrderPrice.DefaultCellStyle = dataGridViewCellStyle5;
+            this.Selling_OrderPrice.HeaderText = "Order Price";
+            this.Selling_OrderPrice.Name = "Selling_OrderPrice";
+            this.Selling_OrderPrice.ReadOnly = true;
+            // 
+            // Selling_MarketPrice
+            // 
+            dataGridViewCellStyle6.Format = "C2";
+            dataGridViewCellStyle6.NullValue = null;
+            this.Selling_MarketPrice.DefaultCellStyle = dataGridViewCellStyle6;
+            this.Selling_MarketPrice.HeaderText = "Market Price";
+            this.Selling_MarketPrice.Name = "Selling_MarketPrice";
+            this.Selling_MarketPrice.ReadOnly = true;
+            // 
+            // Selling_Station
+            // 
+            this.Selling_Station.HeaderText = "Station";
+            this.Selling_Station.Name = "Selling_Station";
+            this.Selling_Station.ReadOnly = true;
+            // 
+            // Selling_Region
+            // 
+            this.Selling_Region.HeaderText = "Region";
+            this.Selling_Region.Name = "Selling_Region";
+            this.Selling_Region.ReadOnly = true;
+            // 
+            // metroPanel3
+            // 
+            this.metroPanel3.Controls.Add(this.metroLabel3);
+            this.metroPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel3.HorizontalScrollbarBarColor = true;
+            this.metroPanel3.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel3.HorizontalScrollbarSize = 10;
+            this.metroPanel3.Location = new System.Drawing.Point(1, 1);
+            this.metroPanel3.Margin = new System.Windows.Forms.Padding(0);
+            this.metroPanel3.Name = "metroPanel3";
+            this.metroPanel3.Size = new System.Drawing.Size(1149, 20);
+            this.metroPanel3.TabIndex = 2;
+            this.metroPanel3.VerticalScrollbarBarColor = true;
+            this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel3.VerticalScrollbarSize = 10;
+            // 
+            // metroLabel3
+            // 
+            this.metroLabel3.AutoSize = true;
+            this.metroLabel3.Location = new System.Drawing.Point(0, -2);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(74, 19);
+            this.metroLabel3.TabIndex = 2;
+            this.metroLabel3.Text = "Sell Orders";
+            // 
+            // metroPanel1
+            // 
+            this.metroPanel1.Controls.Add(this.metroLabel4);
+            this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel1.HorizontalScrollbarBarColor = true;
+            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel1.HorizontalScrollbarSize = 0;
+            this.metroPanel1.Location = new System.Drawing.Point(1, 254);
+            this.metroPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.metroPanel1.Name = "metroPanel1";
+            this.metroPanel1.Size = new System.Drawing.Size(1149, 20);
+            this.metroPanel1.TabIndex = 3;
+            this.metroPanel1.VerticalScrollbarBarColor = true;
+            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel1.VerticalScrollbarSize = 0;
+            // 
+            // metroLabel4
+            // 
+            this.metroLabel4.AutoSize = true;
+            this.metroLabel4.Location = new System.Drawing.Point(0, 0);
+            this.metroLabel4.Name = "metroLabel4";
+            this.metroLabel4.Size = new System.Drawing.Size(75, 19);
+            this.metroLabel4.TabIndex = 2;
+            this.metroLabel4.Text = "Buy Orders";
+            // 
+            // metroPanel4
+            // 
+            this.metroPanel4.Controls.Add(this.buyingGrid);
+            this.metroPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel4.HorizontalScrollbarBarColor = true;
+            this.metroPanel4.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel4.HorizontalScrollbarSize = 0;
+            this.metroPanel4.Location = new System.Drawing.Point(1, 275);
+            this.metroPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.metroPanel4.Name = "metroPanel4";
+            this.metroPanel4.Size = new System.Drawing.Size(1149, 232);
+            this.metroPanel4.TabIndex = 4;
+            this.metroPanel4.VerticalScrollbarBarColor = true;
+            this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel4.VerticalScrollbarSize = 0;
+            // 
             // buyingGrid
             // 
             this.buyingGrid.AllowUserToAddRows = false;
@@ -384,149 +594,6 @@
             this.Buying_MinVolume.Name = "Buying_MinVolume";
             this.Buying_MinVolume.ReadOnly = true;
             // 
-            // metroPanel3
-            // 
-            this.metroPanel3.Controls.Add(this.metroLabel3);
-            this.metroPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel3.HorizontalScrollbarBarColor = true;
-            this.metroPanel3.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel3.HorizontalScrollbarSize = 10;
-            this.metroPanel3.Location = new System.Drawing.Point(1, 1);
-            this.metroPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel3.Name = "metroPanel3";
-            this.metroPanel3.Size = new System.Drawing.Size(1149, 20);
-            this.metroPanel3.TabIndex = 2;
-            this.metroPanel3.VerticalScrollbarBarColor = true;
-            this.metroPanel3.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel3.VerticalScrollbarSize = 10;
-            // 
-            // sellingGrid
-            // 
-            this.sellingGrid.AllowUserToAddRows = false;
-            this.sellingGrid.AllowUserToResizeRows = false;
-            this.sellingGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.sellingGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sellingGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.sellingGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.sellingGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.sellingGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.sellingGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.sellingGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Selling_Select,
-            this.Selling_TypeId,
-            this.Selling_OrderId,
-            this.Selling_Name,
-            this.Selling_Quantity,
-            this.Selling_OrderPrice,
-            this.Selling_MarketPrice,
-            this.Selling_Station,
-            this.Selling_Region});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.sellingGrid.DefaultCellStyle = dataGridViewCellStyle7;
-            this.sellingGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.sellingGrid.EnableHeadersVisualStyles = false;
-            this.sellingGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.sellingGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.sellingGrid.Location = new System.Drawing.Point(0, 0);
-            this.sellingGrid.Name = "sellingGrid";
-            this.sellingGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.sellingGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle8;
-            this.sellingGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.sellingGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.sellingGrid.Size = new System.Drawing.Size(1149, 231);
-            this.sellingGrid.TabIndex = 2;
-            this.sellingGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.sellingGrid_CellDoubleClick);
-            // 
-            // Selling_Select
-            // 
-            this.Selling_Select.HeaderText = "Select";
-            this.Selling_Select.Name = "Selling_Select";
-            // 
-            // Selling_TypeId
-            // 
-            dataGridViewCellStyle2.Format = "N0";
-            dataGridViewCellStyle2.NullValue = null;
-            this.Selling_TypeId.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Selling_TypeId.HeaderText = "TypeId";
-            this.Selling_TypeId.Name = "Selling_TypeId";
-            this.Selling_TypeId.ReadOnly = true;
-            this.Selling_TypeId.Visible = false;
-            // 
-            // Selling_OrderId
-            // 
-            dataGridViewCellStyle3.Format = "N0";
-            dataGridViewCellStyle3.NullValue = null;
-            this.Selling_OrderId.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Selling_OrderId.HeaderText = "OrderId";
-            this.Selling_OrderId.Name = "Selling_OrderId";
-            this.Selling_OrderId.ReadOnly = true;
-            this.Selling_OrderId.Visible = false;
-            // 
-            // Selling_Name
-            // 
-            this.Selling_Name.HeaderText = "Name";
-            this.Selling_Name.Name = "Selling_Name";
-            this.Selling_Name.ReadOnly = true;
-            // 
-            // Selling_Quantity
-            // 
-            dataGridViewCellStyle4.Format = "N0";
-            dataGridViewCellStyle4.NullValue = null;
-            this.Selling_Quantity.DefaultCellStyle = dataGridViewCellStyle4;
-            this.Selling_Quantity.HeaderText = "Quantity";
-            this.Selling_Quantity.Name = "Selling_Quantity";
-            this.Selling_Quantity.ReadOnly = true;
-            // 
-            // Selling_OrderPrice
-            // 
-            dataGridViewCellStyle5.Format = "C2";
-            dataGridViewCellStyle5.NullValue = null;
-            this.Selling_OrderPrice.DefaultCellStyle = dataGridViewCellStyle5;
-            this.Selling_OrderPrice.HeaderText = "Order Price";
-            this.Selling_OrderPrice.Name = "Selling_OrderPrice";
-            this.Selling_OrderPrice.ReadOnly = true;
-            // 
-            // Selling_MarketPrice
-            // 
-            dataGridViewCellStyle6.Format = "C2";
-            dataGridViewCellStyle6.NullValue = null;
-            this.Selling_MarketPrice.DefaultCellStyle = dataGridViewCellStyle6;
-            this.Selling_MarketPrice.HeaderText = "Market Price";
-            this.Selling_MarketPrice.Name = "Selling_MarketPrice";
-            this.Selling_MarketPrice.ReadOnly = true;
-            // 
-            // Selling_Station
-            // 
-            this.Selling_Station.HeaderText = "Station";
-            this.Selling_Station.Name = "Selling_Station";
-            this.Selling_Station.ReadOnly = true;
-            // 
-            // Selling_Region
-            // 
-            this.Selling_Region.HeaderText = "Region";
-            this.Selling_Region.Name = "Selling_Region";
-            this.Selling_Region.ReadOnly = true;
-            // 
             // marketTabPage
             // 
             this.marketTabPage.HorizontalScrollbarBarColor = true;
@@ -571,55 +638,134 @@
             this.logTextBox.TabIndex = 3;
             this.logTextBox.UseSelectable = true;
             // 
-            // metroLabel3
+            // inventoryPage
             // 
-            this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(0, -2);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(74, 19);
-            this.metroLabel3.TabIndex = 2;
-            this.metroLabel3.Text = "Sell Orders";
+            this.inventoryPage.Controls.Add(this.metroPanel5);
+            this.inventoryPage.HorizontalScrollbarBarColor = true;
+            this.inventoryPage.HorizontalScrollbarHighlightOnWheel = false;
+            this.inventoryPage.HorizontalScrollbarSize = 10;
+            this.inventoryPage.Location = new System.Drawing.Point(4, 38);
+            this.inventoryPage.Name = "inventoryPage";
+            this.inventoryPage.Size = new System.Drawing.Size(1151, 536);
+            this.inventoryPage.TabIndex = 3;
+            this.inventoryPage.Text = "Inventory";
+            this.inventoryPage.VerticalScrollbarBarColor = true;
+            this.inventoryPage.VerticalScrollbarHighlightOnWheel = false;
+            this.inventoryPage.VerticalScrollbarSize = 10;
             // 
-            // metroPanel1
+            // metroPanel5
             // 
-            this.metroPanel1.Controls.Add(this.metroLabel4);
-            this.metroPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel1.HorizontalScrollbarBarColor = true;
-            this.metroPanel1.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.HorizontalScrollbarSize = 0;
-            this.metroPanel1.Location = new System.Drawing.Point(1, 254);
-            this.metroPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(1149, 20);
-            this.metroPanel1.TabIndex = 3;
-            this.metroPanel1.VerticalScrollbarBarColor = true;
-            this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel1.VerticalScrollbarSize = 0;
+            this.metroPanel5.Controls.Add(this.refreshInventoryButton);
+            this.metroPanel5.Controls.Add(this.inventoryGrid);
+            this.metroPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel5.HorizontalScrollbarBarColor = true;
+            this.metroPanel5.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel5.HorizontalScrollbarSize = 0;
+            this.metroPanel5.Location = new System.Drawing.Point(0, 0);
+            this.metroPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.metroPanel5.Name = "metroPanel5";
+            this.metroPanel5.Size = new System.Drawing.Size(1151, 536);
+            this.metroPanel5.TabIndex = 2;
+            this.metroPanel5.VerticalScrollbarBarColor = true;
+            this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel5.VerticalScrollbarSize = 0;
             // 
-            // metroLabel4
+            // inventoryGrid
             // 
-            this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(0, 0);
-            this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(75, 19);
-            this.metroLabel4.TabIndex = 2;
-            this.metroLabel4.Text = "Buy Orders";
+            this.inventoryGrid.AllowUserToAddRows = false;
+            this.inventoryGrid.AllowUserToDeleteRows = false;
+            this.inventoryGrid.AllowUserToResizeRows = false;
+            this.inventoryGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.inventoryGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.inventoryGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.inventoryGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.inventoryGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inventoryGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            this.inventoryGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.inventoryGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Inventory_Name,
+            this.Inventory_Quantity,
+            this.Inventory_Group,
+            this.Inventory_Size,
+            this.Inventory_Slot,
+            this.Inventory_Volume});
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.inventoryGrid.DefaultCellStyle = dataGridViewCellStyle15;
+            this.inventoryGrid.EnableHeadersVisualStyles = false;
+            this.inventoryGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.inventoryGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.inventoryGrid.Location = new System.Drawing.Point(0, 0);
+            this.inventoryGrid.Margin = new System.Windows.Forms.Padding(0);
+            this.inventoryGrid.Name = "inventoryGrid";
+            this.inventoryGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            dataGridViewCellStyle16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.inventoryGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            this.inventoryGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.inventoryGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.inventoryGrid.Size = new System.Drawing.Size(1151, 507);
+            this.inventoryGrid.TabIndex = 2;
             // 
-            // metroPanel4
+            // Inventory_Name
             // 
-            this.metroPanel4.Controls.Add(this.buyingGrid);
-            this.metroPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel4.HorizontalScrollbarBarColor = true;
-            this.metroPanel4.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel4.HorizontalScrollbarSize = 0;
-            this.metroPanel4.Location = new System.Drawing.Point(1, 275);
-            this.metroPanel4.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel4.Name = "metroPanel4";
-            this.metroPanel4.Size = new System.Drawing.Size(1149, 232);
-            this.metroPanel4.TabIndex = 4;
-            this.metroPanel4.VerticalScrollbarBarColor = true;
-            this.metroPanel4.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel4.VerticalScrollbarSize = 0;
+            this.Inventory_Name.HeaderText = "Name";
+            this.Inventory_Name.Name = "Inventory_Name";
+            // 
+            // Inventory_Quantity
+            // 
+            this.Inventory_Quantity.HeaderText = "Quantity";
+            this.Inventory_Quantity.Name = "Inventory_Quantity";
+            // 
+            // Inventory_Group
+            // 
+            this.Inventory_Group.HeaderText = "Group";
+            this.Inventory_Group.Name = "Inventory_Group";
+            // 
+            // Inventory_Size
+            // 
+            this.Inventory_Size.HeaderText = "Size";
+            this.Inventory_Size.Name = "Inventory_Size";
+            // 
+            // Inventory_Slot
+            // 
+            this.Inventory_Slot.HeaderText = "Slot";
+            this.Inventory_Slot.Name = "Inventory_Slot";
+            // 
+            // Inventory_Volume
+            // 
+            this.Inventory_Volume.HeaderText = "Volume";
+            this.Inventory_Volume.Name = "Inventory_Volume";
+            // 
+            // refreshInventoryButton
+            // 
+            this.refreshInventoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refreshInventoryButton.Location = new System.Drawing.Point(1039, 510);
+            this.refreshInventoryButton.Name = "refreshInventoryButton";
+            this.refreshInventoryButton.Size = new System.Drawing.Size(109, 23);
+            this.refreshInventoryButton.TabIndex = 5;
+            this.refreshInventoryButton.Text = "Refresh";
+            this.refreshInventoryButton.UseSelectable = true;
+            this.refreshInventoryButton.Click += new System.EventHandler(this.refreshInventoryButton_Click);
             // 
             // OmniEveUI
             // 
@@ -636,14 +782,17 @@
             this.ordersPage.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.metroPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sellingGrid)).EndInit();
             this.metroPanel3.ResumeLayout(false);
             this.metroPanel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sellingGrid)).EndInit();
-            this.logginTabPage.ResumeLayout(false);
             this.metroPanel1.ResumeLayout(false);
             this.metroPanel1.PerformLayout();
             this.metroPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).EndInit();
+            this.logginTabPage.ResumeLayout(false);
+            this.inventoryPage.ResumeLayout(false);
+            this.metroPanel5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -660,15 +809,6 @@
         private MetroFramework.Controls.MetroButton modifyButton;
         private MetroFramework.Controls.MetroTabPage marketTabPage;
         private MetroFramework.Controls.MetroButton refreshButton;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Selling_Select;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_TypeId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Quantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_MarketPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Station;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Buying_Select;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_TypeId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_OrderId;
@@ -691,6 +831,25 @@
         private MetroFramework.Controls.MetroPanel metroPanel1;
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroPanel metroPanel4;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Selling_Select;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_TypeId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_OrderPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_MarketPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Station;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
+        private MetroFramework.Controls.MetroTabPage inventoryPage;
+        private MetroFramework.Controls.MetroPanel metroPanel5;
+        private MetroFramework.Controls.MetroGrid inventoryGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Group;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Size;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Slot;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Volume;
+        private MetroFramework.Controls.MetroButton refreshInventoryButton;
 
     }
 }

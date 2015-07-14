@@ -110,7 +110,9 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /Y "$(TargetDir)$(ProjectName).exe" "$(ProjectDir)..\output\$(ProjectName).exe"
-copy /Y "$(TargetDir)MetroFramework.dll" "$(ProjectDir)..\output\MetroFramework.dll"</PostBuildEvent>
+copy /Y "$(TargetDir)MetroFramework.dll" "$(ProjectDir)..\output\MetroFramework.dll"
+copy /Y "$(TargetDir)DirectEve.dll" "$(ProjectDir)..\output\DirectEve.dll"
+copy /Y "$(TargetDir)DirectEve.pdb" "$(ProjectDir)..\output\DirectEve.pdb"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
