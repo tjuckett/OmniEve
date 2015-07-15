@@ -659,10 +659,17 @@ namespace OmniEve
         {
             if (_mode == Mode.Idle)
             {
-                _mode = Mode.Manual;
-
-                Inventory inventory = new Inventory();
-                _omniEve.AddAction(inventory);
+                DirectContainer itemHanger = Cache.Instance.DirectEve.GetItemHangar();
+                foreach (DirectItem item in itemHanger.Items)
+                {
+                    inventoryGrid.AllowUserToAddRows = true;
+                    int index = inventoryGrid.Rows.Add();
+                    inventoryGrid.Rows[index].Cells["Inventory_Name"].Value = item.Name;
+                    inventoryGrid.Rows[index].Cells["Inventory_Quantity"].Value = item.Quantity;
+                    inventoryGrid.Rows[index].Cells["Inventory_Group"].Value = item.GroupName;
+                    inventoryGrid.Rows[index].Cells["Inventory_Volume"].Value = item.Volume;
+                    inventoryGrid.AllowUserToAddRows = false;
+                }
             }
         }
     }

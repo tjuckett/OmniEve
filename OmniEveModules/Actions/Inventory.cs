@@ -40,7 +40,7 @@ namespace OmniEveModules.Actions
             if (Status.Instance.InSpace)
                 return;
 
-            DirectContainerWindow inventoryWindow = Cache.Instance.DirectEve.Windows.OfType<DirectContainerWindow>().FirstOrDefault(w=>w.Name.Contains("InventoryStation"));
+            DirectContainerWindow inventoryWindow = Cache.Instance.DirectEve.Windows.OfType<DirectContainerWindow>().FirstOrDefault(w=>w.Name.Contains("Inventory"));
 
             switch (_state)
             {
@@ -56,26 +56,10 @@ namespace OmniEveModules.Actions
                 case InventoryState.Begin:
 
                     // Don't close the market window if its already up
-                    if (inventoryWindow != null)
-                        Logging.Log("Inventory:Process", "Inventory already open no need to open the market", Logging.White);
-
                     _state = InventoryState.OpenInventory;
                     break;
 
                 case InventoryState.OpenInventory:
-
-                    if (inventoryWindow == null)
-                    {
-                        Cache.Instance.DirectEve.OpenInventory();
-                        Logging.Log("Inventory:Process", "Opening Inventory", Logging.White);
-                        break;
-                    }
-
-                    if (!inventoryWindow.IsReady)
-                    {
-                        Logging.Log("Inventory:Process", "Inventory is not ready", Logging.White);
-                        break;
-                    }
 
                     _state = InventoryState.LoadItems;
                     break;
@@ -87,29 +71,18 @@ namespace OmniEveModules.Actions
 
                     _lastAction = DateTime.UtcNow;
 
-                    if (inventoryWindow != null)
-                    {
                         //Logging.Log("Inventory:Process", "Load orders for TypeId - " + TypeId.ToString(), Logging.White);
 
-                        foreach(long itemId in inventoryWindow.GetIdsFromTree())
-                        {
-                            DirectType type = Cache.Instance.DirectEve.GetType((int)itemId);
-                            Logging.Log("Inventory:Process", "Item loaded Name - " + type.Name, Logging.White);
-                        }
-
-                        _state = InventoryState.Done;
-
-                        break;
-                    }
-                    else
+                    DirectContainer itemHanger = Cache.Instance.DirectEve.GetItemHangar();
+                    foreach(DirectItem item in itemHanger.Items)
                     {
-                        Logging.Log("Inventory:Process", "MarketWindow is not open, going back to open market state", Logging.White);
-
-                        _state = InventoryState.OpenInventory;
+                        Logging.Log("Inventory:Process", "Item loaded Name - " + item.Name, Logging.White);
                     }
+
+                    _state = InventoryState.Done;
 
                     break;
-
+                
                 /*case MarketInfoState.CacheInfo:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
