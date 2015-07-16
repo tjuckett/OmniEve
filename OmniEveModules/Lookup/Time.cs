@@ -35,6 +35,8 @@ namespace OmniEveModules.Lookup
         public DateTime LastOpenHangar = DateTime.UtcNow;
         public DateTime LastSessionIsReady = DateTime.UtcNow;
         public DateTime LastLogMessage = DateTime.UtcNow;
+        public DateTime LastMyBuyOrders = DateTime.UtcNow;
+        public DateTime LastMySellOrders = DateTime.UtcNow;
 
         public DateTime OmniEveStarted_DateTime = DateTime.UtcNow;
         public static DateTime EnteredCloseOmniEve_DateTime { get; set; }

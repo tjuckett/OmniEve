@@ -130,7 +130,7 @@ namespace OmniEveModules.Actions
                         if (_myBuyOrders != null)
                         {
                             Logging.Log("MyOrders:Process", "Get list of my buy orders successful", Logging.White);
-                            Cache.Instance.MyBuyOrders = _myBuyOrders;                            
+                            Cache.Instance.MyBuyOrders = _myBuyOrders;
                         }
 
                         _state = MyOrdersState.Done;

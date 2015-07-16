@@ -78,36 +78,10 @@ namespace OmniEve
             sellingGrid.Invoke((MethodInvoker)delegate { UpdateMySellOrdersGrid_Fill(mySellOrders); });
             buyingGrid.Invoke((MethodInvoker)delegate { UpdateMyBuyOrdersGrid_Fill(myBuyOrders); });
 
-            // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
-            // an item twice if we have a buy and sell order, just include it once.
-            List<int> marketInfoTypeIds = new List<int>();
-
-            foreach (DirectOrder order in mySellOrders)
-                marketInfoTypeIds.Add(order.TypeId);
-
-            foreach (DirectOrder order in myBuyOrders)
-            {
-                // If the type id isn't already in the list of ids to get market info for then add it
-                if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
-                    marketInfoTypeIds.Add(order.TypeId);
-            }
-
-            // Add an action for each sell order and get the updated market values
-            if (_omniEve != null)
-            {
-                foreach (int typeId in marketInfoTypeIds)
-                {
-                    MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
-                    marketInfo.TypeId = typeId;
-                    _omniEve.AddAction(marketInfo);
-                }
-            }
-
             CheckState();
         }
 
-        private void MyInventoryOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        private void MyItemHangerOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
         {
             inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_MyOrders(mySellOrders, myBuyOrders); });
 
@@ -506,7 +480,7 @@ namespace OmniEve
             inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_Fill(_hangerItems); });
 
             MyOrders myOrders = new MyOrders();
-            myOrders.OnMyOrdersActionFinished += MyInventoryOrdersActionFinished;
+            myOrders.OnMyOrdersActionFinished += MyItemHangerOrdersActionFinished;
             _omniEve.AddAction(myOrders);
 
             CheckState();
@@ -596,7 +570,34 @@ namespace OmniEve
 
         private void marketInfoMyOrdersButton_Click(object sender, EventArgs e)
         {
+            List<DirectOrder> mySellOrders = Cache.Instance.MySellOrders;
+            List<DirectOrder> myBuyOrders = Cache.Instance.MyBuyOrders;
 
+            // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
+            // an item twice if we have a buy and sell order, just include it once.
+            List<int> marketInfoTypeIds = new List<int>();
+
+            foreach (DirectOrder order in mySellOrders)
+                marketInfoTypeIds.Add(order.TypeId);
+
+            foreach (DirectOrder order in myBuyOrders)
+            {
+                // If the type id isn't already in the list of ids to get market info for then add it
+                if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
+                    marketInfoTypeIds.Add(order.TypeId);
+            }
+
+            // Add an action for each sell order and get the updated market values
+            if (_omniEve != null)
+            {
+                foreach (int typeId in marketInfoTypeIds)
+                {
+                    MarketInfo marketInfo = new MarketInfo();
+                    marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
+                    marketInfo.TypeId = typeId;
+                    _omniEve.AddAction(marketInfo);
+                }
+            }
         }
 
         private void modifyButton_Click(object sender, EventArgs e)
