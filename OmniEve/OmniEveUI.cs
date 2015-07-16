@@ -73,9 +73,88 @@ namespace OmniEve
             return true;
         }
 
-        private delegate void UpdateMySellOrdersDelegate(List<DirectOrder> mySellOrders);
-        private delegate void UpdateMyBuyOrdersDelegate(List<DirectOrder> myBuyOrders);
-        private void UpdateMySellOrders(List<DirectOrder> mySellOrders)
+        private void MyOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        {
+            sellingGrid.Invoke((MethodInvoker)delegate { UpdateMySellOrdersGrid_Fill(mySellOrders); });
+            buyingGrid.Invoke((MethodInvoker)delegate { UpdateMyBuyOrdersGrid_Fill(myBuyOrders); });
+
+            // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
+            // an item twice if we have a buy and sell order, just include it once.
+            List<int> marketInfoTypeIds = new List<int>();
+
+            foreach (DirectOrder order in mySellOrders)
+                marketInfoTypeIds.Add(order.TypeId);
+
+            foreach (DirectOrder order in myBuyOrders)
+            {
+                // If the type id isn't already in the list of ids to get market info for then add it
+                if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
+                    marketInfoTypeIds.Add(order.TypeId);
+            }
+
+            // Add an action for each sell order and get the updated market values
+            if (_omniEve != null)
+            {
+                foreach (int typeId in marketInfoTypeIds)
+                {
+                    MarketInfo marketInfo = new MarketInfo();
+                    marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
+                    marketInfo.TypeId = typeId;
+                    _omniEve.AddAction(marketInfo);
+                }
+            }
+
+            CheckState();
+        }
+
+        private void MyInventoryOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        {
+            inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_MyOrders(mySellOrders, myBuyOrders); });
+
+            CheckState();
+        }
+
+        private void MarketInfoActionFinished(MarketItemInfo marketInfo)
+        {
+            List<DirectOrder> sellOrders = marketInfo.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
+            List<DirectOrder> buyOrders = marketInfo.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
+            DirectOrder sellOrder = sellOrders.FirstOrDefault();
+            DirectOrder buyOrder = buyOrders.FirstOrDefault();
+
+            sellingGrid.Invoke((MethodInvoker)delegate { UpdateMySellOrdersGrid_LowestMarketOrder(marketInfo.TypeId, sellOrder); });
+            buyingGrid.Invoke((MethodInvoker)delegate { UpdateMyBuyOrdersGrid_HighestMarketOrder(marketInfo.TypeId, buyOrder); });
+
+            CheckState();
+        }
+
+        private void ModifySellOrderActionFinished(long orderId, double price)
+        {
+            sellingGrid.Invoke((MethodInvoker)delegate { UpdateMySellOrdersGrid_OrderPrice(orderId, price, true); });
+
+            CheckState();
+        }
+
+        private void ModifyBuyOrderActionFinished(long orderId, double price)
+        {
+            buyingGrid.Invoke((MethodInvoker)delegate { UpdateMyBuyOrdersGrid_OrderPrice(orderId, price, true); });
+            CheckState();
+        }
+
+        private void UpdateInventoryGrid_MyOrders(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        {
+            foreach (DataGridViewRow row in inventoryGrid.Rows)
+            {
+                DirectOrder order = mySellOrders.FirstOrDefault(o => o.TypeId == int.Parse(row.Cells["Inventory_TypeId"].Value.ToString()));
+
+                if(order != null)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        private void UpdateMySellOrdersGrid_Fill(List<DirectOrder> mySellOrders)
         {
             Logging.Log("OmniEveUI:UpdateMySellOrders", "Clearing existing sell grid of orders", Logging.White);
             sellingGrid.Rows.Clear();
@@ -106,7 +185,8 @@ namespace OmniEve
                 sellingGrid.AllowUserToAddRows = false;
             }
         }
-        private void UpdateMyBuyOrders(List<DirectOrder> myBuyOrders)
+
+        private void UpdateMyBuyOrdersGrid_Fill(List<DirectOrder> myBuyOrders)
         {
             Logging.Log("OmniEveUI:UpdateMyBuyOrders", "Clearing existing buy grid of orders", Logging.White);
             buyingGrid.Rows.Clear();
@@ -141,79 +221,15 @@ namespace OmniEve
                 buyingGrid.AllowUserToAddRows = false;
             }
         }
-        
-        private void MyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
-        {
-            if (sellingGrid.InvokeRequired == true)
-                sellingGrid.Invoke(new UpdateMySellOrdersDelegate(UpdateMySellOrders), mySellOrders);
-            else
-                UpdateMySellOrders(mySellOrders);
-
-            if(buyingGrid.InvokeRequired == true)
-                buyingGrid.Invoke(new UpdateMyBuyOrdersDelegate(UpdateMyBuyOrders), myBuyOrders);
-            else
-                UpdateMyBuyOrders(myBuyOrders);
-
-            // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
-            // an item twice if we have a buy and sell order, just include it once.
-            List<int> marketInfoTypeIds = new List<int>();
-
-            foreach (DirectOrder order in mySellOrders)
-            {
-                marketInfoTypeIds.Add(order.TypeId);
-            }
-            foreach (DirectOrder order in myBuyOrders)
-            {
-                // If the type id isn't already in the list of ids to get market info for then add it
-                if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
-                    marketInfoTypeIds.Add(order.TypeId);
-            }
-
-            // Add an action for each sell order and get the updated market values
-            if (_omniEve != null)
-            {
-                foreach(int typeId in marketInfoTypeIds)
-                { 
-                    MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
-                    marketInfo.TypeId = typeId;
-                    _omniEve.AddAction(marketInfo);
-                }
-            }
-
-            CheckState();
-        }
-
-        private void MarketInfoFinished(MarketItemInfo marketInfo)
-        {
-            List<DirectOrder> sellOrders = marketInfo.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
-            List<DirectOrder> buyOrders = marketInfo.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
-            DirectOrder sellOrder = sellOrders.FirstOrDefault();
-            DirectOrder buyOrder = buyOrders.FirstOrDefault();
-
-            if(sellingGrid.InvokeRequired == true)
-                sellingGrid.Invoke(new UpdateMarketInfoSellOrderDelegate(UpdateMarketInfoSellOrder), marketInfo, sellOrder);
-            else 
-                UpdateMarketInfoSellOrder(marketInfo, sellOrder);
-
-            if (buyingGrid.InvokeRequired == true)
-                buyingGrid.Invoke(new UpdateMarketInfoBuyOrderDelegate(UpdateMarketInfoBuyOrder), marketInfo, buyOrder);
-            else
-                UpdateMarketInfoBuyOrder(marketInfo, buyOrder);
-
-            CheckState();
-        }
-
-        private delegate void UpdateMarketInfoSellOrderDelegate(MarketItemInfo marketInfo, DirectOrder sellOrder);
-        private void UpdateMarketInfoSellOrder(MarketItemInfo marketInfo, DirectOrder sellOrder)
+        private void UpdateMySellOrdersGrid_LowestMarketOrder(int typeId, DirectOrder sellOrder)
         {
             if (sellOrder != null)
             {
                 foreach (DataGridViewRow row in sellingGrid.Rows)
                 {
-                    if (int.Parse(row.Cells["Selling_TypeId"].Value.ToString()) == marketInfo.TypeId)
+                    if (int.Parse(row.Cells["Selling_TypeId"].Value.ToString()) == typeId)
                     {
-                        Logging.Log("OmniEveUI:MarketInfoFinished", "Row has been found, adding markinfo to row", Logging.White);
+                        Logging.Log("OmniEveUI:UpdateMarketInfoSellOrder", "Row has been found, adding markinfo to row", Logging.White);
 
                         long orderId = (long)row.Cells["Selling_OrderId"].Value;
                         string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
@@ -246,16 +262,15 @@ namespace OmniEve
             }
         }
 
-        private delegate void UpdateMarketInfoBuyOrderDelegate(MarketItemInfo marketInfo, DirectOrder buyOrder);
-        private void UpdateMarketInfoBuyOrder(MarketItemInfo marketInfo, DirectOrder buyOrder)
+        private void UpdateMyBuyOrdersGrid_HighestMarketOrder(int typeId, DirectOrder buyOrder)
         {
             if (buyOrder != null)
             {
                 foreach (DataGridViewRow row in buyingGrid.Rows)
                 {
-                    if (int.Parse(row.Cells["Buying_TypeId"].Value.ToString()) == marketInfo.TypeId)
+                    if (int.Parse(row.Cells["Buying_TypeId"].Value.ToString()) == typeId)
                     {
-                        Logging.Log("OmniEveUI:MarketInfoFinished", "Row has been found, adding market info to row", Logging.White);
+                        Logging.Log("OmniEveUI:UpdateMarketInfoBuyOrder", "Row has been found, adding market info to row", Logging.White);
 
                         long orderId = (long)row.Cells["Buying_OrderId"].Value;
                         string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
@@ -288,8 +303,45 @@ namespace OmniEve
             }
         }
 
+        private void UpdateMySellOrdersGrid_OrderPrice(long orderId, double price, bool changeMarket)
+        {
+            foreach (DataGridViewRow row in sellingGrid.Rows)
+            {
+                if ((long)row.Cells["Selling_OrderId"].Value == orderId)
+                {
+                    row.Cells["Selling_OrderPrice"].Value = price.ToString();
+                    if (changeMarket == true)
+                        row.Cells["Selling_MarketPrice"].Value = price.ToString();
+
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+        }
+
+        private void UpdateMyBuyOrdersGrid_OrderPrice(long orderId, double price, bool changeMarket)
+        {
+            foreach (DataGridViewRow row in buyingGrid.Rows)
+            {
+                if ((long)row.Cells["Buying_OrderId"].Value == orderId)
+                {
+                    row.Cells["Buying_OrderPrice"].Value = price.ToString();
+                    if (changeMarket == true)
+                        row.Cells["Buying_MarketPrice"].Value = price.ToString();
+
+                    row.DefaultCellStyle.BackColor = Color.White;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+                }
+            }
+        }
+
         private void ModifySellOrder(long orderId, string orderPriceStr, string marketPriceStr)
         {
+            if (_omniEve == null)
+            {
+                return;
+            }
+
             List<DirectOrder> orders = Cache.Instance.MySellOrders;
 
             Logging.Log("OmniEveUI:ModifySellOrder", "Getting cached sell orders", Logging.Debug);
@@ -319,7 +371,7 @@ namespace OmniEve
                     modifyOrder.OrderId = myOrder.OrderId;
                     modifyOrder.IsBid = myOrder.IsBid;
                     modifyOrder.Price = newPriceDbl;
-                    modifyOrder.OnModifyOrderActionFinished += ModifySellOrderFinished;
+                    modifyOrder.OnModifyOrderActionFinished += ModifySellOrderActionFinished;
                     _omniEve.AddAction(modifyOrder);
                 }
             }
@@ -331,59 +383,35 @@ namespace OmniEve
 
         private void ModifySellOrders()
         {
-            if (_omniEve != null)
-            {
-                foreach (DataGridViewRow row in sellingGrid.Rows)
-                {
-                    try
-                    {
-                        if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
-                        { 
-                            long orderId = (long)row.Cells["Selling_OrderId"].Value;
-                            string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
-                            string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
-
-                            ModifySellOrder(orderId, orderPriceStr, marketPriceStr);
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Logging.Log("OmniEveUI:ModifySellOrders", "Exception [" + ex + "]", Logging.Debug);
-                    }
-                }
-            }
-
-            CheckState();
-        }
-
-        private delegate void UpdateSellOrderPriceDelegate(long orderId, double price, bool changeMarket);
-        private void UpdateSellOrderPrice(long orderId, double price, bool changeMarket)
-        {
             foreach (DataGridViewRow row in sellingGrid.Rows)
             {
-                if ((long)row.Cells["Selling_OrderId"].Value == orderId)
+                try
                 {
-                    row.Cells["Selling_OrderPrice"].Value = price.ToString();
-                    if (changeMarket == true)
-                        row.Cells["Selling_MarketPrice"].Value = price.ToString();
+                    if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
+                    { 
+                        long orderId = (long)row.Cells["Selling_OrderId"].Value;
+                        string orderPriceStr = (string)row.Cells["Selling_OrderPrice"].Value;
+                        string marketPriceStr = (string)row.Cells["Selling_MarketPrice"].Value;
 
-                    row.DefaultCellStyle.BackColor = Color.White;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
+                        ModifySellOrder(orderId, orderPriceStr, marketPriceStr);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Logging.Log("OmniEveUI:ModifySellOrders", "Exception [" + ex + "]", Logging.Debug);
                 }
             }
-        }
-        private void ModifySellOrderFinished(long orderId, double price)
-        {
-            if (sellingGrid.InvokeRequired == true)
-                sellingGrid.Invoke(new UpdateBuyOrderPriceDelegate(UpdateSellOrderPrice), orderId, price, true);
-            else
-                UpdateSellOrderPrice(orderId, price, true);
 
             CheckState();
         }
 
         private void ModifyBuyOrder(long orderId, string orderPriceStr, string marketPriceStr)
         {
+            if (_omniEve == null)
+            {
+                return;
+            }
+
             List<DirectOrder> orders = Cache.Instance.MyBuyOrders;
 
             Logging.Log("OmniEveUI:ModifyBuyOrder", "Getting cached buy orders", Logging.Debug);
@@ -413,7 +441,7 @@ namespace OmniEve
                     modifyOrder.OrderId = myOrder.OrderId;
                     modifyOrder.IsBid = myOrder.IsBid;
                     modifyOrder.Price = newPriceDbl;
-                    modifyOrder.OnModifyOrderActionFinished += ModifyBuyOrderFinished;
+                    modifyOrder.OnModifyOrderActionFinished += ModifyBuyOrderActionFinished;
                     _omniEve.AddAction(modifyOrder);
                 }
             }
@@ -425,62 +453,68 @@ namespace OmniEve
 
         private void ModifyBuyOrders()
         {
-            if (_omniEve != null)
+            foreach (DataGridViewRow row in buyingGrid.Rows)
             {
-                foreach (DataGridViewRow row in buyingGrid.Rows)
+                try
                 {
-                    try
+                    if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
                     {
-                        if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
-                        {
-                            Logging.Log("OmniEveUI:ModifyBuyOrders", "Row selected, modifying order", Logging.Debug);
+                        Logging.Log("OmniEveUI:ModifyBuyOrders", "Row selected, modifying order", Logging.Debug);
 
-                            long orderId = (long)row.Cells["Buying_OrderId"].Value;
-                            string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
-                            string marketPriceStr = (string)row.Cells["Buying_MarketPrice"].Value;
+                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
+                        string orderPriceStr = (string)row.Cells["Buying_OrderPrice"].Value;
+                        string marketPriceStr = (string)row.Cells["Buying_MarketPrice"].Value;
 
-                            ModifyBuyOrder(orderId, orderPriceStr, marketPriceStr);
-                        }
+                        ModifyBuyOrder(orderId, orderPriceStr, marketPriceStr);
                     }
-                    catch(Exception ex)
-                    {
-                        Logging.Log("OmniEveUI:ModifyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
-                    }
+                }
+                catch(Exception ex)
+                {
+                    Logging.Log("OmniEveUI:ModifyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
                 }
             }
 
             CheckState();
         }
 
-        private delegate void UpdateBuyOrderPriceDelegate(long orderId, double price, bool changeMarket);
-        private void UpdateBuyOrderPrice(long orderId, double price, bool changeMarket)
+        private void UpdateInventoryGrid_Fill(List<DirectItem> _hangerItems)
         {
-            foreach (DataGridViewRow row in buyingGrid.Rows)
+            Logging.Log("OmniEveUI:UpdateInventory", "Clearing existing inventory grid of items", Logging.White);
+            inventoryGrid.Rows.Clear();
+
+            Logging.Log("OmniEveUI:UpdateInventory", "Filling inventory grid of updated items", Logging.White);
+            foreach(DirectItem item in _hangerItems)
             {
-                if ((long)row.Cells["Buying_OrderId"].Value == orderId)
-                {
-                    row.Cells["Buying_OrderPrice"].Value = price.ToString();
-                    if (changeMarket == true)
-                        row.Cells["Buying_MarketPrice"].Value = price.ToString();
-                    
-                    row.DefaultCellStyle.BackColor = Color.White;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
-                }
+                Logging.Log("OmniEveUI:UpdateInventory", "Item Name - " + item.Name
+                          + " Quantity - " + item.Quantity
+                          + " Group - " + item.GroupName
+                          + " Volume - " + item.Volume, Logging.White);
+
+                int index = inventoryGrid.Rows.Add();
+                inventoryGrid.AllowUserToAddRows = true;
+                inventoryGrid.Rows[index].Cells["Inventory_Name"].Value = item.Name;
+                inventoryGrid.Rows[index].Cells["Inventory_TypeId"].Value = item.TypeId;
+                inventoryGrid.Rows[index].Cells["Inventory_Quantity"].Value = item.Quantity;
+                inventoryGrid.Rows[index].Cells["Inventory_Group"].Value = item.GroupName;
+                inventoryGrid.Rows[index].Cells["Inventory_Volume"].Value = item.Volume;
+                inventoryGrid.AllowUserToAddRows = false;
             }
         }
-        private void ModifyBuyOrderFinished(long orderId, double price)
+
+        private void InventoryActionFinished(List<DirectItem> _hangerItems)
         {
-            if (buyingGrid.InvokeRequired == true)
-                buyingGrid.Invoke(new UpdateBuyOrderPriceDelegate(UpdateBuyOrderPrice), orderId, price, true);
-            else
-                UpdateBuyOrderPrice(orderId, price, true);
+            inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_Fill(_hangerItems); });
+
+            MyOrders myOrders = new MyOrders();
+            myOrders.OnMyOrdersActionFinished += MyInventoryOrdersActionFinished;
+            _omniEve.AddAction(myOrders);
 
             CheckState();
         }
 
         private void EnableControls()
         {
-            refreshButton.Enabled = true;
+            myOrdersButton.Enabled = true;
             modifyButton.Enabled = true;
             autoStartButton.Enabled = true;
             autoStopButton.Enabled = true;
@@ -491,7 +525,7 @@ namespace OmniEve
         {
             if (_mode == Mode.Manual)
             {
-                refreshButton.Enabled = false;
+                myOrdersButton.Enabled = false;
                 modifyButton.Enabled = false;
                 autoStartButton.Enabled = false;
                 autoStopButton.Enabled = false;
@@ -499,7 +533,7 @@ namespace OmniEve
             }
             else if (_mode == Mode.Automatic)
             {
-                refreshButton.Enabled = false;
+                myOrdersButton.Enabled = false;
                 modifyButton.Enabled = false;
                 autoStartButton.Enabled = false;
                 autoSecondsTextBox.Enabled = false;
@@ -519,23 +553,12 @@ namespace OmniEve
         {
             if (_omniEve != null)
             {
-                /*if (sellingGrid.InvokeRequired == true)
-                    sellingGrid.Invoke(new ClearGridDelegate(ClearGrid), sellingGrid);
-                else
-                    ClearGrid(sellingGrid);
-
-                if(buyingGrid.InvokeRequired == true)
-                    buyingGrid.Invoke(new ClearGridDelegate(ClearGrid), buyingGrid);
-                else
-                    ClearGrid(buyingGrid);*/
-
                 MyOrders myOrders = new MyOrders();
-                myOrders.OnMyOrdersActionFinished += MyOrdersFinished;
+                myOrders.OnMyOrdersActionFinished += MyOrdersActionFinished;
                 _omniEve.AddAction(myOrders);
             }
         }
 
-        private delegate void ClearGridDelegate(MetroGrid grid);
         private void ClearGrid(MetroGrid grid)
         {
             grid.DataSource = null;
@@ -556,7 +579,7 @@ namespace OmniEve
             Logging.TextBoxWriter = null;
         }
 
-        private void refreshButton_Click(object sender, EventArgs e)
+        private void myOrdersButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -569,6 +592,11 @@ namespace OmniEve
             {
                 Logging.Log("OmniEveUI:RefreshOrdersButton", "Exception [" + ex + "]", Logging.Debug);
             }
+        }
+
+        private void marketInfoMyOrdersButton_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void modifyButton_Click(object sender, EventArgs e)
@@ -631,7 +659,7 @@ namespace OmniEve
 
                 MetroGrid grid = (MetroGrid)sender;
                 MarketInfo marketInfo = new MarketInfo();
-                marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
+                marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
                 marketInfo.TypeId = int.Parse(grid.CurrentRow.Cells["Selling_TypeId"].Value.ToString());
                 _omniEve.AddAction(marketInfo);
 
@@ -647,7 +675,7 @@ namespace OmniEve
 
                 MetroGrid grid = (MetroGrid)sender;
                 MarketInfo marketInfo = new MarketInfo();
-                marketInfo.OnMarketInfoActionFinished += MarketInfoFinished;
+                marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
                 marketInfo.TypeId = int.Parse(grid.CurrentRow.Cells["Buying_TypeId"].Value.ToString());
                 _omniEve.AddAction(marketInfo);
 
@@ -655,21 +683,19 @@ namespace OmniEve
             }
         }
 
-        private void refreshInventoryButton_Click(object sender, EventArgs e)
+        private void refreshItemHangerButton_Click(object sender, EventArgs e)
         {
             if (_mode == Mode.Idle)
             {
-                DirectContainer itemHanger = Cache.Instance.DirectEve.GetItemHangar();
-                foreach (DirectItem item in itemHanger.Items)
-                {
-                    inventoryGrid.AllowUserToAddRows = true;
-                    int index = inventoryGrid.Rows.Add();
-                    inventoryGrid.Rows[index].Cells["Inventory_Name"].Value = item.Name;
-                    inventoryGrid.Rows[index].Cells["Inventory_Quantity"].Value = item.Quantity;
-                    inventoryGrid.Rows[index].Cells["Inventory_Group"].Value = item.GroupName;
-                    inventoryGrid.Rows[index].Cells["Inventory_Volume"].Value = item.Volume;
-                    inventoryGrid.AllowUserToAddRows = false;
-                }
+                _mode = Mode.Manual;
+
+                Logging.Log("OmniEveUI:RefreshInventoryButton", "Adding inventory action", Logging.Debug);
+
+                ItemHanger itemHanger = new ItemHanger();
+                itemHanger.OnItemHangerActionFinished += InventoryActionFinished;
+                _omniEve.AddAction(itemHanger);
+
+                CheckState();
             }
         }
     }

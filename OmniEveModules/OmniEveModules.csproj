@@ -55,7 +55,7 @@
   <ItemGroup>
     <Compile Include="Actions\Action.cs" />
     <Compile Include="Actions\Buy.cs" />
-    <Compile Include="Actions\Inventory.cs" />
+    <Compile Include="Actions\ItemHanger.cs" />
     <Compile Include="Actions\MyOrders.cs" />
     <Compile Include="Actions\MarketInfo.cs" />
     <Compile Include="Actions\Sell.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Lookup\Time.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\BuyState.cs" />
-    <Compile Include="States\InventoryState.cs" />
+    <Compile Include="States\ItemHangerState.cs" />
     <Compile Include="States\MyOrdersState.cs" />
     <Compile Include="States\OmniEveState.cs" />
     <Compile Include="States\MarketInfoState.cs" />

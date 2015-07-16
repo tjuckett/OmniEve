@@ -47,13 +47,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OmniEveUI));
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.ordersPage = new MetroFramework.Controls.MetroTabPage();
+            this.marketInfoMyOrdersButton = new MetroFramework.Controls.MetroButton();
             this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
             this.autoStopButton = new MetroFramework.Controls.MetroButton();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.autoStartButton = new MetroFramework.Controls.MetroButton();
             this.autoSecondsTextBox = new MetroFramework.Controls.MetroTextBox();
             this.modifyButton = new MetroFramework.Controls.MetroButton();
-            this.refreshButton = new MetroFramework.Controls.MetroButton();
+            this.myOrdersButton = new MetroFramework.Controls.MetroButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.metroPanel2 = new MetroFramework.Controls.MetroPanel();
             this.sellingGrid = new MetroFramework.Controls.MetroGrid();
@@ -84,13 +85,13 @@
             this.Buying_Range = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_MinVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inventoryPage = new MetroFramework.Controls.MetroTabPage();
-            this.metroPanel6 = new MetroFramework.Controls.MetroPanel();
-            this.refreshInventoryButton = new MetroFramework.Controls.MetroButton();
             this.inventoryGrid = new MetroFramework.Controls.MetroGrid();
             this.Inventory_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Inventory_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Inventory_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Inventory_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Inventory_Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.refreshItemHangerButton = new MetroFramework.Controls.MetroButton();
             this.logginTabPage = new MetroFramework.Controls.MetroTabPage();
             this.logTextBox = new MetroFramework.Controls.MetroTextBox();
             this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
@@ -104,7 +105,6 @@
             this.metroPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).BeginInit();
             this.inventoryPage.SuspendLayout();
-            this.metroPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).BeginInit();
             this.logginTabPage.SuspendLayout();
             this.SuspendLayout();
@@ -118,20 +118,21 @@
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 1;
+            this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(1159, 578);
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.UseSelectable = true;
             // 
             // ordersPage
             // 
+            this.ordersPage.Controls.Add(this.marketInfoMyOrdersButton);
             this.ordersPage.Controls.Add(this.metroLabel2);
             this.ordersPage.Controls.Add(this.autoStopButton);
             this.ordersPage.Controls.Add(this.metroLabel1);
             this.ordersPage.Controls.Add(this.autoStartButton);
             this.ordersPage.Controls.Add(this.autoSecondsTextBox);
             this.ordersPage.Controls.Add(this.modifyButton);
-            this.ordersPage.Controls.Add(this.refreshButton);
+            this.ordersPage.Controls.Add(this.myOrdersButton);
             this.ordersPage.Controls.Add(this.tableLayoutPanel1);
             this.ordersPage.HorizontalScrollbarBarColor = true;
             this.ordersPage.HorizontalScrollbarHighlightOnWheel = false;
@@ -145,11 +146,22 @@
             this.ordersPage.VerticalScrollbarHighlightOnWheel = false;
             this.ordersPage.VerticalScrollbarSize = 0;
             // 
+            // marketInfoMyOrdersButton
+            // 
+            this.marketInfoMyOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.marketInfoMyOrdersButton.Location = new System.Drawing.Point(940, 513);
+            this.marketInfoMyOrdersButton.Name = "marketInfoMyOrdersButton";
+            this.marketInfoMyOrdersButton.Size = new System.Drawing.Size(109, 23);
+            this.marketInfoMyOrdersButton.TabIndex = 11;
+            this.marketInfoMyOrdersButton.Text = "Market Info";
+            this.marketInfoMyOrdersButton.UseSelectable = true;
+            this.marketInfoMyOrdersButton.Click += new System.EventHandler(this.marketInfoMyOrdersButton_Click);
+            // 
             // metroLabel2
             // 
             this.metroLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(882, 513);
+            this.metroLabel2.Location = new System.Drawing.Point(767, 513);
             this.metroLabel2.Name = "metroLabel2";
             this.metroLabel2.Size = new System.Drawing.Size(52, 19);
             this.metroLabel2.TabIndex = 10;
@@ -215,16 +227,16 @@
             this.modifyButton.UseSelectable = true;
             this.modifyButton.Click += new System.EventHandler(this.modifyButton_Click);
             // 
-            // refreshButton
+            // myOrdersButton
             // 
-            this.refreshButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.refreshButton.Location = new System.Drawing.Point(940, 513);
-            this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(109, 23);
-            this.refreshButton.TabIndex = 4;
-            this.refreshButton.Text = "Refresh";
-            this.refreshButton.UseSelectable = true;
-            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            this.myOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.myOrdersButton.Location = new System.Drawing.Point(825, 513);
+            this.myOrdersButton.Name = "myOrdersButton";
+            this.myOrdersButton.Size = new System.Drawing.Size(109, 23);
+            this.myOrdersButton.TabIndex = 4;
+            this.myOrdersButton.Text = "My Orders";
+            this.myOrdersButton.UseSelectable = true;
+            this.myOrdersButton.Click += new System.EventHandler(this.myOrdersButton_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -594,7 +606,8 @@
             // 
             // inventoryPage
             // 
-            this.inventoryPage.Controls.Add(this.metroPanel6);
+            this.inventoryPage.Controls.Add(this.inventoryGrid);
+            this.inventoryPage.Controls.Add(this.refreshItemHangerButton);
             this.inventoryPage.HorizontalScrollbarBarColor = true;
             this.inventoryPage.HorizontalScrollbarHighlightOnWheel = false;
             this.inventoryPage.HorizontalScrollbarSize = 0;
@@ -606,34 +619,6 @@
             this.inventoryPage.VerticalScrollbarBarColor = true;
             this.inventoryPage.VerticalScrollbarHighlightOnWheel = false;
             this.inventoryPage.VerticalScrollbarSize = 0;
-            // 
-            // metroPanel6
-            // 
-            this.metroPanel6.Controls.Add(this.refreshInventoryButton);
-            this.metroPanel6.Controls.Add(this.inventoryGrid);
-            this.metroPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.metroPanel6.HorizontalScrollbarBarColor = false;
-            this.metroPanel6.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroPanel6.HorizontalScrollbarSize = 0;
-            this.metroPanel6.Location = new System.Drawing.Point(0, 0);
-            this.metroPanel6.Margin = new System.Windows.Forms.Padding(0);
-            this.metroPanel6.Name = "metroPanel6";
-            this.metroPanel6.Size = new System.Drawing.Size(1151, 536);
-            this.metroPanel6.TabIndex = 3;
-            this.metroPanel6.VerticalScrollbarBarColor = false;
-            this.metroPanel6.VerticalScrollbarHighlightOnWheel = false;
-            this.metroPanel6.VerticalScrollbarSize = 0;
-            // 
-            // refreshInventoryButton
-            // 
-            this.refreshInventoryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.refreshInventoryButton.Location = new System.Drawing.Point(1039, 510);
-            this.refreshInventoryButton.Name = "refreshInventoryButton";
-            this.refreshInventoryButton.Size = new System.Drawing.Size(109, 23);
-            this.refreshInventoryButton.TabIndex = 5;
-            this.refreshInventoryButton.Text = "Refresh";
-            this.refreshInventoryButton.UseSelectable = true;
-            this.refreshInventoryButton.Click += new System.EventHandler(this.refreshInventoryButton_Click);
             // 
             // inventoryGrid
             // 
@@ -659,6 +644,7 @@
             this.inventoryGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.inventoryGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Inventory_Name,
+            this.Inventory_TypeId,
             this.Inventory_Quantity,
             this.Inventory_Group,
             this.Inventory_Volume});
@@ -695,6 +681,12 @@
             this.Inventory_Name.HeaderText = "Name";
             this.Inventory_Name.Name = "Inventory_Name";
             // 
+            // Inventory_TypeId
+            // 
+            this.Inventory_TypeId.HeaderText = "TypeId";
+            this.Inventory_TypeId.Name = "Inventory_TypeId";
+            this.Inventory_TypeId.Visible = false;
+            // 
             // Inventory_Quantity
             // 
             this.Inventory_Quantity.HeaderText = "Quantity";
@@ -709,6 +701,17 @@
             // 
             this.Inventory_Volume.HeaderText = "Volume";
             this.Inventory_Volume.Name = "Inventory_Volume";
+            // 
+            // refreshItemHangerButton
+            // 
+            this.refreshItemHangerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refreshItemHangerButton.Location = new System.Drawing.Point(1039, 510);
+            this.refreshItemHangerButton.Name = "refreshItemHangerButton";
+            this.refreshItemHangerButton.Size = new System.Drawing.Size(109, 23);
+            this.refreshItemHangerButton.TabIndex = 5;
+            this.refreshItemHangerButton.Text = "Refresh";
+            this.refreshItemHangerButton.UseSelectable = true;
+            this.refreshItemHangerButton.Click += new System.EventHandler(this.refreshItemHangerButton_Click);
             // 
             // logginTabPage
             // 
@@ -777,7 +780,6 @@
             this.metroPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).EndInit();
             this.inventoryPage.ResumeLayout(false);
-            this.metroPanel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).EndInit();
             this.logginTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -795,7 +797,7 @@
         private MetroFramework.Controls.MetroGrid sellingGrid;
         private MetroFramework.Controls.MetroButton modifyButton;
         private MetroFramework.Controls.MetroTabPage marketTabPage;
-        private MetroFramework.Controls.MetroButton refreshButton;
+        private MetroFramework.Controls.MetroButton myOrdersButton;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Buying_Select;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_TypeId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_OrderId;
@@ -828,13 +830,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Station;
         private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
         private MetroFramework.Controls.MetroTabPage inventoryPage;
-        private MetroFramework.Controls.MetroButton refreshInventoryButton;
+        private MetroFramework.Controls.MetroButton refreshItemHangerButton;
         private MetroFramework.Controls.MetroGrid inventoryGrid;
-        private MetroFramework.Controls.MetroPanel metroPanel6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_TypeId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Quantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Group;
         private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Volume;
+        private MetroFramework.Controls.MetroButton marketInfoMyOrdersButton;
 
     }
 }
