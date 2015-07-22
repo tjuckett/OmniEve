@@ -81,7 +81,7 @@ namespace OmniEve
             CheckState();
         }
 
-        private void MyItemHangerOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        private void MyInventoryOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
         {
             inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_MyOrders(mySellOrders, myBuyOrders); });
 
@@ -480,7 +480,7 @@ namespace OmniEve
             inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_Fill(_hangerItems); });
 
             MyOrders myOrders = new MyOrders();
-            myOrders.OnMyOrdersActionFinished += MyItemHangerOrdersActionFinished;
+            myOrders.OnMyOrdersActionFinished += MyInventoryOrdersActionFinished;
             _omniEve.AddAction(myOrders);
 
             CheckState();
@@ -490,6 +490,7 @@ namespace OmniEve
         {
             myOrdersButton.Enabled = true;
             modifyButton.Enabled = true;
+            marketInfoMyOrdersButton.Enabled = true;
             autoStartButton.Enabled = true;
             autoStopButton.Enabled = true;
             autoSecondsTextBox.Enabled = true;
@@ -497,30 +498,21 @@ namespace OmniEve
 
         private void DisableControls()
         {
+            myOrdersButton.Enabled = false;
+            modifyButton.Enabled = false;
+            marketInfoMyOrdersButton.Enabled = false;
+            autoStartButton.Enabled = false;
+            autoSecondsTextBox.Enabled = false;
+            
             if (_mode == Mode.Manual)
-            {
-                myOrdersButton.Enabled = false;
-                modifyButton.Enabled = false;
-                autoStartButton.Enabled = false;
                 autoStopButton.Enabled = false;
-                autoSecondsTextBox.Enabled = false;
-            }
-            else if (_mode == Mode.Automatic)
-            {
-                myOrdersButton.Enabled = false;
-                modifyButton.Enabled = false;
-                autoStartButton.Enabled = false;
-                autoSecondsTextBox.Enabled = false;
-            }
         }
 
         private void AutoTimerElapsed(Object source, ElapsedEventArgs e)
         {
             // Only refresh orders when the action queue is empty, otherwise wait till the next time or lengthen the time between events
             if(_omniEve != null && _omniEve.IsActionQueueEmpty() == true)
-            {
                 RefreshOrders();
-            }
         }
 
         private void RefreshOrders()
@@ -570,33 +562,39 @@ namespace OmniEve
 
         private void marketInfoMyOrdersButton_Click(object sender, EventArgs e)
         {
-            List<DirectOrder> mySellOrders = Cache.Instance.MySellOrders;
-            List<DirectOrder> myBuyOrders = Cache.Instance.MyBuyOrders;
-
-            // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
-            // an item twice if we have a buy and sell order, just include it once.
-            List<int> marketInfoTypeIds = new List<int>();
-
-            foreach (DirectOrder order in mySellOrders)
-                marketInfoTypeIds.Add(order.TypeId);
-
-            foreach (DirectOrder order in myBuyOrders)
+            try
             {
-                // If the type id isn't already in the list of ids to get market info for then add it
-                if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
+                _mode = Mode.Manual;
+
+                // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
+                // an item twice if we have a buy and sell order, just include it once.
+                List<int> marketInfoTypeIds = new List<int>();
+
+                foreach (DirectOrder order in Cache.Instance.MySellOrders)
                     marketInfoTypeIds.Add(order.TypeId);
-            }
 
-            // Add an action for each sell order and get the updated market values
-            if (_omniEve != null)
-            {
-                foreach (int typeId in marketInfoTypeIds)
+                foreach (DirectOrder order in Cache.Instance.MyBuyOrders)
                 {
-                    MarketInfo marketInfo = new MarketInfo();
-                    marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
-                    marketInfo.TypeId = typeId;
-                    _omniEve.AddAction(marketInfo);
+                    // If the type id isn't already in the list of ids to get market info for then add it
+                    if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
+                        marketInfoTypeIds.Add(order.TypeId);
                 }
+
+                // Add an action for each sell order and get the updated market values
+                if (_omniEve != null)
+                {
+                    foreach (int typeId in marketInfoTypeIds)
+                    {
+                        MarketInfo marketInfo = new MarketInfo();
+                        marketInfo.OnMarketInfoActionFinished += MarketInfoActionFinished;
+                        marketInfo.TypeId = typeId;
+                        _omniEve.AddAction(marketInfo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("OmniEveUI:MarketInfoMyOrders", "Exception [" + ex + "]", Logging.Debug);
             }
         }
 

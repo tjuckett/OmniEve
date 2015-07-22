@@ -116,16 +116,23 @@ namespace OmniEveModules.Actions
                         _lastAction = DateTime.UtcNow;
                         
                         List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
-                        DirectOrder order = orders.First(o => o.OrderId == OrderId);
+                        DirectOrder order = orders.FirstOrDefault(o => o.OrderId == OrderId);
 
-                        Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
+                        if(order != null)
+                        {
+                            Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
 
-                        bool success = order.ModifyOrder(Price);
+                            bool success = order.ModifyOrder(Price);
 
-                        if(success)
-                            Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
+                            if (success)
+                                Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
+                            else
+                                Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
+                        }
                         else
-                            Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
+                        {
+                            Logging.Log("ModifyOrder:Process", "Order no longer exists, exiting modify action", Logging.White);
+                        }
 
                         _state = ModifyOrderState.Done;
                     }
