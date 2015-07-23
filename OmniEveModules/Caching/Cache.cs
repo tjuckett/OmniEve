@@ -26,7 +26,7 @@ namespace OmniEveModules.Caching
         private List<DirectOrder> _myBuyOrders { get; set; }
         private List<DirectOrder> _mySellOrders { get; set; }
         
-        private Dictionary<int, MarketItemInfo> _marketItemInfo = new Dictionary<int, MarketItemInfo>();
+        private Dictionary<int, MarketItem> _marketItems = new Dictionary<int, MarketItem>();
         
         public DirectEve DirectEve { get; set; }
 
@@ -151,11 +151,42 @@ namespace OmniEveModules.Caching
             }
         }
 
-        public MarketItemInfo GetMarketItemInfo(int typeId)
+        public Dictionary<int, MarketItem> MarketItems
+        {
+            get
+            {
+                try
+                {
+                    return _marketItems;
+                }
+                catch (Exception ex)
+                {
+                    Logging.Log("Cache:MarketItems", "Exception [" + ex + "]", Logging.Debug);
+                    return null;
+                }
+            }
+            set
+            {
+                try
+                {
+                    _marketItems = value;
+                }
+                catch (Exception ex)
+                {
+                    Logging.Log("Cache:MySellOrders", "Exception [" + ex + "]", Logging.Debug);
+                }
+            }
+        }
+
+        public MarketItem GetMarketItem(int typeId)
         {
             try
             {
-                return _marketItemInfo[typeId];
+                MarketItem marketItem;
+                if (_marketItems.TryGetValue(typeId, out marketItem))
+                    return marketItem;
+
+                return null;
             }
             catch (Exception ex)
             {
@@ -163,11 +194,11 @@ namespace OmniEveModules.Caching
                 return null;
             }
         }
-        public void SetMarketItemInfo(int typeId, MarketItemInfo info)
+        public void SetMarketItem(int typeId, MarketItem info)
         {
             try
             {
-                _marketItemInfo[typeId] = info;
+                _marketItems[typeId] = info;
             }
             catch (Exception ex)
             {

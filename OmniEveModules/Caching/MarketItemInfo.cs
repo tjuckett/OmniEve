@@ -8,7 +8,7 @@ namespace OmniEveModules.Caching
 {
     using DirectEve;
 
-    public class MarketItemInfo
+    public class MarketItem
     {
         public int TypeId { get; set; }
         public List<DirectOrder> SellOrders { get; set; }
