@@ -12,16 +12,16 @@ namespace OmniEve
     using OmniEveModules.Lookup;
     using OmniEveModules.States;
     using OmniEveModules.Status;
-    using OmniEveModules.Actions;
+    using OmniEveModules.Scripts;
 
     public class OmniEve : IDisposable
     {
         private DateTime _lastPulse;
         private OmniEveState _state = OmniEveState.Idle;
         private object _listLock = new object();
-        private List<IAction> _actions = new List<IAction>();
-        private IAction _currentAction = null;
-        private int _currentActionIndex = 0;
+        private List<IScript> _scripts = new List<IScript>();
+        private IScript _currentScript = null;
+        private int _currentScriptIndex = 0;
         private static DateTime _nextOmniEveAction = DateTime.UtcNow.AddHours(-1);
 
         public bool Cleanup { get; set; }
@@ -51,11 +51,11 @@ namespace OmniEve
             }
         }
 
-        public void AddAction(IAction action)
+        public void AddScript(IScript script)
         {
             lock(_listLock)
             {
-                _actions.Add(action);
+                _scripts.Add(script);
             }
         }
 
@@ -63,14 +63,14 @@ namespace OmniEve
         {
             lock (_listLock)
             {
-                _actions.Clear();
-                _currentActionIndex = 0;
+                _scripts.Clear();
+                _currentScriptIndex = 0;
             }
         }
 
         public bool IsActionQueueEmpty()
         {
-            return _actions.Count() == _currentActionIndex;
+            return _scripts.Count() == _currentScriptIndex;
         }
 
         public bool OnFrameValidate()
@@ -152,36 +152,38 @@ namespace OmniEve
                         Cache.Instance.DirectEve.OnFrame -= EVEOnFrame;
                         break;
                     case OmniEveState.NextAction:
-                        if (_currentAction == null && _actions.Count > 0 && _currentActionIndex < _actions.Count())
+                        Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Next Action State", Logging.Teal);
+
+                        if (_currentScript == null && _scripts.Count > 0 && _currentScriptIndex < _scripts.Count)
                         {
                             Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Popping next action off the queue", Logging.Teal);
                             
-                            _currentAction = _actions[_currentActionIndex];
-                            _currentActionIndex++;
+                            _currentScript = _scripts[_currentScriptIndex];
+                            _currentScriptIndex++;
                             
                             _state = OmniEveState.InitAction;
                         }
 
                         break;
                     case OmniEveState.InitAction:
-                        if (_currentAction != null)
+                        if (_currentScript != null)
                         {
                             Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Initializing current action", Logging.Teal);
-                            _currentAction.Initialize();
+                            _currentScript.Initialize();
                             _state = OmniEveState.ProcessAction;
                         }
                         break;
                     case OmniEveState.ProcessAction:
-                        if(_currentAction != null)
+                        if(_currentScript != null)
                         {
-                            _currentAction.Process();
+                            _currentScript.Process();
                         
                             // If the current action is now done we can stop processing and go back to the idle state
-                            if (_currentAction.IsDone())
+                            if (_currentScript.IsDone())
                             {
                                 Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Current action is done, going back to idle state", Logging.Teal);
                                 _state = OmniEveState.Idle;
-                                _currentAction = null;
+                                _currentScript = null;
                             }
                         }
                         break;

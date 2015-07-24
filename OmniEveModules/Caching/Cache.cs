@@ -58,7 +58,7 @@ namespace OmniEveModules.Caching
             }
         }*/
 
-        public DirectContainer ItemHangar
+        /*public DirectContainer ItemHangar
         {
             get
             {
@@ -93,7 +93,7 @@ namespace OmniEveModules.Caching
             }
 
             set { _itemHangar = value; }
-        }
+        }*/
 
         public List<DirectOrder> MyBuyOrders
         {

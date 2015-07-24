@@ -8,6 +8,8 @@ namespace OmniEveModules.Scripts
 {
     public interface IScript
     {
-        List<IAction> CreateActionList()
+        void Initialize();
+        void Process();
+        bool IsDone();
     }
 }
