@@ -94,3 +94,4 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjecto
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csproj.GenerateResource.Cache
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.exe
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csprojResolveAssemblyReference.cache

@@ -313,26 +313,29 @@ namespace OmniEve
         {
             List<DirectOrder> sellOrders = new List<DirectOrder>();
 
-            foreach (DataGridViewRow row in sellingGrid.Rows)
-            {
-                try
+            sellingGrid.Invoke((MethodInvoker)delegate 
+            { 
+                foreach (DataGridViewRow row in sellingGrid.Rows)
                 {
-                    if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
+                    try
                     {
-                        long orderId = (long)row.Cells["Selling_OrderId"].Value;
-                        DirectOrder order = Cache.Instance.MySellOrders.FirstOrDefault(o => o.OrderId == orderId);
-                        if (order != null)
+                        if (Convert.ToBoolean(row.Cells["Selling_Select"].Value) == true)
                         {
-                            Logging.Log("OmniEveUI:CreateModifySellOrdersList", "Adding sell order to list of orders that need to be modified OrderId - " + orderId, Logging.Debug);
-                            sellOrders.Add(order);
+                            long orderId = (long)row.Cells["Selling_OrderId"].Value;
+                            DirectOrder order = Cache.Instance.MySellOrders.FirstOrDefault(o => o.OrderId == orderId);
+                            if (order != null)
+                            {
+                                Logging.Log("OmniEveUI:CreateModifySellOrdersList", "Adding sell order to list of orders that need to be modified OrderId - " + orderId, Logging.Debug);
+                                sellOrders.Add(order);
+                            }
                         }
                     }
+                    catch(Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:CreateModifySellOrdersList", "Exception [" + ex + "]", Logging.Debug);
+                    }
                 }
-                catch(Exception ex)
-                {
-                    Logging.Log("OmniEveUI:CreateModifySellOrdersList", "Exception [" + ex + "]", Logging.Debug);
-                }
-            }
+            });
 
             return sellOrders;
         }
@@ -341,26 +344,29 @@ namespace OmniEve
         {
             List<DirectOrder> buyOrders = new List<DirectOrder>();
 
-            foreach (DataGridViewRow row in buyingGrid.Rows)
+            buyingGrid.Invoke((MethodInvoker)delegate 
             {
-                try
+                foreach (DataGridViewRow row in buyingGrid.Rows)
                 {
-                    if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
+                    try
                     {
-                        long orderId = (long)row.Cells["Buying_OrderId"].Value;
-                        DirectOrder order = Cache.Instance.MyBuyOrders.FirstOrDefault(o => o.OrderId == orderId);
-                        if (order != null)
+                        if (Convert.ToBoolean(row.Cells["Buying_Select"].Value) == true)
                         {
-                            buyOrders.Add(order);
-                            Logging.Log("OmniEveUI:CreateModifyBuyOrdersList", "Adding buy order to list of orders that need to be modified OrderId - " + orderId, Logging.Debug);
+                            long orderId = (long)row.Cells["Buying_OrderId"].Value;
+                            DirectOrder order = Cache.Instance.MyBuyOrders.FirstOrDefault(o => o.OrderId == orderId);
+                            if (order != null)
+                            {
+                                buyOrders.Add(order);
+                                Logging.Log("OmniEveUI:CreateModifyBuyOrdersList", "Adding buy order to list of orders that need to be modified OrderId - " + orderId, Logging.Debug);
+                            }
                         }
                     }
+                    catch(Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:ModifyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
+                    }
                 }
-                catch(Exception ex)
-                {
-                    Logging.Log("OmniEveUI:ModifyBuyOrders", "Exception [" + ex + "]", Logging.Debug);
-                }
-            }
+            });
 
             return buyOrders;
         }
@@ -502,13 +508,9 @@ namespace OmniEve
                 // Add an action for each sell order and get the updated market values
                 if (_omniEve != null)
                 {
-                    foreach (int typeId in marketInfoTypeIds)
-                    {
-                        MarketInfo marketInfo = new MarketInfo();
-                        marketInfo.OnMarketInfoActionFinished += OnMarketItemFinished;
-                        marketInfo.TypeId = typeId;
-                        _omniEve.AddScript(marketInfo);
-                    }
+                    MarketInfoForList marketInfoForList = new MarketInfoForList(marketInfoTypeIds);
+                    marketInfoForList.OnMarketInfoFinished += OnMarketItemFinished;
+                    _omniEve.AddScript(marketInfoForList);
                 }
             }
             catch (Exception ex)
@@ -576,9 +578,8 @@ namespace OmniEve
                 _mode = Mode.Manual;
 
                 MetroGrid grid = (MetroGrid)sender;
-                MarketInfo marketInfo = new MarketInfo();
-                marketInfo.OnMarketInfoActionFinished += OnMarketItemFinished;
-                marketInfo.TypeId = int.Parse(grid.CurrentRow.Cells["Selling_TypeId"].Value.ToString());
+                MarketInfo marketInfo = new MarketInfo(int.Parse(grid.CurrentRow.Cells["Selling_TypeId"].Value.ToString()));
+                marketInfo.OnMarketInfoFinished += OnMarketItemFinished;
                 _omniEve.AddScript(marketInfo);
 
                 CheckState();
@@ -592,9 +593,8 @@ namespace OmniEve
                 _mode = Mode.Manual;
 
                 MetroGrid grid = (MetroGrid)sender;
-                MarketInfo marketInfo = new MarketInfo();
-                marketInfo.OnMarketInfoActionFinished += OnMarketItemFinished;
-                marketInfo.TypeId = int.Parse(grid.CurrentRow.Cells["Buying_TypeId"].Value.ToString());
+                MarketInfo marketInfo = new MarketInfo(int.Parse(grid.CurrentRow.Cells["Buying_TypeId"].Value.ToString()));
+                marketInfo.OnMarketInfoFinished += OnMarketItemFinished;
                 _omniEve.AddScript(marketInfo);
 
                 CheckState();

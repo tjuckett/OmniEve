@@ -15,16 +15,20 @@ namespace OmniEveModules.Scripts
 
     public class MarketInfo : IScript
     {
-        public delegate void MarketInfoActionFinished(MarketItem marketItem);
-        public event MarketInfoActionFinished OnMarketInfoActionFinished;
+        public delegate void MarketInfoFinished(MarketItem marketItem);
+        public event MarketInfoFinished OnMarketInfoFinished;
 
         public int TypeId { get; set; }
 
         private DateTime _lastAction;
         private MarketInfoState _state = MarketInfoState.Idle;
         private bool _done = false;
-
         private MarketItem _marketItem;
+
+        public MarketInfo(int typeId)
+        {
+            TypeId = typeId;
+        }
 
         public void Initialize()
         {
@@ -51,8 +55,8 @@ namespace OmniEveModules.Scripts
                 case MarketInfoState.Idle:
                     break;
                 case MarketInfoState.Done:
-                    if (OnMarketInfoActionFinished != null)
-                        OnMarketInfoActionFinished(_marketItem);
+                    if (OnMarketInfoFinished != null)
+                        OnMarketInfoFinished(_marketItem);
 
                     _done = true;
                     break;
@@ -141,6 +145,8 @@ namespace OmniEveModules.Scripts
                             _marketItem.SellOrders = marketWindow.SellOrders;
                             _marketItem.BuyOrders = marketWindow.BuyOrders;
                             _marketItem.TypeId = TypeId;
+
+                            Cache.Instance.SetMarketItem(TypeId, _marketItem);
 
                             _state = MarketInfoState.Done;
                         }

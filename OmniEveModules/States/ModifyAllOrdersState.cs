@@ -6,6 +6,6 @@
         Done,
         Begin,
         PopNext,
-        Process,
+        Process
     }
 }

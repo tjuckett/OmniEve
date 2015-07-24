@@ -152,8 +152,6 @@ namespace OmniEve
                         Cache.Instance.DirectEve.OnFrame -= EVEOnFrame;
                         break;
                     case OmniEveState.NextAction:
-                        Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Next Action State", Logging.Teal);
-
                         if (_currentScript == null && _scripts.Count > 0 && _currentScriptIndex < _scripts.Count)
                         {
                             Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Popping next action off the queue", Logging.Teal);

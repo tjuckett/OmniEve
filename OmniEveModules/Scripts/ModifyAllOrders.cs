@@ -65,13 +65,15 @@ namespace OmniEveModules.Scripts
                     break;
 
                 case ModifyAllOrdersState.Begin:
-                    Logging.Log("ModifyAllOrders:Process", "Creating modify order scripts for sell and buy orders", Logging.White);
-
                     // Create all the modify orders
                     foreach(DirectOrder order in SellOrders)
                     {
                         MarketItem marketItem = Cache.Instance.GetMarketItem(order.TypeId);
-                        DirectOrder lowestOrder = marketItem.SellOrders.FirstOrDefault();
+
+                        if(marketItem == null)
+                            continue;
+
+                        DirectOrder lowestOrder = marketItem.SellOrders.OrderBy(o => o.Price).FirstOrDefault(o => o.StationId == order.StationId);
 
                         // Don't modify if there isn't a lowest order and don't modify if the lowest order is our own
                         if(lowestOrder != null && lowestOrder.OrderId != order.OrderId && lowestOrder.Price <= order.Price)
@@ -79,7 +81,9 @@ namespace OmniEveModules.Scripts
                             double price = double.Parse((decimal.Parse(lowestOrder.Price.ToString()) - 0.01m).ToString());
 
                             Logging.Log("ModifyAllOrders:Process", "Creating sell modify order script for Order Id - " + order.OrderId + " Price - " + price, Logging.White);
-                            _modifyOrders.Add(new ModifyOrder(order.OrderId, false, price));
+                            ModifyOrder modifyOrder = new ModifyOrder(order.OrderId, false, price);
+                            modifyOrder.OnModifyOrderFinished += ModifySellOrderFinished;
+                            _modifyOrders.Add(modifyOrder);
                         }
                     }
 
@@ -87,7 +91,11 @@ namespace OmniEveModules.Scripts
                     foreach (DirectOrder order in BuyOrders)
                     {
                         MarketItem marketItem = Cache.Instance.GetMarketItem(order.TypeId);
-                        DirectOrder highestOrder = marketItem.BuyOrders.FirstOrDefault();
+
+                        if (marketItem == null)
+                            continue;
+
+                        DirectOrder highestOrder = marketItem.BuyOrders.OrderByDescending(o => o.Price).FirstOrDefault(o => o.StationId == order.StationId);
 
                         // Don't modify if there isn't a lowest order and don't modify if the lowest order is our own
                         if (highestOrder != null && highestOrder.OrderId != order.OrderId && highestOrder.Price >= order.Price)
@@ -95,7 +103,9 @@ namespace OmniEveModules.Scripts
                             double price = double.Parse((decimal.Parse(highestOrder.Price.ToString()) + 0.01m).ToString());
 
                             Logging.Log("ModifyAllOrders:Process", "Creating buy modify order script for Order Id - " + order.OrderId + " Price - " + price, Logging.White);
-                            _modifyOrders.Add(new ModifyOrder(order.OrderId, true, price));
+                            ModifyOrder modifyOrder = new ModifyOrder(order.OrderId, true, price);
+                            modifyOrder.OnModifyOrderFinished += ModifyBuyOrderFinished;
+                            _modifyOrders.Add(modifyOrder);
                         }
                     }
 
@@ -105,9 +115,11 @@ namespace OmniEveModules.Scripts
                 case ModifyAllOrdersState.PopNext:
 
                     _currentModify = _modifyOrders.FirstOrDefault();
-
+                    
                     if (_currentModify != null)
                     {
+                        _modifyOrders.Remove(_currentModify);
+
                         Logging.Log("ModifyAllOrders:Process", "Popping next order script to run", Logging.White);
 
                         _currentModify.Initialize();
@@ -130,19 +142,22 @@ namespace OmniEveModules.Scripts
                         if (_currentModify.IsDone() == true)
                         {
                             Logging.Log("ModifyAllOrders:Process", "Modify script is done, executing callback and popping next", Logging.White);
-
-                            // Call the callback for each order modified
-                            if(_currentModify.IsBid == false)
-                                OnModifySellOrderFinished(_currentModify.OrderId, _currentModify.Price);
-                            else
-                                OnModifyBuyOrderFinished(_currentModify.OrderId, _currentModify.Price);
-
                             _state = ModifyAllOrdersState.PopNext;
                         }
                     }
 
                     break;
             }
+        }
+
+        private void ModifySellOrderFinished(long orderId, double price)
+        {
+            OnModifySellOrderFinished(orderId, price);
+        }
+
+        private void ModifyBuyOrderFinished(long orderId, double price)
+        {
+            OnModifyBuyOrderFinished(orderId, price);
         }
     }
 }
