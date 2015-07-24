@@ -25,7 +25,7 @@ namespace OmniEveModules.Scripts
         private MarketInfoForListState _state = MarketInfoForListState.Idle;
         private bool _done = false;
 
-        private List<MarketInfo> _marketInfos;
+        private List<MarketInfo> _marketInfos = new List<MarketInfo>();
         private MarketInfo _currentMarketInfo = null;
 
         public MarketInfoForList(List<int> typeIds)
@@ -50,8 +50,6 @@ namespace OmniEveModules.Scripts
 
             if (Status.Instance.InSpace)
                 return;
-
-            DirectMarketWindow marketWindow = Cache.Instance.DirectEve.Windows.OfType<DirectMarketWindow>().FirstOrDefault();
 
             switch (_state)
             {
