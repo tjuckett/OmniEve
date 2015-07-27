@@ -15,22 +15,34 @@ namespace OmniEveModules.Scripts
 
     public class Buy : IScript
     {
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            OpenMarket,
+            LoadItem,
+            BuyItem,
+            WaitForItems,
+            CreateOrder
+        }
+
         public int Item { get; set; }
         public int Unit { get; set; }
         public bool UseOrders { get; set; }
 
         private DateTime _lastAction;
         private bool _returnBuy;
-        private BuyState _state = BuyState.Idle;
+        private State _state = State.Idle;
 
         public void Initialize()
         {
-            _state = BuyState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
         {
-            return _state == BuyState.Done;
+            return _state == State.Done;
         }
 
         public void Process()
@@ -45,19 +57,19 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case BuyState.Idle:
-                case BuyState.Done:
+                case State.Idle:
+                case State.Done:
                     break;
 
-                case BuyState.Begin:
+                case State.Begin:
 
                     // Close the market window if there is one
                     if (marketWindow != null)
                         marketWindow.Close();
-                    _state = BuyState.OpenMarket;
+                    _state = State.OpenMarket;
                     break;
 
-                case BuyState.OpenMarket:
+                case State.OpenMarket:
                     
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
                         break;
@@ -74,11 +86,11 @@ namespace OmniEveModules.Scripts
                         break;
 
                     Logging.Log("Buy:Process", "Opening Market", Logging.White);
-                    _state = BuyState.LoadItem;
+                    _state = State.LoadItem;
 
                     break;
 
-                case BuyState.LoadItem:
+                case State.LoadItem:
 
                     _lastAction = DateTime.UtcNow;
 
@@ -87,11 +99,11 @@ namespace OmniEveModules.Scripts
                         marketWindow.LoadTypeId(Item);
                         if (UseOrders)
                         {
-                            _state = BuyState.CreateOrder;
+                            _state = State.CreateOrder;
                         }
                         else
                         {
-                            _state = BuyState.BuyItem;
+                            _state = State.BuyItem;
                         }
 
                         break;
@@ -99,7 +111,7 @@ namespace OmniEveModules.Scripts
 
                     break;
 
-                case BuyState.CreateOrder:
+                case State.CreateOrder:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
                         break;
@@ -120,12 +132,12 @@ namespace OmniEveModules.Scripts
                             }
                         }
                         UseOrders = false;
-                        _state = BuyState.Done;
+                        _state = State.Done;
                     }
 
                     break;
 
-                case BuyState.BuyItem:
+                case State.BuyItem:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
                         break;
@@ -141,7 +153,7 @@ namespace OmniEveModules.Scripts
                             if (order.VolumeEntered >= Unit)
                             {
                                 order.Buy(Unit, DirectOrderRange.Station);
-                                _state = BuyState.WaitForItems;
+                                _state = State.WaitForItems;
                             }
                             else
                             {
@@ -149,14 +161,14 @@ namespace OmniEveModules.Scripts
                                 Unit = Unit - order.VolumeEntered;
                                 Logging.Log("Buy:Process", "Missing " + Convert.ToString(Unit) + " units", Logging.White);
                                 _returnBuy = true;
-                                _state = BuyState.WaitForItems;
+                                _state = State.WaitForItems;
                             }
                         }
                     }
 
                     break;
 
-                case BuyState.WaitForItems:
+                case State.WaitForItems:
                     // Wait 5 seconds after moving
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
                         break;
@@ -169,12 +181,12 @@ namespace OmniEveModules.Scripts
                     {
                         Logging.Log("Buy:Process", "Return Buy", Logging.White);
                         _returnBuy = false;
-                        _state = BuyState.OpenMarket;
+                        _state = State.OpenMarket;
                         break;
                     }
 
                     Logging.Log("Buy:Process", "Done", Logging.White);
-                    _state = BuyState.Done;
+                    _state = State.Done;
 
                     break;
             }

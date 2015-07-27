@@ -15,13 +15,23 @@ namespace OmniEveModules.Scripts
 
     public class MarketInfo : IScript
     {
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            OpenMarket,
+            LoadItem,
+            CacheInfo
+        }
+
         public delegate void MarketInfoFinished(MarketItem marketItem);
         public event MarketInfoFinished OnMarketInfoFinished;
 
         public int TypeId { get; set; }
 
         private DateTime _lastAction;
-        private MarketInfoState _state = MarketInfoState.Idle;
+        private State _state = State.Idle;
         private bool _done = false;
         private MarketItem _marketItem;
 
@@ -32,7 +42,7 @@ namespace OmniEveModules.Scripts
 
         public void Initialize()
         {
-            _state = MarketInfoState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
@@ -52,25 +62,25 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case MarketInfoState.Idle:
+                case State.Idle:
                     break;
-                case MarketInfoState.Done:
+                case State.Done:
                     if (OnMarketInfoFinished != null)
                         OnMarketInfoFinished(_marketItem);
 
                     _done = true;
                     break;
 
-                case MarketInfoState.Begin:
+                case State.Begin:
 
                     // Don't close the market window if its already up
                     if (marketWindow != null)
                         Logging.Log("MarketItemInfo:Process", "Market already open no need to open the market", Logging.White);
 
-                    _state = MarketInfoState.OpenMarket;
+                    _state = State.OpenMarket;
                     break;
 
-                case MarketInfoState.OpenMarket:
+                case State.OpenMarket:
 
                     if (marketWindow == null)
                     {
@@ -85,10 +95,10 @@ namespace OmniEveModules.Scripts
                         break;
                     }
 
-                    _state = MarketInfoState.LoadItem;
+                    _state = State.LoadItem;
                     break;
 
-                case MarketInfoState.LoadItem:
+                case State.LoadItem:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -102,7 +112,7 @@ namespace OmniEveModules.Scripts
                         if (marketWindow.DetailTypeId != TypeId)
                         {
                             if(marketWindow.LoadTypeId(TypeId) == true)
-                                _state = MarketInfoState.CacheInfo;
+                                _state = State.CacheInfo;
                         }
 
                         break;
@@ -111,12 +121,12 @@ namespace OmniEveModules.Scripts
                     {
                         Logging.Log("MarketItemInfo:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
-                        _state = MarketInfoState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
 
                     break;
 
-                case MarketInfoState.CacheInfo:
+                case State.CacheInfo:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -132,7 +142,7 @@ namespace OmniEveModules.Scripts
                         }
 
                         if (marketWindow.DetailTypeId != TypeId)
-                            _state = MarketInfoState.LoadItem;
+                            _state = State.LoadItem;
 
                         Logging.Log("MarketItemInfo:Process", "Get list of orders for Item - " + TypeId.ToString(), Logging.White);
 
@@ -148,12 +158,12 @@ namespace OmniEveModules.Scripts
 
                             Cache.Instance.SetMarketItem(TypeId, _marketItem);
 
-                            _state = MarketInfoState.Done;
+                            _state = State.Done;
                         }
                     }
                     else
                     {
-                        _state = MarketInfoState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
                     break;
             }

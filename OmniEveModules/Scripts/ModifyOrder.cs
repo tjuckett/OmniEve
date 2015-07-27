@@ -15,6 +15,16 @@ namespace OmniEveModules.Scripts
 
     public class ModifyOrder : IScript
     {
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            OpenMarket,
+            LoadOrders,
+            Modify
+        }
+
         public delegate void ModifyOrderFinished(long orderId, double price);
         public event ModifyOrderFinished OnModifyOrderFinished;
 
@@ -24,7 +34,7 @@ namespace OmniEveModules.Scripts
 
         private bool _done = false;
         private DateTime _lastAction;
-        private ModifyOrderState _state = ModifyOrderState.Idle;
+        private State _state = State.Idle;
 
         public ModifyOrder(long orderId, bool isBid, double price)
         {
@@ -35,7 +45,7 @@ namespace OmniEveModules.Scripts
 
         public void Initialize()
         {
-            _state = ModifyOrderState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
@@ -55,24 +65,24 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case ModifyOrderState.Idle:
+                case State.Idle:
                     break;
-                case ModifyOrderState.Done:
+                case State.Done:
                     if (OnModifyOrderFinished != null)
                         OnModifyOrderFinished(OrderId, Price);
 
                     _done = true;
                     break;
 
-                case ModifyOrderState.Begin:
+                case State.Begin:
                     
                     // Don't close the market window if its already up
                     if (marketWindow != null)
                         Logging.Log("ModifyOrder:Process", "Market already open no need to open the market", Logging.White);
-                    _state = ModifyOrderState.OpenMarket;
+                    _state = State.OpenMarket;
                     break;
 
-                case ModifyOrderState.OpenMarket:
+                case State.OpenMarket:
 
                     if (marketWindow == null)
                     {
@@ -84,10 +94,10 @@ namespace OmniEveModules.Scripts
                     if (!marketWindow.IsReady)
                         break;
 
-                    _state = ModifyOrderState.LoadOrders;
+                    _state = State.LoadOrders;
                     break;
 
-                case ModifyOrderState.LoadOrders:
+                case State.LoadOrders:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -99,7 +109,7 @@ namespace OmniEveModules.Scripts
                         Logging.Log("ModifyOrder:Process", "Load orders", Logging.White);
 
                         if(marketWindow.LoadOrders() == true)
-                            _state = ModifyOrderState.Modify;
+                            _state = State.Modify;
 
                         break;
                     }
@@ -107,12 +117,12 @@ namespace OmniEveModules.Scripts
                     {
                         Logging.Log("ModifyOrder:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
-                        _state = ModifyOrderState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
 
                     break;
 
-                case ModifyOrderState.Modify:
+                case State.Modify:
 
                     // We keep getting the popup saying we can't modify many orders in a minute, so this needs to be at 6 or higher, probably higher
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
@@ -141,11 +151,11 @@ namespace OmniEveModules.Scripts
                             Logging.Log("ModifyOrder:Process", "Order no longer exists, exiting modify action", Logging.White);
                         }
 
-                        _state = ModifyOrderState.Done;
+                        _state = State.Done;
                     }
                     else
                     {
-                        _state = ModifyOrderState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
 
                     break;

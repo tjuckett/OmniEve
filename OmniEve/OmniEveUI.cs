@@ -81,13 +81,6 @@ namespace OmniEve
             CheckState();
         }
 
-        private void OnMyInventoryOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
-        {
-            inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_MyOrders(mySellOrders, myBuyOrders); });
-
-            CheckState();
-        }
-
         private void OnMarketInfoFinished(MarketItem marketItem)
         {
             List<DirectOrder> sellOrders = marketItem.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
@@ -112,20 +105,6 @@ namespace OmniEve
         {
             buyingGrid.Invoke((MethodInvoker)delegate { UpdateMyBuyOrdersGrid_OrderPrice(orderId, price, true); });
             CheckState();
-        }
-
-        private void UpdateInventoryGrid_MyOrders(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
-        {
-            foreach (DataGridViewRow row in inventoryGrid.Rows)
-            {
-                DirectOrder order = mySellOrders.FirstOrDefault(o => o.TypeId == int.Parse(row.Cells["Inventory_TypeId"].Value.ToString()));
-
-                if(order != null)
-                {
-                    row.DefaultCellStyle.BackColor = Color.Red;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
-                }
-            }
         }
 
         private void UpdateMySellOrdersGrid_Fill(List<DirectOrder> mySellOrders)
@@ -303,6 +282,46 @@ namespace OmniEve
             }
         }
 
+        private void UpdateItemHangerGrid_Fill(List<DirectItem> _hangerItems, List<DirectOrder> mySellOrders)
+        {
+            Logging.Log("OmniEveUI:UpdateItemHanger", "Clearing existing item hanger grid of items", Logging.White);
+            itemHangerGrid.Rows.Clear();
+
+            Logging.Log("OmniEveUI:UpdateItemHanger", "Filling item hanger grid of updated items", Logging.White);
+
+            bool selectedOneItem = false;
+
+            foreach (DirectItem item in _hangerItems)
+            {
+                Logging.Log("OmniEveUI:UpdateItemHanger", "Item Name - " + item.Name
+                          + " Quantity - " + item.Quantity
+                          + " Group - " + item.GroupName
+                          + " Volume - " + item.Volume, Logging.White);
+
+                int index = itemHangerGrid.Rows.Add();
+                itemHangerGrid.AllowUserToAddRows = true;
+                itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = false;
+                itemHangerGrid.Rows[index].Cells["ItemHanger_Name"].Value = item.Name;
+                itemHangerGrid.Rows[index].Cells["ItemHanger_ItemId"].Value = item.ItemId;
+                itemHangerGrid.Rows[index].Cells["ItemHanger_Quantity"].Value = item.Quantity;
+                itemHangerGrid.Rows[index].Cells["ItemHanger_Group"].Value = item.GroupName;
+                itemHangerGrid.Rows[index].Cells["ItemHanger_Volume"].Value = item.Volume;
+
+                DirectOrder order = mySellOrders.FirstOrDefault(o => o.TypeId == item.TypeId);
+
+                if (order == null && selectedOneItem == false)
+                {
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = true;
+                    itemHangerGrid.Rows[index].DefaultCellStyle.BackColor = Color.Red;
+                    itemHangerGrid.Rows[index].DefaultCellStyle.ForeColor = Color.Black;
+
+                    selectedOneItem = true;
+                }
+
+                itemHangerGrid.AllowUserToAddRows = false;
+            }
+        }
+
         private List<DirectOrder> CreateModifySellOrdersList()
         {
             List<DirectOrder> sellOrders = new List<DirectOrder>();
@@ -365,37 +384,36 @@ namespace OmniEve
             return buyOrders;
         }
 
-        private void UpdateInventoryGrid_Fill(List<DirectItem> _hangerItems)
+        private void OnItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders)
         {
-            Logging.Log("OmniEveUI:UpdateInventory", "Clearing existing inventory grid of items", Logging.White);
-            inventoryGrid.Rows.Clear();
+            itemHangerGrid.Invoke((MethodInvoker)delegate { UpdateItemHangerGrid_Fill(hangerItems, sellOrders); });
 
-            Logging.Log("OmniEveUI:UpdateInventory", "Filling inventory grid of updated items", Logging.White);
-            foreach(DirectItem item in _hangerItems)
-            {
-                Logging.Log("OmniEveUI:UpdateInventory", "Item Name - " + item.Name
-                          + " Quantity - " + item.Quantity
-                          + " Group - " + item.GroupName
-                          + " Volume - " + item.Volume, Logging.White);
-
-                int index = inventoryGrid.Rows.Add();
-                inventoryGrid.AllowUserToAddRows = true;
-                inventoryGrid.Rows[index].Cells["Inventory_Name"].Value = item.Name;
-                inventoryGrid.Rows[index].Cells["Inventory_TypeId"].Value = item.TypeId;
-                inventoryGrid.Rows[index].Cells["Inventory_Quantity"].Value = item.Quantity;
-                inventoryGrid.Rows[index].Cells["Inventory_Group"].Value = item.GroupName;
-                inventoryGrid.Rows[index].Cells["Inventory_Volume"].Value = item.Volume;
-                inventoryGrid.AllowUserToAddRows = false;
-            }
+            CheckState();
         }
 
-        private void InventoryActionFinished(List<DirectItem> _hangerItems)
+        private void OnSellItemsFinished(List<DirectItem> itemsSold)
         {
-            inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_Fill(_hangerItems); });
+            itemHangerGrid.Invoke((MethodInvoker)delegate 
+            {
+                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                {
+                    try
+                    {
+                        DirectItem item = itemsSold.FirstOrDefault(i => i.ItemId == (long)row.Cells["ItemHanger_ItemId"].Value);
 
-            MyOrders myOrders = new MyOrders();
-            myOrders.OnMyOrdersFinished += OnMyInventoryOrdersFinished;
-            _omniEve.AddScript(myOrders);
+                        if(item != null)
+                        {
+                            row.Cells["ItemHanger_Select"].Value = false;
+                            row.DefaultCellStyle.BackColor = Color.White;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:OnSellItemsFinished", "Exception [" + ex + "]", Logging.Debug);
+                    }
+                }
+            });
 
             CheckState();
         }
@@ -408,6 +426,8 @@ namespace OmniEve
             autoStartButton.Enabled = true;
             autoStopButton.Enabled = true;
             autoSecondsTextBox.Enabled = true;
+            refreshItemHangerButton.Enabled = true;
+            sellItemsButton.Enabled = true;
         }
 
         private void DisableControls()
@@ -415,6 +435,8 @@ namespace OmniEve
             myOrdersButton.Enabled = false;
             modifyButton.Enabled = false;
             marketInfoMyOrdersButton.Enabled = false;
+            refreshItemHangerButton.Enabled = false;
+            sellItemsButton.Enabled = false;
             autoStartButton.Enabled = false;
             autoSecondsTextBox.Enabled = false;
             
@@ -468,6 +490,47 @@ namespace OmniEve
             modifyAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
             modifyAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
             _omniEve.AddScript(modifyAllOrders);
+        }
+
+        public void RefreshItemHanger()
+        {
+            ItemHanger itemHanger = new ItemHanger();
+            itemHanger.OnItemHangerFinished += OnItemHangerFinished;
+            _omniEve.AddScript(itemHanger);
+        }
+
+        public void SellItemsInHanger()
+        {
+            List<DirectItem> sellItemList = new List<DirectItem>();
+
+            itemHangerGrid.Invoke((MethodInvoker)delegate
+            {
+                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                {
+                    try
+                    {
+                        if (Convert.ToBoolean(row.Cells["ItemHanger_Select"].Value) == true)
+                        {
+                            long itemId = (long)row.Cells["ItemHanger_ItemId"].Value;
+                            DirectItem item = Cache.Instance.ItemHanger.Items.FirstOrDefault(i => i.ItemId == itemId);
+                            if (item != null)
+                            {
+                                Logging.Log("OmniEveUI:SellItemsInHanger", "Adding item to list of items to be sold ItemId - " + itemId, Logging.Debug);
+                                sellItemList.Add(item);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:SellItemsInHanger", "Exception [" + ex + "]", Logging.Debug);
+                    }
+                }
+            });
+
+            SellItems sellItems = new SellItems(sellItemList);
+            sellItems.OnSellItemsFinished += OnSellItemsFinished;
+
+            _omniEve.AddScript(sellItems);
         }
 
         private void OmniEveUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -615,11 +678,23 @@ namespace OmniEve
             {
                 _mode = Mode.Manual;
 
-                Logging.Log("OmniEveUI:RefreshInventoryButton", "Adding inventory action", Logging.Debug);
+                Logging.Log("OmniEveUI:RefreshItemHangerButton", "Adding item hanger action", Logging.Debug);
 
-                ItemHanger itemHanger = new ItemHanger();
-                itemHanger.OnItemHangerActionFinished += InventoryActionFinished;
-                _omniEve.AddScript(itemHanger);
+                RefreshItemHanger();
+
+                CheckState();
+            }
+        }
+
+        private void sellItemsButton_Click(object sender, EventArgs e)
+        {
+            if (_mode == Mode.Idle)
+            {
+                _mode = Mode.Manual;
+
+                Logging.Log("OmniEveUI:SellItemsButton", "Adding sell items action", Logging.Debug);
+
+                SellItemsInHanger();
 
                 CheckState();
             }

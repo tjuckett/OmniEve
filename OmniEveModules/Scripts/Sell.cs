@@ -15,21 +15,44 @@ namespace OmniEveModules.Scripts
 
     public class Sell : IScript
     {
-        public int Item { get; set; }
-        public int Unit { get; set; }
-        public bool UseOrders { get; set; }
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            OpenMarket,
+            LoadItem,
+            CreateOrder,
+            StartQuickSell,
+            WaitForSellWindow,
+            InspectOrder,
+            WaitingToFinishQuickSell,
+        }
+
+        public delegate void SellFinished(DirectItem item);
+        public event SellFinished OnSellFinished;
+
+        private DirectItem _item = null;
+        private bool _createOrder = false;
+        private bool _done = false;
 
         private DateTime _lastAction;
-        private SellState _state = SellState.Idle;
+        private State _state = State.Idle;
+
+        public Sell(DirectItem item, bool createOrder)
+        {
+            _item = item;
+            _createOrder = createOrder;
+        }
 
         public void Initialize()
         {
-            _state = SellState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
         {
-            return _state == SellState.Done;
+            return _done == true;
         }
 
         public void Process()
@@ -45,26 +68,31 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case SellState.Idle:
-                case SellState.Done:
+                case State.Idle:
+                    break;
+                case State.Done:
+                    if (OnSellFinished != null)
+                        OnSellFinished(_item);
+
+                    _done = true;
                     break;
 
-                case SellState.Begin:
-                    if (UseOrders)
+                case State.Begin:
+                    if (_createOrder)
                     {
                         // Close the market window if there is one
                         if (marketWindow != null)
                             marketWindow.Close();
 
-                        _state = SellState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
                     else
                     {
-                        _state = SellState.StartQuickSell;
+                        _state = State.StartQuickSell;
                     }
                     break;
 
-                case SellState.OpenMarket:
+                case State.OpenMarket:
 
                     if (marketWindow == null)
                     {
@@ -75,14 +103,17 @@ namespace OmniEveModules.Scripts
                     }
 
                     if (!marketWindow.IsReady)
+                    {
+                        Logging.Log("Sell:Process", "Market window is not ready", Logging.White);
                         break;
+                    }
 
                     Logging.Log("Sell:Process", "Opening Market", Logging.White);
-                    _state = SellState.LoadItem;
+                    _state = State.LoadItem;
 
                     break;
 
-                case SellState.LoadItem:
+                case State.LoadItem:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -91,43 +122,55 @@ namespace OmniEveModules.Scripts
 
                     if (marketWindow != null)
                     {
-                        if (marketWindow.DetailTypeId != Item)
+                        Logging.Log("Sell:Process", "Load orders for TypeId - " + _item.TypeId.ToString(), Logging.White);
+
+                        if (marketWindow.DetailTypeId != _item.TypeId)
                         {
-                            marketWindow.LoadTypeId(Item);
-                            _state = SellState.CreateOrder;
-                            break;
+                            if(marketWindow.LoadTypeId(_item.TypeId))
+                                _state = State.CreateOrder;
                         }
+
+                        break;
+                    }
+                    else
+                    {
+                        Logging.Log("Sell:Process", "MarketWindow is not open, going back to open market state", Logging.White);
+
+                        _state = State.OpenMarket;
                     }
 
                     break;
 
-                case SellState.CreateOrder:
+                case State.CreateOrder:
 
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
 
                     _lastAction = DateTime.UtcNow;
 
                     if (marketWindow != null)
                     {
-                        List<DirectOrder> orders = marketWindow.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
-
-                        DirectOrder order = orders.OrderByDescending(o => o.Price).LastOrDefault();
+                        DirectOrder order = marketWindow.SellOrders.OrderBy(o => o.Price).FirstOrDefault(o => o.StationId == Cache.Instance.DirectEve.Session.StationId);
+                        
                         if (order != null)
                         {
-                            double price = order.Price - 0.01;
+                            double price = double.Parse((decimal.Parse(order.Price.ToString()) - 0.01m).ToString());
+
                             if (Cache.Instance.DirectEve.Session.StationId != null)
                             {
-                                //Cache.Instance.DirectEve.Sell(Item, (int)Cache.Instance.DirectEve.Session.StationId, Unit, price, 0, false);
+                                Logging.Log("Sell:Process", "Create order for Name - " + _item.Name + " Price - " + price.ToString() + " Quantity - " + _item.Quantity, Logging.White);
+                                if(Cache.Instance.DirectEve.Sell(_item, (int)Cache.Instance.DirectEve.Session.StationId, _item.Quantity, price, 90, false) == true)
+                                    Logging.Log("Sell:Process", "Successfully created order for Name - " + _item.Name, Logging.White);
+                                else
+                                    Logging.Log("Sell:Process", "Failed creating order for Name - " + _item.Name, Logging.White);
                             }
                         }
-                        UseOrders = false;
-                        _state = SellState.Done;
+                        _state = State.Done;
                     }
 
                     break;
 
-                case SellState.StartQuickSell:
+                case State.StartQuickSell:
 
                     /*if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 1)
                         break;
@@ -155,10 +198,10 @@ namespace OmniEveModules.Scripts
                         break;
                     }*/
 
-                    _state = SellState.WaitForSellWindow;
+                    _state = State.WaitForSellWindow;
                     break;
 
-                case SellState.WaitForSellWindow:
+                case State.WaitForSellWindow:
 
                     //if (sellWindow == null || !sellWindow.IsReady || sellWindow.Item.ItemId != Item)
                     //    break;
@@ -166,11 +209,11 @@ namespace OmniEveModules.Scripts
                     // Mark as new execution
                     _lastAction = DateTime.UtcNow;
 
-                    Logging.Log("Sell:Process", "Inspecting sell order for " + Item, Logging.White);
-                    _state = SellState.InspectOrder;
+                    Logging.Log("Sell:Process", "Inspecting sell order for " + _item.TypeId, Logging.White);
+                    _state = State.InspectOrder;
                     break;
 
-                case SellState.InspectOrder:
+                case State.InspectOrder:
                     // Let the order window stay open for 2 seconds
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -178,30 +221,30 @@ namespace OmniEveModules.Scripts
                     {
                         if ((!sellWindow.OrderId.HasValue || !sellWindow.Price.HasValue || !sellWindow.RemainingVolume.HasValue))
                         {
-                            Logging.Log("Sell:Process", "No order available for " + Item, Logging.White);
+                            Logging.Log("Sell:Process", "No order available for " + _item.TypeId, Logging.White);
 
                             sellWindow.Cancel();
-                            _state = SellState.WaitingToFinishQuickSell;
+                            _state = State.WaitingToFinishQuickSell;
                             break;
                         }
 
                         double price = sellWindow.Price.Value;
 
-                        Logging.Log("Sell:Process", "Selling " + Unit + " of " + Item + " [Sell price: " + (price * Unit).ToString("#,##0.00") + "]", Logging.White);
+                        Logging.Log("Sell:Process", "Selling " + _item.Volume + " of " + _item.TypeId + " [Sell price: " + (price * _item.Volume).ToString("#,##0.00") + "]", Logging.White);
                         sellWindow.Accept();
-                        _state = SellState.WaitingToFinishQuickSell;
+                        _state = State.WaitingToFinishQuickSell;
                     }
                     _lastAction = DateTime.UtcNow;
                     break;
 
-                case SellState.WaitingToFinishQuickSell:
-                    if (sellWindow == null || !sellWindow.IsReady || sellWindow.Item.ItemId != Item)
+                case State.WaitingToFinishQuickSell:
+                    if (sellWindow == null || !sellWindow.IsReady || sellWindow.Item.ItemId != _item.ItemId)
                     {
                         DirectWindow modal = Cache.Instance.DirectEve.Windows.FirstOrDefault(w => w.IsModal);
                         if (modal != null)
                             modal.Close();
 
-                        _state = SellState.Done;
+                        _state = State.Done;
                         break;
                     }
                     break;

@@ -85,16 +85,18 @@
             this.Buying_Range = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_MinVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inventoryPage = new MetroFramework.Controls.MetroTabPage();
-            this.inventoryGrid = new MetroFramework.Controls.MetroGrid();
-            this.Inventory_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Inventory_Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemHangerGrid = new MetroFramework.Controls.MetroGrid();
             this.refreshItemHangerButton = new MetroFramework.Controls.MetroButton();
             this.logginTabPage = new MetroFramework.Controls.MetroTabPage();
             this.logTextBox = new MetroFramework.Controls.MetroTextBox();
             this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.sellItemsButton = new MetroFramework.Controls.MetroButton();
+            this.ItemHanger_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ItemHanger_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemHanger_ItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemHanger_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemHanger_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ItemHanger_Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.metroTabControl1.SuspendLayout();
             this.ordersPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -105,7 +107,7 @@
             this.metroPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).BeginInit();
             this.inventoryPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemHangerGrid)).BeginInit();
             this.logginTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,7 +120,7 @@
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 1;
             this.metroTabControl1.Size = new System.Drawing.Size(1159, 578);
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.UseSelectable = true;
@@ -606,7 +608,8 @@
             // 
             // inventoryPage
             // 
-            this.inventoryPage.Controls.Add(this.inventoryGrid);
+            this.inventoryPage.Controls.Add(this.sellItemsButton);
+            this.inventoryPage.Controls.Add(this.itemHangerGrid);
             this.inventoryPage.Controls.Add(this.refreshItemHangerButton);
             this.inventoryPage.HorizontalScrollbarBarColor = true;
             this.inventoryPage.HorizontalScrollbarHighlightOnWheel = false;
@@ -620,19 +623,19 @@
             this.inventoryPage.VerticalScrollbarHighlightOnWheel = false;
             this.inventoryPage.VerticalScrollbarSize = 0;
             // 
-            // inventoryGrid
+            // itemHangerGrid
             // 
-            this.inventoryGrid.AllowUserToAddRows = false;
-            this.inventoryGrid.AllowUserToDeleteRows = false;
-            this.inventoryGrid.AllowUserToResizeRows = false;
-            this.inventoryGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.itemHangerGrid.AllowUserToAddRows = false;
+            this.itemHangerGrid.AllowUserToDeleteRows = false;
+            this.itemHangerGrid.AllowUserToResizeRows = false;
+            this.itemHangerGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.inventoryGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.inventoryGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.inventoryGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.inventoryGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            this.inventoryGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.itemHangerGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.itemHangerGrid.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.itemHangerGrid.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.itemHangerGrid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.itemHangerGrid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
             dataGridViewCellStyle14.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
@@ -640,14 +643,15 @@
             dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inventoryGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
-            this.inventoryGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.inventoryGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Inventory_Name,
-            this.Inventory_TypeId,
-            this.Inventory_Quantity,
-            this.Inventory_Group,
-            this.Inventory_Volume});
+            this.itemHangerGrid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle14;
+            this.itemHangerGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.itemHangerGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ItemHanger_Select,
+            this.ItemHanger_Name,
+            this.ItemHanger_ItemId,
+            this.ItemHanger_Quantity,
+            this.ItemHanger_Group,
+            this.ItemHanger_Volume});
             dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle15.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             dataGridViewCellStyle15.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
@@ -655,14 +659,14 @@
             dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.inventoryGrid.DefaultCellStyle = dataGridViewCellStyle15;
-            this.inventoryGrid.EnableHeadersVisualStyles = false;
-            this.inventoryGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.inventoryGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.inventoryGrid.Location = new System.Drawing.Point(0, 0);
-            this.inventoryGrid.Margin = new System.Windows.Forms.Padding(0);
-            this.inventoryGrid.Name = "inventoryGrid";
-            this.inventoryGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.itemHangerGrid.DefaultCellStyle = dataGridViewCellStyle15;
+            this.itemHangerGrid.EnableHeadersVisualStyles = false;
+            this.itemHangerGrid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.itemHangerGrid.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.itemHangerGrid.Location = new System.Drawing.Point(0, 0);
+            this.itemHangerGrid.Margin = new System.Windows.Forms.Padding(0);
+            this.itemHangerGrid.Name = "itemHangerGrid";
+            this.itemHangerGrid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle16.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(174)))), ((int)(((byte)(219)))));
             dataGridViewCellStyle16.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
@@ -670,37 +674,11 @@
             dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(198)))), ((int)(((byte)(247)))));
             dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.inventoryGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
-            this.inventoryGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.inventoryGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.inventoryGrid.Size = new System.Drawing.Size(1151, 507);
-            this.inventoryGrid.TabIndex = 2;
-            // 
-            // Inventory_Name
-            // 
-            this.Inventory_Name.HeaderText = "Name";
-            this.Inventory_Name.Name = "Inventory_Name";
-            // 
-            // Inventory_TypeId
-            // 
-            this.Inventory_TypeId.HeaderText = "TypeId";
-            this.Inventory_TypeId.Name = "Inventory_TypeId";
-            this.Inventory_TypeId.Visible = false;
-            // 
-            // Inventory_Quantity
-            // 
-            this.Inventory_Quantity.HeaderText = "Quantity";
-            this.Inventory_Quantity.Name = "Inventory_Quantity";
-            // 
-            // Inventory_Group
-            // 
-            this.Inventory_Group.HeaderText = "Group";
-            this.Inventory_Group.Name = "Inventory_Group";
-            // 
-            // Inventory_Volume
-            // 
-            this.Inventory_Volume.HeaderText = "Volume";
-            this.Inventory_Volume.Name = "Inventory_Volume";
+            this.itemHangerGrid.RowHeadersDefaultCellStyle = dataGridViewCellStyle16;
+            this.itemHangerGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.itemHangerGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.itemHangerGrid.Size = new System.Drawing.Size(1151, 507);
+            this.itemHangerGrid.TabIndex = 2;
             // 
             // refreshItemHangerButton
             // 
@@ -757,6 +735,48 @@
             this.marketTabPage.VerticalScrollbarHighlightOnWheel = false;
             this.marketTabPage.VerticalScrollbarSize = 0;
             // 
+            // sellItemsButton
+            // 
+            this.sellItemsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.sellItemsButton.Location = new System.Drawing.Point(924, 510);
+            this.sellItemsButton.Name = "sellItemsButton";
+            this.sellItemsButton.Size = new System.Drawing.Size(109, 23);
+            this.sellItemsButton.TabIndex = 6;
+            this.sellItemsButton.Text = "Sell Items";
+            this.sellItemsButton.UseSelectable = true;
+            this.sellItemsButton.Click += new System.EventHandler(this.sellItemsButton_Click);
+            // 
+            // ItemHanger_Select
+            // 
+            this.ItemHanger_Select.HeaderText = "Select";
+            this.ItemHanger_Select.Name = "ItemHanger_Select";
+            // 
+            // ItemHanger_Name
+            // 
+            this.ItemHanger_Name.HeaderText = "Name";
+            this.ItemHanger_Name.Name = "ItemHanger_Name";
+            // 
+            // ItemHanger_ItemId
+            // 
+            this.ItemHanger_ItemId.HeaderText = "ItemId";
+            this.ItemHanger_ItemId.Name = "ItemHanger_ItemId";
+            this.ItemHanger_ItemId.Visible = false;
+            // 
+            // ItemHanger_Quantity
+            // 
+            this.ItemHanger_Quantity.HeaderText = "Quantity";
+            this.ItemHanger_Quantity.Name = "ItemHanger_Quantity";
+            // 
+            // ItemHanger_Group
+            // 
+            this.ItemHanger_Group.HeaderText = "Group";
+            this.ItemHanger_Group.Name = "ItemHanger_Group";
+            // 
+            // ItemHanger_Volume
+            // 
+            this.ItemHanger_Volume.HeaderText = "Volume";
+            this.ItemHanger_Volume.Name = "ItemHanger_Volume";
+            // 
             // OmniEveUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -780,7 +800,7 @@
             this.metroPanel4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.buyingGrid)).EndInit();
             this.inventoryPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.inventoryGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.itemHangerGrid)).EndInit();
             this.logginTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -831,13 +851,15 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Selling_Region;
         private MetroFramework.Controls.MetroTabPage inventoryPage;
         private MetroFramework.Controls.MetroButton refreshItemHangerButton;
-        private MetroFramework.Controls.MetroGrid inventoryGrid;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_TypeId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Quantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Group;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Inventory_Volume;
+        private MetroFramework.Controls.MetroGrid itemHangerGrid;
         private MetroFramework.Controls.MetroButton marketInfoMyOrdersButton;
+        private MetroFramework.Controls.MetroButton sellItemsButton;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ItemHanger_Select;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_ItemId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Group;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Volume;
 
     }
 }

@@ -15,6 +15,15 @@ namespace OmniEveModules.Scripts
 
     public class ModifyAllOrders : IScript
     {
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            PopNext,
+            Process
+        }
+
         public delegate void ModifyAllOrdersFinished();
         public event ModifyAllOrdersFinished OnModifyAllOrdersFinished;
 
@@ -25,7 +34,7 @@ namespace OmniEveModules.Scripts
         public List<DirectOrder> BuyOrders { get; set; }
 
         private bool _done = false;
-        private ModifyAllOrdersState _state = ModifyAllOrdersState.Idle;
+        private State _state = State.Idle;
         private List<ModifyOrder> _modifyOrders = new List<ModifyOrder>();
         private ModifyOrder _currentModify = null;
 
@@ -37,7 +46,7 @@ namespace OmniEveModules.Scripts
 
         public void Initialize()
         {
-            _state = ModifyAllOrdersState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
@@ -55,16 +64,16 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case ModifyAllOrdersState.Idle:
+                case State.Idle:
                     break;
-                case ModifyAllOrdersState.Done:
+                case State.Done:
                     if (OnModifyAllOrdersFinished != null)
                         OnModifyAllOrdersFinished();
 
                     _done = true;
                     break;
 
-                case ModifyAllOrdersState.Begin:
+                case State.Begin:
                     // Create all the modify orders
                     foreach(DirectOrder order in SellOrders)
                     {
@@ -109,10 +118,10 @@ namespace OmniEveModules.Scripts
                         }
                     }
 
-                    _state = ModifyAllOrdersState.PopNext;
+                    _state = State.PopNext;
                     break;
 
-                case ModifyAllOrdersState.PopNext:
+                case State.PopNext:
 
                     _currentModify = _modifyOrders.FirstOrDefault();
                     
@@ -123,16 +132,16 @@ namespace OmniEveModules.Scripts
                         Logging.Log("ModifyAllOrders:Process", "Popping next order script to run", Logging.White);
 
                         _currentModify.Initialize();
-                        _state = ModifyAllOrdersState.Process;
+                        _state = State.Process;
                     }
                     else
                     {
                         Logging.Log("ModifyAllOrders:Process", "No more order scripts left, going to done state", Logging.White);
-                        _state = ModifyAllOrdersState.Done;
+                        _state = State.Done;
                     }
                     break;
 
-                case ModifyAllOrdersState.Process:
+                case State.Process:
 
                     if (_currentModify != null)
                     {
@@ -142,7 +151,7 @@ namespace OmniEveModules.Scripts
                         if (_currentModify.IsDone() == true)
                         {
                             Logging.Log("ModifyAllOrders:Process", "Modify script is done, executing callback and popping next", Logging.White);
-                            _state = ModifyAllOrdersState.PopNext;
+                            _state = State.PopNext;
                         }
                     }
 

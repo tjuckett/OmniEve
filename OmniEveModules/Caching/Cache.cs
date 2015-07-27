@@ -22,10 +22,10 @@ namespace OmniEveModules.Caching
         }
 
         //private List<DirectWindow> _windows;
-        private DirectContainer _itemHangar { get; set; }
+        private DirectContainer _itemHanger;
         private List<DirectOrder> _myBuyOrders { get; set; }
         private List<DirectOrder> _mySellOrders { get; set; }
-        
+
         private Dictionary<int, MarketItem> _marketItems = new Dictionary<int, MarketItem>();
         
         public DirectEve DirectEve { get; set; }
@@ -58,32 +58,13 @@ namespace OmniEveModules.Caching
             }
         }*/
 
-        /*public DirectContainer ItemHangar
+        public DirectContainer ItemHanger
         {
             get
             {
                 try
                 {
-                    if (!Status.Instance.InSpace && Status.Instance.InStation)
-                    {
-                        if (_itemHangar == null)
-                        {
-                            _itemHangar = Cache.Instance.DirectEve.GetItemHangar();
-                        }
-
-                        if (Instance.DirectEve.Windows.All(i => i.Type != "form.StationItems")) // look for windows via the window (via caption of form type) ffs, not what is attached to this DirectCotnainer
-                        {
-                            if (DateTime.UtcNow > Time.Instance.LastOpenHangar.AddSeconds(10))
-                            {
-                                Cache.Instance.DirectEve.ExecuteCommand(DirectCmd.OpenHangarFloor);
-                                Time.Instance.LastOpenHangar = DateTime.UtcNow;
-                            }
-                        }
-
-                        return _itemHangar;
-                    }
-
-                    return null;
+                    return _itemHanger;
                 }
                 catch (Exception ex)
                 {
@@ -92,8 +73,18 @@ namespace OmniEveModules.Caching
                 }
             }
 
-            set { _itemHangar = value; }
-        }*/
+            set 
+            {
+                try
+                {
+                    _itemHanger = value;
+                }
+                catch (Exception ex)
+                {
+                    Logging.Log("Cache:ItemHangar", "Exception [" + ex + "]", Logging.Debug);
+                } 
+            }
+        }
 
         public List<DirectOrder> MyBuyOrders
         {

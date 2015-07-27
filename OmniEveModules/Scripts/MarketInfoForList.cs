@@ -15,6 +15,15 @@ namespace OmniEveModules.Scripts
 
     public class MarketInfoForList : IScript
     {
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            PopNext,
+            Process
+        }
+
         public delegate void MarketInfoForListFinished();
         public event MarketInfoForListFinished OnMarketInfoForListFinished;
 
@@ -22,7 +31,7 @@ namespace OmniEveModules.Scripts
 
         public List<int> TypeIds { get; set; }
 
-        private MarketInfoForListState _state = MarketInfoForListState.Idle;
+        private State _state = State.Idle;
         private bool _done = false;
 
         private List<MarketInfo> _marketInfos = new List<MarketInfo>();
@@ -35,7 +44,7 @@ namespace OmniEveModules.Scripts
 
         public void Initialize()
         {
-            _state = MarketInfoForListState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
@@ -53,16 +62,16 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case MarketInfoForListState.Idle:
+                case State.Idle:
                     break;
-                case MarketInfoForListState.Done:
+                case State.Done:
                     if (OnMarketInfoForListFinished != null)
                         OnMarketInfoForListFinished();
 
                     _done = true;
                     break;
 
-                case MarketInfoForListState.Begin:
+                case State.Begin:
 
                     foreach(int typeId in TypeIds)
                     {
@@ -72,10 +81,10 @@ namespace OmniEveModules.Scripts
                     }
 
                     // Don't close the market window if its already up
-                    _state = MarketInfoForListState.PopNext;
+                    _state = State.PopNext;
                     break;
 
-                case MarketInfoForListState.PopNext:
+                case State.PopNext:
                     _currentMarketInfo = _marketInfos.FirstOrDefault();
 
                     if (_currentMarketInfo != null)
@@ -85,16 +94,16 @@ namespace OmniEveModules.Scripts
                         Logging.Log("MarketInfoForList:Process", "Popping next market info script to run", Logging.White);
 
                         _currentMarketInfo.Initialize();
-                        _state = MarketInfoForListState.Process;
+                        _state = State.Process;
                     }
                     else
                     {
                         Logging.Log("MarketInfoForList:Process", "No more market info scripts left, going to done state", Logging.White);
-                        _state = MarketInfoForListState.Done;
+                        _state = State.Done;
                     }
                     break;
 
-                case MarketInfoForListState.Process:
+                case State.Process:
 
                     if (_currentMarketInfo != null)
                     {
@@ -105,7 +114,7 @@ namespace OmniEveModules.Scripts
                         {
                             Logging.Log("MarketInfoForList:Process", "Market info script is done, executing callback and popping next", Logging.White);
 
-                            _state = MarketInfoForListState.PopNext;
+                            _state = State.PopNext;
                         }
                     }
                     break;

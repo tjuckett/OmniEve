@@ -15,18 +15,28 @@ namespace OmniEveModules.Scripts
 
     public class MyOrders : IScript
     {
+        public enum State
+        {
+            Idle,
+            Done,
+            Begin,
+            OpenMarket,
+            LoadOrders,
+            CacheOrders
+        }
+
         public delegate void MyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders);
         public event MyOrdersFinished OnMyOrdersFinished;
 
         private DateTime _lastAction;
-        private MyOrdersState _state = MyOrdersState.Idle;
+        private State _state = State.Idle;
         private bool _done = false;
         private List<DirectOrder> _myBuyOrders = null;
         private List<DirectOrder> _mySellOrders = null;
 
         public void Initialize()
         {
-            _state = MyOrdersState.Begin;
+            _state = State.Begin;
         }
 
         public bool IsDone()
@@ -46,25 +56,25 @@ namespace OmniEveModules.Scripts
 
             switch (_state)
             {
-                case MyOrdersState.Idle:
+                case State.Idle:
                     break;
-                case MyOrdersState.Done:
+                case State.Done:
                     if (OnMyOrdersFinished != null)
                         OnMyOrdersFinished(_mySellOrders, _myBuyOrders);
 
                     _done = true;
                     break;
 
-                case MyOrdersState.Begin:
+                case State.Begin:
 
                     // Don't close the market window if its already up
                     if (marketWindow != null)
                         Logging.Log("MyOrders:Process", "Market already open no need to open the market", Logging.White);
 
-                    _state = MyOrdersState.OpenMarket;
+                    _state = State.OpenMarket;
                     break;
 
-                case MyOrdersState.OpenMarket:
+                case State.OpenMarket:
 
                     if (marketWindow == null)
                     {
@@ -79,10 +89,10 @@ namespace OmniEveModules.Scripts
                         break;
                     }
 
-                    _state = MyOrdersState.LoadOrders;
+                    _state = State.LoadOrders;
                     break;
 
-                case MyOrdersState.LoadOrders:
+                case State.LoadOrders:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -94,7 +104,7 @@ namespace OmniEveModules.Scripts
                         Logging.Log("MyOrders:Process", "Load orders", Logging.White);
 
                         if(marketWindow.LoadOrders() == true)
-                            _state = MyOrdersState.CacheOrders;
+                            _state = State.CacheOrders;
 
                         break;
                     }
@@ -102,12 +112,12 @@ namespace OmniEveModules.Scripts
                     {
                         Logging.Log("MyOrders:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
-                        _state = MyOrdersState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
 
                     break;
 
-                case MyOrdersState.CacheOrders:
+                case State.CacheOrders:
 
                     if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
                         break;
@@ -133,11 +143,11 @@ namespace OmniEveModules.Scripts
                             Cache.Instance.MyBuyOrders = _myBuyOrders;
                         }
 
-                        _state = MyOrdersState.Done;
+                        _state = State.Done;
                     }
                     else
                     {
-                        _state = MyOrdersState.OpenMarket;
+                        _state = State.OpenMarket;
                     }
                     break;
             }
