@@ -77,6 +77,7 @@
     <Compile Include="States\MarketInfoState.cs" />
     <Compile Include="States\SellState.cs" />
     <Compile Include="States\ModifyOrderState.cs" />
+    <Compile Include="Scripts\UpdateAllOrders.cs" />
     <Compile Include="Status\Status.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -82,7 +82,7 @@ namespace OmniEveModules.Scripts
 
                             Logging.Log("ModifyAllOrders:Process", "Creating sell modify order script for Order Id - " + order.OrderId + " Price - " + price, Logging.White);
                             ModifyOrder modifyOrder = new ModifyOrder(order.OrderId, false, price);
-                            modifyOrder.OnModifyOrderFinished += ModifySellOrderFinished;
+                            modifyOrder.OnModifyOrderFinished += OnModifySellOrderFinished;
                             _modifyOrders.Add(modifyOrder);
                         }
                     }
@@ -104,7 +104,7 @@ namespace OmniEveModules.Scripts
 
                             Logging.Log("ModifyAllOrders:Process", "Creating buy modify order script for Order Id - " + order.OrderId + " Price - " + price, Logging.White);
                             ModifyOrder modifyOrder = new ModifyOrder(order.OrderId, true, price);
-                            modifyOrder.OnModifyOrderFinished += ModifyBuyOrderFinished;
+                            modifyOrder.OnModifyOrderFinished += OnModifyBuyOrderFinished;
                             _modifyOrders.Add(modifyOrder);
                         }
                     }
@@ -148,16 +148,6 @@ namespace OmniEveModules.Scripts
 
                     break;
             }
-        }
-
-        private void ModifySellOrderFinished(long orderId, double price)
-        {
-            OnModifySellOrderFinished(orderId, price);
-        }
-
-        private void ModifyBuyOrderFinished(long orderId, double price)
-        {
-            OnModifyBuyOrderFinished(orderId, price);
         }
     }
 }

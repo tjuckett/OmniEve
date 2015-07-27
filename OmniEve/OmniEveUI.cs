@@ -88,7 +88,7 @@ namespace OmniEve
             CheckState();
         }
 
-        private void OnMarketItemFinished(MarketItem marketItem)
+        private void OnMarketInfoFinished(MarketItem marketItem)
         {
             List<DirectOrder> sellOrders = marketItem.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
             List<DirectOrder> buyOrders = marketItem.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderByDescending(o => o.Price).ToList();
@@ -221,9 +221,6 @@ namespace OmniEve
                                 row.Cells["Selling_Select"].Value = true;
                                 row.DefaultCellStyle.BackColor = Color.Red;
                                 row.DefaultCellStyle.ForeColor = Color.Black;
-
-                                //if (_mode == Mode.Automatic)
-                                //    ModifySellOrder(orderId, orderPriceStr, marketPriceStr);
                             }
                             else
                             {
@@ -262,9 +259,6 @@ namespace OmniEve
                                 row.Cells["Buying_Select"].Value = true;
                                 row.DefaultCellStyle.BackColor = Color.Red;
                                 row.DefaultCellStyle.ForeColor = Color.Black;
-
-                                //if (_mode == Mode.Automatic)
-                                //    ModifyBuyOrder(orderId, orderPriceStr, marketPriceStr);
                             }
                             else
                             {
@@ -400,7 +394,7 @@ namespace OmniEve
             inventoryGrid.Invoke((MethodInvoker)delegate { UpdateInventoryGrid_Fill(_hangerItems); });
 
             MyOrders myOrders = new MyOrders();
-            myOrders.OnMyOrdersActionFinished += OnMyInventoryOrdersFinished;
+            myOrders.OnMyOrdersFinished += OnMyInventoryOrdersFinished;
             _omniEve.AddScript(myOrders);
 
             CheckState();
@@ -432,7 +426,20 @@ namespace OmniEve
         {
             // Only refresh orders when the action queue is empty, otherwise wait till the next time or lengthen the time between events
             if(_omniEve != null && _omniEve.IsActionQueueEmpty() == true)
-                RefreshOrders();
+                UpdateAllOrders();
+        }
+
+        private void UpdateAllOrders()
+        {
+            if(_omniEve != null)
+            {
+                UpdateAllOrders updateAllOrders = new UpdateAllOrders();
+                updateAllOrders.OnMyOrdersFinished += OnMyOrdersFinished;
+                updateAllOrders.OnMarketInfoFinished += OnMarketInfoFinished;
+                updateAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
+                updateAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
+                _omniEve.AddScript(updateAllOrders);
+            }
         }
 
         private void RefreshOrders()
@@ -440,7 +447,7 @@ namespace OmniEve
             if (_omniEve != null)
             {
                 MyOrders myOrders = new MyOrders();
-                myOrders.OnMyOrdersActionFinished += OnMyOrdersFinished;
+                myOrders.OnMyOrdersFinished += OnMyOrdersFinished;
                 _omniEve.AddScript(myOrders);
             }
         }
@@ -485,7 +492,7 @@ namespace OmniEve
             }
         }
 
-        private void marketInfoMyOrdersButton_Click(object sender, EventArgs e)
+        private void marketInfoButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -509,7 +516,7 @@ namespace OmniEve
                 if (_omniEve != null)
                 {
                     MarketInfoForList marketInfoForList = new MarketInfoForList(marketInfoTypeIds);
-                    marketInfoForList.OnMarketInfoFinished += OnMarketItemFinished;
+                    marketInfoForList.OnMarketInfoFinished += OnMarketInfoFinished;
                     _omniEve.AddScript(marketInfoForList);
                 }
             }
@@ -562,7 +569,8 @@ namespace OmniEve
                 _timer.AutoReset = true;
                 _timer.Start();
 
-                RefreshOrders();
+
+                UpdateAllOrders();
                 CheckState();
             }
             catch (Exception ex)
@@ -579,7 +587,7 @@ namespace OmniEve
 
                 MetroGrid grid = (MetroGrid)sender;
                 MarketInfo marketInfo = new MarketInfo(int.Parse(grid.CurrentRow.Cells["Selling_TypeId"].Value.ToString()));
-                marketInfo.OnMarketInfoFinished += OnMarketItemFinished;
+                marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
                 _omniEve.AddScript(marketInfo);
 
                 CheckState();
@@ -594,7 +602,7 @@ namespace OmniEve
 
                 MetroGrid grid = (MetroGrid)sender;
                 MarketInfo marketInfo = new MarketInfo(int.Parse(grid.CurrentRow.Cells["Buying_TypeId"].Value.ToString()));
-                marketInfo.OnMarketInfoFinished += OnMarketItemFinished;
+                marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
                 _omniEve.AddScript(marketInfo);
 
                 CheckState();

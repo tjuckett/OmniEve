@@ -155,7 +155,7 @@
             this.marketInfoMyOrdersButton.TabIndex = 11;
             this.marketInfoMyOrdersButton.Text = "Market Info";
             this.marketInfoMyOrdersButton.UseSelectable = true;
-            this.marketInfoMyOrdersButton.Click += new System.EventHandler(this.marketInfoMyOrdersButton_Click);
+            this.marketInfoMyOrdersButton.Click += new System.EventHandler(this.marketInfoButton_Click);
             // 
             // metroLabel2
             // 

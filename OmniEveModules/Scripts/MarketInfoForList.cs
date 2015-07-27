@@ -67,7 +67,7 @@ namespace OmniEveModules.Scripts
                     foreach(int typeId in TypeIds)
                     {
                         MarketInfo marketInfo = new MarketInfo(typeId);
-                        marketInfo.OnMarketInfoFinished += MarketInfoFinished;
+                        marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
                         _marketInfos.Add(marketInfo);
                     }
 
@@ -110,11 +110,6 @@ namespace OmniEveModules.Scripts
                     }
                     break;
             }
-        }
-
-        private void MarketInfoFinished(MarketItem marketItem)
-        {
-            OnMarketInfoFinished(marketItem);
         }
     }
 }

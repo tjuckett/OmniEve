@@ -15,8 +15,8 @@ namespace OmniEveModules.Scripts
 
     public class MyOrders : IScript
     {
-        public delegate void MyOrdersActionFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders);
-        public event MyOrdersActionFinished OnMyOrdersActionFinished;
+        public delegate void MyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders);
+        public event MyOrdersFinished OnMyOrdersFinished;
 
         private DateTime _lastAction;
         private MyOrdersState _state = MyOrdersState.Idle;
@@ -49,8 +49,8 @@ namespace OmniEveModules.Scripts
                 case MyOrdersState.Idle:
                     break;
                 case MyOrdersState.Done:
-                    if (OnMyOrdersActionFinished != null)
-                        OnMyOrdersActionFinished(_mySellOrders, _myBuyOrders);
+                    if (OnMyOrdersFinished != null)
+                        OnMyOrdersFinished(_mySellOrders, _myBuyOrders);
 
                     _done = true;
                     break;
