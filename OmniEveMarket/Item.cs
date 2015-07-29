@@ -25,11 +25,11 @@ namespace OmniEveMarket
         public PriceHistory PriceHistory { get; set; }
         public QuickLook QuickLook { get; set; }
 
-        public bool ShouldBuySellOrder(decimal minProfit, decimal profitMargin, decimal iskLimit, bool includePriceHistory)
+        public bool ShouldBuySellOrder(decimal minProfit, decimal profitMargin, decimal iskLimit)
         {
             try
             {
-                if (BuySellOrders == null || MarketStats == null)
+                if (BuySellOrders == null || MarketStats == null || PriceHistory == null)
                     return false;
 
                 if (BuySellOrders.SellOrdersBought < (BuySellOrders.SellOrderCount * 0.35) &&
@@ -38,28 +38,21 @@ namespace OmniEveMarket
                     BuySellOrders.Profit > minProfit &&
                     (BuySellOrders.TotalSpent < iskLimit || iskLimit == 0.0m))
                 {
-                    if (includePriceHistory == false)
-                    {
-                        return true;
-                    }
-                    else if (includePriceHistory == true && PriceHistory != null)
-                    {
-                        int priceHistoryMatch = 0;
+                    int priceHistoryMatch = 0;
 
-                        foreach (PriceHistory.Day day in PriceHistory.Days)
+                    foreach (PriceHistory.Day day in PriceHistory.Days)
+                    {
+                        if (BuySellOrders.SellOrdersBought < day.OrderCount &&
+                            BuySellOrders.VolumeBought < day.Volume &&
+                            BuySellOrders.SellPrice > day.MaxPrice * 0.9m &&
+                            BuySellOrders.SellPrice < day.MaxPrice * 1.1m)
                         {
-                            if (BuySellOrders.SellOrdersBought < day.OrderCount &&
-                                BuySellOrders.VolumeBought < day.Volume &&
-                                BuySellOrders.SellPrice > day.MaxPrice * 0.9m &&
-                                BuySellOrders.SellPrice < day.MaxPrice * 1.1m)
-                            {
-                                priceHistoryMatch++;
-                            }
+                            priceHistoryMatch++;
                         }
-
-                        if (PriceHistory.Days.Count() > 0 && priceHistoryMatch / PriceHistory.Days.Count() > 0.5)
-                            return true;
                     }
+
+                    if (PriceHistory.Days.Count() > 0 && priceHistoryMatch / PriceHistory.Days.Count() > 0.5)
+                        return true;
                 }
             }
             catch (Exception ex)
@@ -71,22 +64,17 @@ namespace OmniEveMarket
             return false;
         }
 
-        public bool ShouldCreateBuyOrder(decimal minProfit, decimal profitMargin, decimal iskLimit, bool includePriceHistory)
+        public bool ShouldCreateBuyOrder(decimal minProfit, decimal profitMargin, decimal iskLimit, int minVolume, int minOrders)
         {
             try
             {
-                if (CreateBuyOrder == null || MarketStats == null)
+                if (CreateBuyOrder == null || MarketStats == null || PriceHistory == null)
                     return false;
 
                 if (MarketStats.Sell.Min > MarketStats.Buy.Max &&
-                    CreateBuyOrder.ProfitMargin > (profitMargin / 100.0m) &&
-                    CreateBuyOrder.Profit > minProfit)
+                    CreateBuyOrder.ProfitMargin > (profitMargin / 100.0m))
                 {
-                    if (includePriceHistory == false)
-                    {
-                        return true;
-                    }
-                    else if (includePriceHistory == true && PriceHistory.Days != null)
+                    if (PriceHistory.Days != null)
                     {
                         int priceHistoryMinMatch = 0;
                         int priceHistoryMaxMatch = 0;
@@ -107,7 +95,9 @@ namespace OmniEveMarket
 
                         if (lastThirty.Count() > 0 &&
                             (decimal)priceHistoryMinMatch / (decimal)lastThirty.Count() > 0.5m &&
-                            (decimal)priceHistoryMaxMatch / (decimal)lastThirty.Count() > 0.5m)
+                            (decimal)priceHistoryMaxMatch / (decimal)lastThirty.Count() > 0.5m &&
+                            PriceHistory.AvgVolume > minVolume && PriceHistory.AvgOrders > minOrders && 
+                            CreateBuyOrder.Profit * PriceHistory.AvgVolume > minProfit)
                             return true;
                     }
                 }

@@ -88,4 +88,3 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.xml
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\bin\Release\Newtonsoft.Json.xml
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveMarket\obj\Release\OmniEveMarket.csprojResolveAssemblyReference.cache

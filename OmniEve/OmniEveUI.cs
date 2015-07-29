@@ -409,7 +409,7 @@ namespace OmniEve
                 }
 
                 // Remove all the rows that had sell orders created
-                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                foreach (DataGridViewRow row in rowsToRemove)
                     itemHangerGrid.Rows.Remove(row);
             });
 
@@ -445,7 +445,7 @@ namespace OmniEve
                 }
 
                 // Remove all the rows that had sell orders created
-                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                foreach (DataGridViewRow row in rowsToRemove)
                     itemHangerGrid.Rows.Remove(row);
             });
 
