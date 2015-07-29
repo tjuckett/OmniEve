@@ -20,19 +20,22 @@ namespace OmniEveModules.Scripts
             Idle,
             Done,
             Begin,
-            SellOrders
+            PopNext,
+            Process
         }
 
         public delegate void SellItemsFinished(List<DirectItem> itemsSold);
         public event SellItemsFinished OnSellItemsFinished;
+
+        public event SellItem.SellItemFinished OnSellItemFinished;
 
         private State _state = State.Idle;
         private bool _done = false;
 
         private List<DirectItem> _items = null;
         private List<DirectItem> _itemsSold = new List<DirectItem>();
-        private List<Sell> _sellItems = new List<Sell>();
-        private Sell _currentSell = null;
+        private List<SellItem> _sellItems = new List<SellItem>();
+        private SellItem _currentSell = null;
         
         public SellItems(List<DirectItem> items)
         {
@@ -72,26 +75,47 @@ namespace OmniEveModules.Scripts
 
                     foreach(DirectItem item in _items)
                     {
-                        Sell sellItem = new Sell(item, true);
-                        sellItem.OnSellFinished += SellFinished;
+                        SellItem sellItem = new SellItem(item, true);
+                        sellItem.OnSellItemFinished += SellFinished;
+                        sellItem.OnSellItemFinished += OnSellItemFinished;
                         _sellItems.Add(sellItem);
                     }
 
-                    _state = State.SellOrders;
+                    _state = State.PopNext;
                     break;
 
-                case State.SellOrders:
-                    if (_currentSell == null)
-                    {
-                        _currentSell = PullNextSell();
-                    }
+                case State.PopNext:
+                    _currentSell = _sellItems.FirstOrDefault();
 
                     if (_currentSell != null)
-                        _currentSell.Process();
-                    else
-                        _state = State.Done;
+                    {
+                        _sellItems.Remove(_currentSell);
 
-                    _state = State.SellOrders;
+                        Logging.Log("SellItems:Process", "Popping next sell script to run", Logging.White);
+
+                        _currentSell.Initialize();
+                        _state = State.Process;
+                    }
+                    else
+                    {
+                        Logging.Log("SellItems:Process", "No more sell scripts left, going to done state", Logging.White);
+                        _state = State.Done;
+                    }
+                    break;
+
+                case State.Process:
+                    if (_currentSell != null)
+                    {
+                        _currentSell.Process();
+
+                        // If the current script is done then pop the next one
+                        if (_currentSell.IsDone() == true)
+                        {
+                            Logging.Log("SellItems:Process", "Sell script is done, executing callback and popping next", Logging.White);
+                            _state = State.PopNext;
+                        }
+                    }
+
                     break;
             }
         }
@@ -99,25 +123,6 @@ namespace OmniEveModules.Scripts
         private void SellFinished(DirectItem item)
         {
             _itemsSold.Add(item);
-
-            _currentSell = PullNextSell();
-
-            if (_currentSell == null)
-                _state = State.SellOrders;
-        }
-
-        private Sell PullNextSell()
-        {
-            Sell sell = _sellItems.FirstOrDefault();
-
-            if (sell == null)
-                return null;
-
-            sell.Initialize();
-
-            _sellItems.Remove(sell);
-
-            return sell;
         }
     }
 }

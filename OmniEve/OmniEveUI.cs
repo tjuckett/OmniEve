@@ -289,8 +289,6 @@ namespace OmniEve
 
             Logging.Log("OmniEveUI:UpdateItemHanger", "Filling item hanger grid of updated items", Logging.White);
 
-            bool selectedOneItem = false;
-
             foreach (DirectItem item in _hangerItems)
             {
                 Logging.Log("OmniEveUI:UpdateItemHanger", "Item Name - " + item.Name
@@ -309,13 +307,11 @@ namespace OmniEve
 
                 DirectOrder order = mySellOrders.FirstOrDefault(o => o.TypeId == item.TypeId);
 
-                if (order == null && selectedOneItem == false)
+                if (order == null)
                 {
                     itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = true;
                     itemHangerGrid.Rows[index].DefaultCellStyle.BackColor = Color.Red;
                     itemHangerGrid.Rows[index].DefaultCellStyle.ForeColor = Color.Black;
-
-                    selectedOneItem = true;
                 }
 
                 itemHangerGrid.AllowUserToAddRows = false;
@@ -391,10 +387,41 @@ namespace OmniEve
             CheckState();
         }
 
+        private void OnSellItemFinished(DirectItem itemSold)
+        {
+            itemHangerGrid.Invoke((MethodInvoker)delegate
+            {
+                List<DataGridViewRow> rowsToRemove = new List<DataGridViewRow>();
+
+                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                {
+                    try
+                    {
+                        if (itemSold.ItemId == (long)row.Cells["ItemHanger_ItemId"].Value)
+                        {
+                            rowsToRemove.Add(row);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:OnSellItemFinished", "Exception [" + ex + "]", Logging.Debug);
+                    }
+                }
+
+                // Remove all the rows that had sell orders created
+                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                    itemHangerGrid.Rows.Remove(row);
+            });
+
+            CheckState();
+        }
+
         private void OnSellItemsFinished(List<DirectItem> itemsSold)
         {
             itemHangerGrid.Invoke((MethodInvoker)delegate 
             {
+                List<DataGridViewRow> rowsToRemove = new List<DataGridViewRow>();
+
                 foreach (DataGridViewRow row in itemHangerGrid.Rows)
                 {
                     try
@@ -403,8 +430,11 @@ namespace OmniEve
 
                         if(item != null)
                         {
-                            row.Cells["ItemHanger_Select"].Value = false;
-                            row.DefaultCellStyle.BackColor = Color.White;
+                            rowsToRemove.Add(row);
+                        }
+                        else if(row.DefaultCellStyle.BackColor == Color.Red)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.Yellow;
                             row.DefaultCellStyle.ForeColor = Color.Black;
                         }
                     }
@@ -413,6 +443,10 @@ namespace OmniEve
                         Logging.Log("OmniEveUI:OnSellItemsFinished", "Exception [" + ex + "]", Logging.Debug);
                     }
                 }
+
+                // Remove all the rows that had sell orders created
+                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                    itemHangerGrid.Rows.Remove(row);
             });
 
             CheckState();
@@ -528,6 +562,7 @@ namespace OmniEve
             });
 
             SellItems sellItems = new SellItems(sellItemList);
+            sellItems.OnSellItemFinished += OnSellItemFinished;
             sellItems.OnSellItemsFinished += OnSellItemsFinished;
 
             _omniEve.AddScript(sellItems);
