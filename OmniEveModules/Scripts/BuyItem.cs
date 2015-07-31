@@ -13,7 +13,7 @@ namespace OmniEveModules.Scripts
     using OmniEveModules.States;
     using OmniEveModules.Status;
 
-    public class Buy : IScript
+    public class BuyItem : IScript
     {
         public enum State
         {
@@ -27,13 +27,23 @@ namespace OmniEveModules.Scripts
             CreateOrder
         }
 
-        public int Item { get; set; }
-        public int Unit { get; set; }
-        public bool UseOrders { get; set; }
+        public delegate void BuyItemFinished(int typeId, bool orderCreated);
+        public event BuyItemFinished OnBuyItemFinished;
 
+        private int _typeId = 0;
+        private int _volume = 0;
+        private bool _createOrder = false;
         private DateTime _lastAction;
-        private bool _returnBuy;
+        private bool _returnBuy = false;
+        private bool _done = false;
         private State _state = State.Idle;
+
+        public BuyItem(int typeId, int volume, bool createOrder)
+        {
+            _typeId = typeId;
+            _volume = volume;
+            _createOrder = createOrder;
+        }
 
         public void Initialize()
         {
@@ -42,7 +52,7 @@ namespace OmniEveModules.Scripts
 
         public bool IsDone()
         {
-            return _state == State.Done;
+            return _done;
         }
 
         public void Process()
@@ -58,7 +68,12 @@ namespace OmniEveModules.Scripts
             switch (_state)
             {
                 case State.Idle:
+                    break;
                 case State.Done:
+                    if (OnBuyItemFinished != null)
+                        OnBuyItemFinished(_typeId, _createOrder);
+
+                    _done = true;
                     break;
 
                 case State.Begin:
@@ -71,9 +86,6 @@ namespace OmniEveModules.Scripts
 
                 case State.OpenMarket:
                     
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 5)
-                        break;
-
                     if (marketWindow == null)
                     {
                         _lastAction = DateTime.UtcNow;
@@ -83,30 +95,45 @@ namespace OmniEveModules.Scripts
                     }
 
                     if (!marketWindow.IsReady)
+                    {
+                        Logging.Log("BuyItem:Process", "Market window is not ready", Logging.White);
                         break;
+                    }
 
-                    Logging.Log("Buy:Process", "Opening Market", Logging.White);
+                    Logging.Log("BuyItem:Process", "Opening Market", Logging.White);
                     _state = State.LoadItem;
 
                     break;
 
                 case State.LoadItem:
 
+                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
+                        break;
+
                     _lastAction = DateTime.UtcNow;
 
-                    if (marketWindow != null && marketWindow.DetailTypeId != Item)
+                    if (marketWindow != null)
                     {
-                        marketWindow.LoadTypeId(Item);
-                        if (UseOrders)
+                        Logging.Log("BuyItem:Process", "Load orders for TypeId - " + _typeId.ToString(), Logging.White);
+
+                        if (marketWindow.DetailTypeId != _typeId)
                         {
-                            _state = State.CreateOrder;
-                        }
-                        else
-                        {
-                            _state = State.BuyItem;
+                            if (marketWindow.LoadTypeId(_typeId))
+                            {
+                                if(_createOrder == true)
+                                    _state = State.CreateOrder;
+                                else
+                                    _state = State.BuyItem;
+                            }
                         }
 
                         break;
+                    }
+                    else
+                    {
+                        Logging.Log("BuyItem:Process", "Market Window is not open, going back to open market state", Logging.White);
+
+                        _state = State.OpenMarket;
                     }
 
                     break;
@@ -120,18 +147,29 @@ namespace OmniEveModules.Scripts
 
                     if (marketWindow != null)
                     {
+                        if (!marketWindow.IsReady)
+                        {
+                            Logging.Log("BuyItem:Process", "Market window is not ready", Logging.White);
+                            break;
+                        }
+
+                        if (marketWindow.DetailTypeId != _typeId)
+                        {
+                            _state = State.LoadItem;
+                            break;
+                        }
+
                         List<DirectOrder> orders = marketWindow.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
 
                         DirectOrder order = orders.OrderByDescending(o => o.Price).FirstOrDefault();
                         if (order != null)
                         {
-                            double price = order.Price + 0.01;
+                            double price = double.Parse((decimal.Parse(order.Price.ToString()) + 0.01m).ToString());
                             if (Cache.Instance.DirectEve.Session.StationId != null)
                             {
-                                Cache.Instance.DirectEve.Buy((int)Cache.Instance.DirectEve.Session.StationId, Item, price, Unit, DirectOrderRange.Station, 1, 30);
+                                Cache.Instance.DirectEve.Buy((int)Cache.Instance.DirectEve.Session.StationId, _typeId, price, _volume, DirectOrderRange.Station, 1, 90);
                             }
                         }
-                        UseOrders = false;
                         _state = State.Done;
                     }
 
@@ -144,22 +182,34 @@ namespace OmniEveModules.Scripts
 
                     if (marketWindow != null)
                     {
+                        if (!marketWindow.IsReady)
+                        {
+                            Logging.Log("BuyItem:Process", "Market window is not ready", Logging.White);
+                            break;
+                        }
+
+                        if (marketWindow.DetailTypeId != _typeId)
+                        {
+                            _state = State.LoadItem;
+                            break;
+                        }
+
                         List<DirectOrder> orders = marketWindow.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
 
                         DirectOrder order = orders.OrderBy(o => o.Price).FirstOrDefault();
                         if (order != null)
                         {
                             // Calculate how much we still need
-                            if (order.VolumeEntered >= Unit)
+                            if (order.VolumeEntered >= _volume)
                             {
-                                order.Buy(Unit, DirectOrderRange.Station);
+                                order.Buy(_volume, DirectOrderRange.Station);
                                 _state = State.WaitForItems;
                             }
                             else
                             {
-                                order.Buy(Unit, DirectOrderRange.Station);
-                                Unit = Unit - order.VolumeEntered;
-                                Logging.Log("Buy:Process", "Missing " + Convert.ToString(Unit) + " units", Logging.White);
+                                order.Buy(_volume, DirectOrderRange.Station);
+                                _volume = _volume - order.VolumeEntered;
+                                Logging.Log("BuyItem:Process", "Missing " + Convert.ToString(_volume) + " units", Logging.White);
                                 _returnBuy = true;
                                 _state = State.WaitForItems;
                             }
@@ -179,13 +229,13 @@ namespace OmniEveModules.Scripts
 
                     if (_returnBuy)
                     {
-                        Logging.Log("Buy:Process", "Return Buy", Logging.White);
+                        Logging.Log("BuyItem:Process", "Return Buy", Logging.White);
                         _returnBuy = false;
                         _state = State.OpenMarket;
                         break;
                     }
 
-                    Logging.Log("Buy:Process", "Done", Logging.White);
+                    Logging.Log("BuyItem:Process", "Done", Logging.White);
                     _state = State.Done;
 
                     break;

@@ -24,7 +24,7 @@ namespace OmniEveModules.Scripts
             CompareMyOrders
         }
 
-        public delegate void ItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders);
+        public delegate void ItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders, List<DirectOrder> buyOrders);
         public event ItemHangerFinished OnItemHangerFinished;
 
         private DateTime _lastAction;
@@ -34,6 +34,7 @@ namespace OmniEveModules.Scripts
 
         private MyOrders _myOrders = null;
         private List<DirectOrder> _sellOrders;
+        private List<DirectOrder> _buyOrders;
 
         public void Initialize()
         {
@@ -59,7 +60,7 @@ namespace OmniEveModules.Scripts
                     break;
                 case State.Done:
                     if (OnItemHangerFinished != null)
-                        OnItemHangerFinished(_hangerItems, _sellOrders);
+                        OnItemHangerFinished(_hangerItems, _sellOrders, _buyOrders);
 
                     _done = true;
                     break;
@@ -110,6 +111,7 @@ namespace OmniEveModules.Scripts
         private void OnMyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
         {
             _sellOrders = mySellOrders;
+            _buyOrders = myBuyOrders;
             _state = State.Done;
         }
     }

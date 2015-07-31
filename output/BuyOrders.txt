@@ -1,0 +1,151 @@
+11443,Hydromagnetic Physics,34,6000075.5,11989887.14
+19149,Pithum B-Type Medium Remote Shield Booster,16,9750005.87,19000000
+14043,Dread Guristas EM Ward Amplifier,30,9100003.97,13999998.26
+13957,Dark Blood Large Armor Repairer,6,26001000.03,43999986.37
+34278,Polarized Light Neutron Blaster,22,5198250.82,9999993.99
+13980,Dark Blood Armor Kinetic Hardener,24,5704065.16,9229993.94
+18961,Core B-Type Armor Kinetic Hardener,7,16002000,27989989.92
+11454,Caldari Starship Engineering,31,4003150.71,6497994.85
+30558,Malfunctioning Thruster Sections,63,800001.21,1999930.58
+2559,ECM - Phase Inverter II,134,680100.12,1199796.76
+11445,Minmatar Starship Engineering,26,3300298.61,5789979
+11451,Nuclear Physics,24,4000191.36,6400000
+19241,Gistum C-Type Kinetic Deflection Amplifier,20,4100202.03,6899999.74
+13951,Dread Guristas Small Shield Booster,8,12100403.86,18500406.23
+3655,Medium Hull Repairer II,30,1800000.27,3440122.5
+2258,ECCM - Omni II,28,253701.32,1851488.86
+2580,Gravimetric Backup Array II,55,403000.24,1198938.52
+18847,Centum C-Type Energized Thermic Membrane,16,747011.19,3400000
+31276,Medium Ionic Field Projector I,65,850000.01,1499991.01
+19211,Pithum C-Type Thermic Dissipation Amplifier,85,915001.04,1415000.2
+573,Neutron Blaster Cannon I,70,1000006.55,1599999.99
+20209,Rocket Specialization,128,455402.24,780402.22
+20110,Sleeper Foundation Block,21,2600500,4499990.95
+31646,Medium Warhead Rigor Catalyst I,58,963000.01,1649994.9
+13225,Eifyr and Co. 'Gunslinger' Small Projectile Turret SP-603,31,650030.78,1889999.99
+32083,Medium Sentry Damage Augmentor I,36,926992.65,1979999.74
+14084,True Sansha Energized Explosive Membrane,35,1503000,2500000
+35062,Coercer Blood Raiders SKIN (30 Days),45,122223,874999.86
+3285,Quad Light Beam Laser II,57,830318.86,1430318.74
+35434,Prophecy Blood Raiders SKIN (30 Days),26,303334.41,1499982.93
+18807,Corelum C-Type Energized Thermic Membrane,21,1361201.26,2852999.94
+34738,Imicus Inner Zone Shipping SKIN (Permanent),42,1110010.15,1789999.99
+22619,Frigoris Restrained Ice Harvester Upgrade,7,6655000.02,10486998.99
+1436,Auto Targeting System II,87,255500.07,555547.56
+14220,Shadow Serpentis Medium Plasma Smartbomb,6,6130498.42,10109056.37
+22131,Mid-grade Talisman Alpha,8,5501006.62,8500000
+1855,Ship Scanner II,95,308000.01,551999.97
+4274,Mining Foreman Link - Harvester Capacitor Efficiency II,27,1337003,2195999.99
+1565,Small EMP Smartbomb II,43,251100.22,729999.93
+35006,Brutix Serpentis SKIN (30 Days),29,200000.01,899999.96
+35150,Ferox Guristas SKIN (30 Days),33,180190.13,785000
+31456,Medium Energy Collision Accelerator I,76,40010.13,297998.49
+2588,Magnetometric Backup Array II,26,155008.51,896998.85
+3412,Astrometrics,56,125012.68,463468.98
+6811,Focused Anode Pulse Particle Stream I,39,500030.12,989994
+35586,Thrasher Thukker Tribe SKIN (30 Days),48,211224.12,596998.91
+26080,Large Anti-Kinetic Screen Reinforcer I,29,358001.67,946999.6
+19267,Gist B-Type Thermic Dissipation Field,7,2851000,5247999
+18845,Corpum C-Type Energized Thermic Membrane,14,1933000.01,3100000
+28298,'Integrated' Vespa,55,411124.63,699998.66
+35038,Catalyst Serpentis SKIN (30 Days),50,441000.01,754554.35
+19081,Corpum A-Type Medium Remote Capacitor Transmitter,8,2800192.14,4699538.99
+12182,Crokite Processing,49,90004.01,389989.94
+26008,Large Hybrid Collision Accelerator I,15,27000.15,997995
+18025,Ice Processing,37,101000.82,488666.89
+27930,Medium Remote Hull Repairer I,39,40100,398628.99
+23099,Imperial Navy Infrared M,84,270008.11,439886.17
+32817,Medium Mercoxit Mining Crystal Optimization I,37,560000.16,943947.98
+26253,Armor Rigging,178,19000.38,97000
+14035,Dread Guristas Thermic Dissipation Amplifier,25,878018.43,1438999.99
+13997,Domination Kinetic Deflection Field,7,935003.03,2699999.99
+22557,Mining Foreman Link - Laser Optimization I,45,274000.01,548999.72
+14029,Domination Explosive Deflection Amplifier,8,968004.09,2445996.99
+20024,Sanshas Standard L,8,193001,1647989.99
+11297,400mm Steel Plates I,59,165200.01,363700
+14210,Dread Guristas Medium Graviton Smartbomb,10,1880001.05,3054490
+6761,Quad Modulated Light Energy Beam I,32,457017.09,819999.97
+3466,Medium Secure Container,79,10000.9,149994.97
+33272,Survey Probe Launcher II,14,211000.01,998000.35
+20409,Armored Warfare Link - Passive Defense I,43,118005.46,374924.51
+26048,Large Projectile Collision Accelerator I,13,62202.5,899999
+19269,Gist B-Type Explosive Deflection Field,6,2712000.27,4508999.93
+25980,Large Energy Collision Accelerator I,12,130011.29,999998.37
+21212,Blood Infrared M,8,265004.01,1563999.14
+30600,Malfunctioning Electromechanical Component,60,275008.15,450000
+26255,Drones Rigging,126,45113.43,124849.39
+26259,Hybrid Weapon Rigging,111,31033.01,118770.99
+26046,Large Projectile Burst Aerator I,13,501001.02,1247999
+31444,Medium Energy Burst Aerator I,41,27200.12,249999.48
+20514,Siege Warfare Link - Shield Harmonizing I,38,199019.6,434000
+11277,Armor Thermic Hardener I,112,120000.63,199898.74
+11488,Huge Secure Container,29,22002.38,309999.83
+10838,Large Shield Booster I,66,12120.12,137969
+3306,Medium Energy Turret,99,23005.86,104997.91
+18752,Corpii A-Type Kinetic Plating,11,754093.22,1488008.84
+13262,Zainou 'Gnome' Shield Emission Systems SE-803,33,200002.85,435000
+421,'Basic' Capacitor Recharger,7,900000.96,1999998.97
+22227,Armored Warfare Link - Rapid Repair I,28,123003.6,394997.63
+13992,Domination Armor Thermic Hardener,6,2019000.03,3297999.9
+20408,Skirmish Warfare Link - Rapid Deployment I,28,154005.02,411998.99
+31480,Medium Energy Locus Coordinator I,65,110000,219980.98
+18766,Centii A-Type Thermic Plating,15,623660.11,1100000
+18795,Coreli A-Type EM Plating,18,551838.36,948999.85
+18756,Corpii A-Type Explosive Plating,11,862603.54,1499999.99
+14088,Dark Blood Energized EM Membrane,14,166251.16,647887.99
+18754,Centii A-Type Kinetic Plating,14,377294.99,849999.99
+457,Focused Medium Beam Laser I,58,41002.18,151999.82
+11303,Armor Explosive Hardener I,107,107411.02,168899.94
+35074,Cormorant Guristas SKIN (30 Days),50,60006,187978.99
+18760,Corpii A-Type EM Plating,13,315884.24,800000
+6805,Focused Modal Pulse Laser I,40,97011.24,249999.97
+18801,Corelum C-Type Energized Kinetic Membrane,15,590003.06,1000000
+2355,Small Hull Repairer II,21,300000.35,589996.8
+6635,Dual Modulated Light Energy Beam I,157,61025.16,100000
+20069,Armored Warfare Link - Damage Control I,35,207002.49,379999.89
+11305,Armor Kinetic Hardener I,93,88757.01,149499.96
+20070,Skirmish Warfare Link - Evasive Maneuvers I,29,205000.01,397998.95
+17363,Small Audit Log Secure Container,29,11000.11,199567.98
+14076,Dark Blood Energized Kinetic Membrane,16,357115,699999
+14031,Dread Guristas Explosive Deflection Amplifier,19,427005,699990
+26257,Projectile Weapon Rigging,87,30009.23,86447.99
+2020,Large Capacitor Battery I,49,72002.08,171989.95
+31203,Medium Emission Scope Sharpener I,18,455112.16,724994.99
+31215,Medium Gravity Capacitor Upgrade I,57,52063.6,129869.99
+8785,125mm Light Carbine Repeating Cannon I,52,139756,222999.97
+14094,Dark Blood Energized Thermic Membrane,17,346015,598998.9
+456,Focused Medium Pulse Laser I,94,75501.03,119447.94
+3393,Repair Systems,153,7500.01,32499.99
+26260,Launcher Rigging,140,7004.08,33999.99
+32774,Small Ancillary Shield Booster,418,11200,20399.24
+27904,Large Remote Hull Repairer I,41,35000.46,126000
+11301,Armor EM Hardener I,77,56002.01,104000
+3538,Large Armor Repairer I,65,50016.76,104998.94
+3435,Propulsion Jamming,385,1026.06,9977
+3388,Advanced Industry,74,21502.7,67950
+20124,Siege Warfare Link - Active Shielding I,24,201000,340999.93
+12190,Omber Processing,49,64409.7,131248.9
+32918,Mining Frigate,207,4508.04,19999.98
+20405,Information Warfare Link - Recon Operation I,16,210029.68,399896.49
+2529,Explosive Deflection Amplifier I,66,12256.23,57592.9
+12193,Scordite Processing,80,16001.7,52498.84
+12265,Medium Energy Neutralizer I,74,50000.2,89887.94
+20617,Small 'Settler' Shield Booster,7,771001.7,1189999.98
+20345,100mm Steel Plates II,56,95892.5,147061.23
+1198,EM Plating II,60,45006.66,87997
+26256,Electronic Superiority Rigging,127,4001.17,21894.96
+1963,Remote Sensor Booster I,55,40600.73,79000
+3653,Medium Hull Repairer I,74,47034.39,75000
+11227,Energized Explosive Membrane I,36,62633.06,114999.98
+13286,Limited Social Adaptation Chip,96,10000.18,28899.86
+2018,Medium Capacitor Battery I,82,11015.18,32994.98
+2103,Remote Tracking Computer I,33,11008.19,64999.99
+2004,ECCM - Gravimetric I,79,3001,24988
+3465,Large Secure Container,39,15169.06,58900
+3551,Survey,165,5603.03,15457.47
+17215,Serpentis Copper Tag,78,27013.09,47999.98
+21450,Blood Radio M,25,96500,159999.99
+5743,Small 'Hope' Hull Reconstructor I,81,806.17,18997.92
+31240,Medium Memetic Algorithm Bank I,24,4446.38,64999.92
+6807,Focused Afocal Pulse Maser I,28,17331.83,69102.87
+31228,Medium Liquid Cooled Electronics I,38,10000.03,39499.99

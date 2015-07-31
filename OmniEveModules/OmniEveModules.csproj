@@ -53,8 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\BuyItems.cs" />
     <Compile Include="Scripts\IScript.cs" />
-    <Compile Include="Scripts\Buy.cs" />
+    <Compile Include="Scripts\BuyItem.cs" />
     <Compile Include="Scripts\ItemHanger.cs" />
     <Compile Include="Scripts\MarketInfoForList.cs" />
     <Compile Include="Scripts\MyOrders.cs" />
