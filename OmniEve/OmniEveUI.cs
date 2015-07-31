@@ -81,6 +81,41 @@ namespace OmniEve
             CheckState();
         }
 
+        private void OnCheckMyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        {
+            int orderCap = Cache.Instance.DirectEve.GetOrderCap();
+
+            Logging.Log("OmniEveUI:OnCheckMyOrdersFinished", "Buy Order Count - " + myBuyOrders.Count + " Sell Order Count - " + mySellOrders.Count + " Order Cap - " + orderCap, Logging.White);
+
+            int maxBuyOrders = (int)((decimal)orderCap * 0.66m);
+            int newBuyOrders = 0;
+
+            marketGrid.Invoke((MethodInvoker)delegate
+            {
+                foreach(DataGridViewRow row in marketGrid.Rows)
+                {
+                    int typeId = (int)row.Cells["Market_TypeId"].Value;
+
+                    DirectOrder order = myBuyOrders.FirstOrDefault(o => o.TypeId == typeId);
+
+                    if (order == null)
+                    {
+                        newBuyOrders++;
+
+                        row.DefaultCellStyle.BackColor = Color.LightGreen;
+                        row.DefaultCellStyle.ForeColor = Color.Black;
+
+                        if(myBuyOrders.Count + newBuyOrders <= maxBuyOrders && myBuyOrders.Count + mySellOrders.Count + newBuyOrders <= (orderCap-5))
+                        {
+                            row.Cells["Market_Select"].Value = true;
+                        }
+                    }
+                }
+            });
+
+            CheckState();
+        }
+
         private void OnMarketInfoFinished(MarketItem marketItem)
         {
             List<DirectOrder> sellOrders = marketItem.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).OrderBy(o => o.Price).ToList();
@@ -96,14 +131,40 @@ namespace OmniEve
 
         private void OnModifySellOrderFinished(long orderId, double price)
         {
-            sellingGrid.Invoke((MethodInvoker)delegate { UpdateMySellOrdersGrid_OrderPrice(orderId, price, true); });
+            sellingGrid.Invoke((MethodInvoker)delegate 
+            {
+                foreach (DataGridViewRow row in sellingGrid.Rows)
+                {
+                    if ((long)row.Cells["Selling_OrderId"].Value == orderId)
+                    {
+                        row.Cells["Selling_OrderPrice"].Value = price.ToString();
+                        row.Cells["Selling_MarketPrice"].Value = price.ToString();
+
+                        row.DefaultCellStyle.BackColor = Color.White;
+                        row.DefaultCellStyle.ForeColor = Color.Black;
+                    }
+                }
+            });
 
             CheckState();
         }
 
         private void OnModifyBuyOrderFinished(long orderId, double price)
         {
-            buyingGrid.Invoke((MethodInvoker)delegate { UpdateMyBuyOrdersGrid_OrderPrice(orderId, price, true); });
+            buyingGrid.Invoke((MethodInvoker)delegate 
+            { 
+                foreach (DataGridViewRow row in buyingGrid.Rows)
+                {
+                    if ((long)row.Cells["Buying_OrderId"].Value == orderId)
+                    {
+                        row.Cells["Buying_OrderPrice"].Value = price.ToString();
+                        row.Cells["Buying_MarketPrice"].Value = price.ToString();
+
+                        row.DefaultCellStyle.BackColor = Color.White;
+                        row.DefaultCellStyle.ForeColor = Color.Black;
+                    }
+                } 
+            });
             CheckState();
         }
 
@@ -250,74 +311,6 @@ namespace OmniEve
             }
         }
 
-        private void UpdateMySellOrdersGrid_OrderPrice(long orderId, double price, bool changeMarket)
-        {
-            foreach (DataGridViewRow row in sellingGrid.Rows)
-            {
-                if ((long)row.Cells["Selling_OrderId"].Value == orderId)
-                {
-                    row.Cells["Selling_OrderPrice"].Value = price.ToString();
-                    if (changeMarket == true)
-                        row.Cells["Selling_MarketPrice"].Value = price.ToString();
-
-                    row.DefaultCellStyle.BackColor = Color.White;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void UpdateMyBuyOrdersGrid_OrderPrice(long orderId, double price, bool changeMarket)
-        {
-            foreach (DataGridViewRow row in buyingGrid.Rows)
-            {
-                if ((long)row.Cells["Buying_OrderId"].Value == orderId)
-                {
-                    row.Cells["Buying_OrderPrice"].Value = price.ToString();
-                    if (changeMarket == true)
-                        row.Cells["Buying_MarketPrice"].Value = price.ToString();
-
-                    row.DefaultCellStyle.BackColor = Color.White;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
-                }
-            }
-        }
-
-        private void UpdateItemHangerGrid_Fill(List<DirectItem> _hangerItems, List<DirectOrder> mySellOrders)
-        {
-            Logging.Log("OmniEveUI:UpdateItemHanger", "Clearing existing item hanger grid of items", Logging.White);
-            itemHangerGrid.Rows.Clear();
-
-            Logging.Log("OmniEveUI:UpdateItemHanger", "Filling item hanger grid of updated items", Logging.White);
-
-            foreach (DirectItem item in _hangerItems)
-            {
-                Logging.Log("OmniEveUI:UpdateItemHanger", "Item Name - " + item.Name
-                          + " Quantity - " + item.Quantity
-                          + " Group - " + item.GroupName
-                          + " Volume - " + item.Volume, Logging.White);
-
-                int index = itemHangerGrid.Rows.Add();
-                itemHangerGrid.AllowUserToAddRows = true;
-                itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = false;
-                itemHangerGrid.Rows[index].Cells["ItemHanger_Name"].Value = item.Name;
-                itemHangerGrid.Rows[index].Cells["ItemHanger_ItemId"].Value = item.ItemId;
-                itemHangerGrid.Rows[index].Cells["ItemHanger_Quantity"].Value = item.Quantity;
-                itemHangerGrid.Rows[index].Cells["ItemHanger_Group"].Value = item.GroupName;
-                itemHangerGrid.Rows[index].Cells["ItemHanger_Volume"].Value = item.Volume;
-
-                DirectOrder order = mySellOrders.FirstOrDefault(o => o.TypeId == item.TypeId);
-
-                if (order == null)
-                {
-                    itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = true;
-                    itemHangerGrid.Rows[index].DefaultCellStyle.BackColor = Color.Red;
-                    itemHangerGrid.Rows[index].DefaultCellStyle.ForeColor = Color.Black;
-                }
-
-                itemHangerGrid.AllowUserToAddRows = false;
-            }
-        }
-
         private List<DirectOrder> CreateModifySellOrdersList()
         {
             List<DirectOrder> sellOrders = new List<DirectOrder>();
@@ -380,14 +373,57 @@ namespace OmniEve
             return buyOrders;
         }
 
-        private void OnItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders)
+        private void OnItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders, List<DirectOrder> buyOrders)
         {
-            itemHangerGrid.Invoke((MethodInvoker)delegate { UpdateItemHangerGrid_Fill(hangerItems, sellOrders); });
+            itemHangerGrid.Invoke((MethodInvoker)delegate 
+            {
+                int orderCap = Cache.Instance.DirectEve.GetOrderCap();
+                int maxSellOrders = (int)((decimal)orderCap * 0.66m);
+                int newSellOrders = 0;
+
+                Logging.Log("OmniEveUI:UpdateItemHanger", "Clearing existing item hanger grid of items", Logging.White);
+                itemHangerGrid.Rows.Clear();
+
+                Logging.Log("OmniEveUI:UpdateItemHanger", "Filling item hanger grid of updated items", Logging.White);
+
+                foreach (DirectItem item in hangerItems)
+                {
+                    Logging.Log("OmniEveUI:UpdateItemHanger", "Item Name - " + item.Name
+                              + " Quantity - " + item.Quantity
+                              + " Group - " + item.GroupName
+                              + " Volume - " + item.Volume, Logging.White);
+
+                    int index = itemHangerGrid.Rows.Add();
+                    itemHangerGrid.AllowUserToAddRows = true;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = false;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_Name"].Value = item.Name;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_ItemId"].Value = item.ItemId;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_Quantity"].Value = item.Quantity;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_Group"].Value = item.GroupName;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_Volume"].Value = item.Volume;
+
+                    DirectOrder order = sellOrders.FirstOrDefault(o => o.TypeId == item.TypeId);
+
+                    if (order == null)
+                    {
+                        newSellOrders++;
+                        itemHangerGrid.Rows[index].DefaultCellStyle.BackColor = Color.LightGreen;
+                        itemHangerGrid.Rows[index].DefaultCellStyle.ForeColor = Color.Black;
+
+                        if (sellOrders.Count + newSellOrders <= maxSellOrders && buyOrders.Count + sellOrders.Count + newSellOrders <= orderCap)
+                        {
+                            itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = true;
+                        }
+                    }
+
+                    itemHangerGrid.AllowUserToAddRows = false;
+                }
+            });
 
             CheckState();
         }
 
-        private void OnSellItemFinished(DirectItem itemSold)
+        private void OnSellItemFinished(DirectItem itemSold, bool sold)
         {
             itemHangerGrid.Invoke((MethodInvoker)delegate
             {
@@ -399,7 +435,13 @@ namespace OmniEve
                     {
                         if (itemSold.ItemId == (long)row.Cells["ItemHanger_ItemId"].Value)
                         {
-                            rowsToRemove.Add(row);
+                            if(sold == true)
+                                rowsToRemove.Add(row);
+                            else
+                            {
+                                row.DefaultCellStyle.BackColor = Color.Yellow;
+                                row.DefaultCellStyle.ForeColor = Color.Black;
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -432,7 +474,7 @@ namespace OmniEve
                         {
                             rowsToRemove.Add(row);
                         }
-                        else if(row.DefaultCellStyle.BackColor == Color.Red)
+                        else if((bool)row.Cells["ItemHanger_Select"].Value == true)
                         {
                             row.DefaultCellStyle.BackColor = Color.Yellow;
                             row.DefaultCellStyle.ForeColor = Color.Black;
@@ -447,6 +489,68 @@ namespace OmniEve
                 // Remove all the rows that had sell orders created
                 foreach (DataGridViewRow row in rowsToRemove)
                     itemHangerGrid.Rows.Remove(row);
+            });
+
+            CheckState();
+        }
+
+        private void OnBuyItemFinished(int typeId, bool orderCreated)
+        {
+            marketGrid.Invoke((MethodInvoker)delegate
+            {
+                List<DataGridViewRow> rowsToRemove = new List<DataGridViewRow>();
+
+                foreach (DataGridViewRow row in marketGrid.Rows)
+                {
+                    try
+                    {
+                        if (typeId == (int)row.Cells["Market_TypeId"].Value)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.White;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:OnSellItemFinished", "Exception [" + ex + "]", Logging.Debug);
+                    }
+                }
+
+                // Remove all the rows that had sell orders created
+                foreach (DataGridViewRow row in rowsToRemove)
+                    marketGrid.Rows.Remove(row);
+            });
+
+            CheckState();
+        }
+
+        private void OnBuyItemsFinished(List<int> typeIdsBought, bool ordersCreated)
+        {
+            marketGrid.Invoke((MethodInvoker)delegate
+            {
+                List<DataGridViewRow> rowsToRemove = new List<DataGridViewRow>();
+
+                foreach (DataGridViewRow row in marketGrid.Rows)
+                {
+                    try
+                    {
+                        int typeId = typeIdsBought.FirstOrDefault(i => i == (int)row.Cells["Market_TypeId"].Value);
+
+                        if (typeId != 0)
+                        {
+                            row.DefaultCellStyle.BackColor = Color.White;
+                            row.DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:OnSellItemsFinished", "Exception [" + ex + "]", Logging.Debug);
+                    }
+                }
+
+                // Remove all the rows that had sell orders created
+                foreach (DataGridViewRow row in rowsToRemove)
+                    marketGrid.Rows.Remove(row);
             });
 
             CheckState();
@@ -566,6 +670,39 @@ namespace OmniEve
             sellItems.OnSellItemsFinished += OnSellItemsFinished;
 
             _omniEve.AddScript(sellItems);
+        }
+
+        public void CreateBuyOrders()
+        {
+            Dictionary<int, int> ordersToCreate = new Dictionary<int, int>();
+
+            marketGrid.Invoke((MethodInvoker)delegate
+            {
+                foreach (DataGridViewRow row in marketGrid.Rows)
+                {
+                    try
+                    {
+                        if (Convert.ToBoolean(row.Cells["Market_Select"].Value) == true)
+                        {
+                            int typeId = (int)row.Cells["Market_TypeId"].Value;
+                            int volume = (int)row.Cells["Market_Volume"].Value;
+
+                            Logging.Log("OmniEveUI:CreateBuyOrders", "Adding type to create buy order for TypeId - " + typeId + " Volume - " + volume, Logging.Debug);
+                            ordersToCreate.Add(typeId, volume);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("OmniEveUI:SellItemsInHanger", "Exception [" + ex + "]", Logging.Debug);
+                    }
+                }
+            });
+
+            BuyItems buyItems = new BuyItems(ordersToCreate, true);
+            buyItems.OnBuyItemFinished += OnBuyItemFinished;
+            buyItems.OnBuyItemsFinished += OnBuyItemsFinished;
+
+            _omniEve.AddScript(buyItems);
         }
 
         private void OmniEveUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -732,6 +869,79 @@ namespace OmniEve
                 SellItemsInHanger();
 
                 CheckState();
+            }
+        }
+
+        private void loadBuyOrdersButton_Click(object sender, EventArgs e)
+        {
+            _mode = Mode.Manual;
+
+            string[] allLines = File.ReadAllLines("C:\\Users\\Tim\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+
+            foreach (string line in allLines)
+            {
+                try
+                {
+                    string[] parameters = line.Split(',');
+
+                    int typeId = int.Parse(parameters[0]);
+                    string name = parameters[1];
+                    int volume = int.Parse(parameters[2]);
+                    double buyPrice = double.Parse(parameters[3]);
+                    double sellPrice = double.Parse(parameters[4]);
+                    double potentialProfit = (sellPrice - buyPrice) * volume;
+
+                    marketGrid.Invoke((MethodInvoker)delegate
+                    {
+                        int index = marketGrid.Rows.Add();
+
+                        marketGrid.Rows[index].Cells["Market_Select"].Value = false;
+                        marketGrid.Rows[index].Cells["Market_TypeId"].Value = typeId;
+                        marketGrid.Rows[index].Cells["Market_Name"].Value = name;
+                        marketGrid.Rows[index].Cells["Market_Volume"].Value = volume;
+                        marketGrid.Rows[index].Cells["Market_BuyPrice"].Value = buyPrice;
+                        marketGrid.Rows[index].Cells["Market_SellPrice"].Value = sellPrice;
+                        marketGrid.Rows[index].Cells["Market_PotentialProfit"].Value = potentialProfit;
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Logging.Log("OmniEveUI:loadBuyOrdersFileOk", "Exception [" + ex + "]", Logging.Debug);
+                }
+            }
+
+            CheckState();
+        }
+
+        private void createBuyOrderButton_Click(object sender, EventArgs e)
+        {
+            if (_mode == Mode.Idle)
+            {
+                _mode = Mode.Manual;
+
+                Logging.Log("OmniEveUI:CreateBuyOrdersButton", "Creating Buy Orders", Logging.Debug);
+
+                CreateBuyOrders();
+
+                CheckState();
+            }
+        }
+
+        private void checkMyOrdersButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _mode = Mode.Manual;
+
+                MyOrders myOrders = new MyOrders();
+                myOrders.OnMyOrdersFinished += OnCheckMyOrdersFinished;
+                _omniEve.AddScript(myOrders);
+
+                CheckState();
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("OmniEveUI:checkMyOrdersButton", "Exception [" + ex + "]", Logging.Debug);
             }
         }
     }

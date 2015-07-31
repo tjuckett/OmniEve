@@ -120,9 +120,10 @@ namespace OmniEveModules.Scripts
             }
         }
 
-        private void SellFinished(DirectItem item)
+        private void SellFinished(DirectItem item, bool sold)
         {
-            _itemsSold.Add(item);
+            if(sold == true)
+                _itemsSold.Add(item);
         }
     }
 }

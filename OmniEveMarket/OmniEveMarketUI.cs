@@ -22,8 +22,6 @@ namespace OmniEveMarket
     {
         private List<MetroGrid> _grids = new List<MetroGrid>();
 
-        private OpenFileDialog _openfileDialog;
-
         private decimal _salesTax = 1.5m;
         private decimal _brokersFee = 1.0m;
         private decimal _iskLimit = 0.0m;
@@ -36,7 +34,6 @@ namespace OmniEveMarket
 
         private List<Item> _items = new List<Item>();
         private List<Item> _updatedItems = new List<Item>();
-        private List<Item> _uiUpdatedItems = new List<Item>();
 
         private int _crestRequests = 0;
         private System.Timers.Timer _crestTimer = new System.Timers.Timer();
@@ -46,8 +43,6 @@ namespace OmniEveMarket
         public OmniEveMarketUI()
         {
             InitializeComponent();
-
-            _openfileDialog = new OpenFileDialog();
 
             _salesTax = Properties.Settings.Default.SalesTax;
             _brokersFee = Properties.Settings.Default.BrokersFee;
@@ -219,25 +214,28 @@ namespace OmniEveMarket
         {
             try
             {
-                if (item == null || item.BuySellOrders == null || item.MarketStats == null || item.PriceHistory == null)
-                    return;
+                buySellOrdersGrid.Invoke((MethodInvoker)delegate 
+                {
+                    if (item == null || item.BuySellOrders == null || item.MarketStats == null || item.PriceHistory == null)
+                        return;
 
-                int rowIndex = buySellOrdersGrid.Rows.Add();
+                    int rowIndex = buySellOrdersGrid.Rows.Add();
 
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Name"].Value = item.Name;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TypeId"].Value = item.TypeId;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_InitialBuyPrice"].Value = item.MarketStats.Sell.Min;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellVolume"].Value = item.MarketStats.Sell.Volume;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellOrders"].Value = item.BuySellOrders.SellOrderCount;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_FinalSellPrice"].Value = item.BuySellOrders.SellPrice;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersBought"].Value = item.BuySellOrders.SellOrdersBought;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeBought"].Value = item.BuySellOrders.VolumeBought;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TotalSpent"].Value = item.BuySellOrders.TotalSpent;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Profit"].Value = item.BuySellOrders.Profit;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_ProfitMargin"].Value = item.BuySellOrders.ProfitMargin;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersMovement"].Value = item.PriceHistory.AvgOrders;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeMovement"].Value = item.PriceHistory.AvgVolume;
-                buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_AvgPrice"].Value = item.PriceHistory.AvgPrice;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Name"].Value = item.Name;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TypeId"].Value = item.TypeId;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_InitialBuyPrice"].Value = item.MarketStats.Sell.Min;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellVolume"].Value = item.MarketStats.Sell.Volume;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OpenSellOrders"].Value = item.BuySellOrders.SellOrderCount;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_FinalSellPrice"].Value = item.BuySellOrders.SellPrice;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersBought"].Value = item.BuySellOrders.SellOrdersBought;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeBought"].Value = item.BuySellOrders.VolumeBought;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_TotalSpent"].Value = item.BuySellOrders.TotalSpent;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_Profit"].Value = item.BuySellOrders.Profit;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_ProfitMargin"].Value = item.BuySellOrders.ProfitMargin;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_OrdersMovement"].Value = item.PriceHistory.AvgOrders;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_VolumeMovement"].Value = item.PriceHistory.AvgVolume;
+                    buySellOrdersGrid.Rows[rowIndex].Cells["BuySellOrders_AvgPrice"].Value = item.PriceHistory.AvgPrice;
+                });
             }
             catch (Exception ex)
             {
@@ -250,33 +248,36 @@ namespace OmniEveMarket
         {
             try
             {
-                if (item == null || item.CreateBuyOrder == null || item.MarketStats == null || item.PriceHistory == null)
-                    return;
+                createBuyOrdersGrid.Invoke((MethodInvoker)delegate
+                {
+                    if (item == null || item.CreateBuyOrder == null || item.MarketStats == null || item.PriceHistory == null)
+                        return;
 
-                int rowIndex = createBuyOrdersGrid.Rows.Add();
+                    int rowIndex = createBuyOrdersGrid.Rows.Add();
 
-                bool selectRow = CheckPriceHistoryToSelect(item);
+                    bool selectRow = CheckPriceHistoryToSelect(item);
 
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Select"].Value = selectRow;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Name"].Value = item.Name;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TypeId"].Value = item.TypeId;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MinSellOrder"].Value = item.MarketStats.Sell.Min;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MaxBuyOrder"].Value = item.MarketStats.Buy.Max;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Profit"].Value = item.CreateBuyOrder.Profit;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_ProfitMargin"].Value = item.CreateBuyOrder.ProfitMargin;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TotalProfit"].Value = item.PriceHistory.AvgVolume * item.CreateBuyOrder.Profit;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_OrdersMovement"].Value = item.PriceHistory.AvgOrders;
-                createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_VolumeMovement"].Value = item.PriceHistory.AvgVolume;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Select"].Value = selectRow;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Name"].Value = item.Name;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TypeId"].Value = item.TypeId;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MinSellOrder"].Value = item.MarketStats.Sell.Min;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_MaxBuyOrder"].Value = item.MarketStats.Buy.Max;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_Profit"].Value = item.CreateBuyOrder.Profit;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_ProfitMargin"].Value = item.CreateBuyOrder.ProfitMargin;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_TotalProfit"].Value = item.PriceHistory.AvgVolume * item.CreateBuyOrder.Profit;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_OrdersMovement"].Value = item.PriceHistory.AvgOrders;
+                    createBuyOrdersGrid.Rows[rowIndex].Cells["CreateBuyOrders_VolumeMovement"].Value = item.PriceHistory.AvgVolume;
 
-                if(selectRow)
-                { 
-                    createBuyOrdersGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
-                    createBuyOrdersGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
-                }
+                    if (selectRow)
+                    {
+                        createBuyOrdersGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                        createBuyOrdersGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                    }
 
-                // If we are adding the first row then we add the selection changed
-                if(rowIndex == 0)
-                    createBuyOrdersGrid.SelectionChanged += createBuyOrdersGrid_SelectionChanged;
+                    // If we are adding the first row then we add the selection changed
+                    if (rowIndex == 0)
+                        createBuyOrdersGrid.SelectionChanged += createBuyOrdersGrid_SelectionChanged;
+                });
             }
             catch (Exception ex)
             {
@@ -294,7 +295,8 @@ namespace OmniEveMarket
             int totalDayCount = lastNinety.Count;
             int noOrderDayCount = 0;
             int allMinOrMaxDayCount = 0;
-            int bothMinAndMaxDayCount = 0;
+            int moreMinDayCount = 0;
+            int moreMaxDayCount = 0;
 
             foreach (PriceHistory.Day day in lastNinety)
             {
@@ -302,11 +304,15 @@ namespace OmniEveMarket
                     noOrderDayCount++;    
                 else if (day.MaxPrice == day.MinPrice)
                     allMinOrMaxDayCount++;  
-                else
-                    bothMinAndMaxDayCount++;
+                else if ((day.MinPrice + day.MaxPrice) / 2.0m <= day.AvgPrice)
+                    moreMaxDayCount++;
+                else if ((day.MinPrice + day.MaxPrice) / 2.0m > day.AvgPrice)
+                    moreMinDayCount++;
             }
 
-            if ((decimal)bothMinAndMaxDayCount / (decimal)totalDayCount > 0.75m &&
+            if ((decimal)(moreMaxDayCount + moreMinDayCount) / (decimal)totalDayCount > 0.75m &&
+                (decimal)(moreMaxDayCount) / (decimal)totalDayCount > 0.25m &&
+                (decimal)(moreMinDayCount) / (decimal)totalDayCount > 0.10m &&
                 (decimal)noOrderDayCount / (decimal)totalDayCount < 0.05m &&
                 (decimal)allMinOrMaxDayCount / (decimal)totalDayCount < 0.2m)
                 return true;
@@ -335,20 +341,26 @@ namespace OmniEveMarket
         {
             try
             {
-                sellersGrid.Rows.Clear();
-                buyersGrid.Rows.Clear();
-
                 Item item = _items.Find(i => i.TypeId == typeId);
-
                 QuickLook quickLook = item.QuickLook;
                 List<Order> sellers = quickLook.SellOrders;
                 List<Order> buyers = quickLook.BuyOrders;
+                    
+                sellersGrid.Invoke((MethodInvoker)delegate
+                {
+                    sellersGrid.Rows.Clear();
+                    foreach (Order order in sellers)
+                        sellersGrid.Rows.Add(order.VolRemain.ToString(), order.Price.ToString());
 
-                foreach (Order order in sellers)
-                    sellersGrid.Rows.Add(order.VolRemain.ToString(), order.Price.ToString());
+                });
 
-                foreach (Order order in buyers)
-                    buyersGrid.Rows.Add(order.VolRemain.ToString(), order.Price.ToString());
+                buyersGrid.Invoke((MethodInvoker)delegate
+                {
+                    buyersGrid.Rows.Clear();
+                    foreach (Order order in buyers)
+                        buyersGrid.Rows.Add(order.VolRemain.ToString(), order.Price.ToString());
+                });
+
             }
             catch(Exception ex)
             {
@@ -361,42 +373,45 @@ namespace OmniEveMarket
         {
             try
             {
-                priceHistoryGrid.Rows.Clear();
+                priceHistoryGrid.Invoke((MethodInvoker)delegate
+                {
+                    priceHistoryGrid.Rows.Clear();
 
-                Item item = _items.Find(i => i.TypeId == typeId);
+                    Item item = _items.Find(i => i.TypeId == typeId);
 
-                PriceHistory priceHistory = item.PriceHistory;
+                    PriceHistory priceHistory = item.PriceHistory;
 
-                List<PriceHistory.Day> lastNinety = priceHistory.Days.Take(90).ToList();
+                    List<PriceHistory.Day> lastNinety = priceHistory.Days.Take(90).ToList();
 
-                foreach (PriceHistory.Day day in lastNinety)
-                { 
-                    int rowIndex = priceHistoryGrid.Rows.Add(day.Date.ToString(), day.OrderCount.ToString(), day.Volume.ToString(), day.MinPrice.ToString(), day.MaxPrice.ToString(), day.AvgPrice.ToString());
-
-                    if (day.MaxPrice == 0.0m && day.MinPrice == 0.0m)
+                    foreach (PriceHistory.Day day in lastNinety)
                     {
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Red;
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                        int rowIndex = priceHistoryGrid.Rows.Add(day.Date.ToString(), day.OrderCount.ToString(), day.Volume.ToString(), day.MinPrice.ToString(), day.MaxPrice.ToString(), day.AvgPrice.ToString());
+
+                        if (day.MaxPrice == 0.0m && day.MinPrice == 0.0m)
+                        {
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Red;
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                        // If both the min and the max are the same it means that there are all buyers or all sellers
+                        else if (day.MaxPrice == day.MinPrice)
+                        {
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Yellow;
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                        // If its less than the average it means the average price is closer to the max and we want to label those red
+                        else if ((day.MinPrice + day.MaxPrice) / 2.0m <= day.AvgPrice)
+                        {
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightBlue;
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                        }
+                        // If its greater than the average it means the average price is closer to the min and we want to label those green
+                        else if ((day.MinPrice + day.MaxPrice) / 2.0m > day.AvgPrice)
+                        {
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                            priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
+                        }
                     }
-                    // If both the min and the max are the same it means that there are all buyers or all sellers
-                    else if (day.MaxPrice == day.MinPrice)
-                    {
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.Yellow;
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
-                    }
-                    // If its less than the average it means the average price is closer to the max and we want to label those red
-                    else if ((day.MinPrice + day.MaxPrice) / 2.0m <= day.AvgPrice)
-                    {
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightBlue;
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
-                    }
-                    // If its greater than the average it means the average price is closer to the min and we want to label those green
-                    else if ((day.MinPrice + day.MaxPrice) / 2.0m > day.AvgPrice)
-                    {
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
-                        priceHistoryGrid.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Black;
-                    }
-                }
+                });
             }
             catch (Exception ex)
             {
@@ -550,13 +565,42 @@ namespace OmniEveMarket
 
         private void createBuyOrdersButton_Click(object sender, EventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
 
+            saveFileDialog.FileOk += createBuyOrdersFileOk;
+            saveFileDialog.Filter = "Text Files (*.txt)|*.txt";
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.DefaultExt = "txt";
+            saveFileDialog.ShowDialog();
+        }
+
+        private void createBuyOrdersFileOk(object sender, CancelEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = (SaveFileDialog)sender;
+
+            File.Delete(saveFileDialog.FileName);
+
+            foreach(DataGridViewRow row in createBuyOrdersGrid.Rows)
+            {
+                if((bool)row.Cells["CreateBuyOrders_Select"].Value == true)
+                {
+                    File.AppendAllText(saveFileDialog.FileName, 
+                                       row.Cells["CreateBuyOrders_TypeId"].Value + "," +
+                                       row.Cells["CreateBuyOrders_Name"].Value + "," +
+                                       row.Cells["CreateBuyOrders_VolumeMovement"].Value + "," +
+                                       row.Cells["CreateBuyOrders_MaxBuyOrder"].Value + "," +
+                                       row.Cells["CreateBuyOrders_MinSellOrder"].Value + 
+                                       Environment.NewLine);
+                }
+            }
         }
 
         private void backgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             try
             {
+                _items.Clear();
+
                 LoadMarketTypes("https://public-crest.eveonline.com/market/types/");
 
                 int itemCount = _items.Count();
@@ -565,7 +609,10 @@ namespace OmniEveMarket
                 foreach (Item item in _items)
                 {
                     if (_cancelMarketLoad == true)
+                    {
+                        _cancelMarketLoad = false;
                         return;
+                    }
 
                     if (item.TypeId != 0)
                     {
@@ -598,7 +645,6 @@ namespace OmniEveMarket
                         item.BuySellOrders = buySellOrders;
                         item.CreateBuyOrder = createBuyOrder;
                         item.TypeId = typeId;
-                        item.Updated = true;
 
                         lock (_updatedItems)
                         {
@@ -623,30 +669,24 @@ namespace OmniEveMarket
         {
             try
             {
+                List<Item> itemsToCheck = null;
+
                 lock (_updatedItems)
                 {
-                    foreach(Item updatedItem in _updatedItems)
-                    {
-                        _uiUpdatedItems.Add(updatedItem);
-                    }
-
+                    itemsToCheck = new List<Item>(_updatedItems);
                     _updatedItems.Clear();
                 }
 
-                Item item = null;
-                
-                if(_uiUpdatedItems.Count > 0)
-                { 
-                    item = _uiUpdatedItems[0];
-                    _uiUpdatedItems.RemoveAt(0);
-                }
+                if (itemsToCheck == null)
+                    return;
 
-                if (item != null && item.Updated == true)
+                foreach(Item item in itemsToCheck)
                 {
-                    CheckAndBuySellOrder(item);
-                    CheckAndCreateBuyOrder(item);
-
-                    item.Updated = false;
+                    if (item != null)
+                    {
+                        CheckAndBuySellOrder(item);
+                        CheckAndCreateBuyOrder(item);
+                    }
                 }
             }
             catch(Exception ex)

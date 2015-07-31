@@ -28,12 +28,13 @@ namespace OmniEveModules.Scripts
             SellItem
         }
 
-        public delegate void SellItemFinished(DirectItem item);
+        public delegate void SellItemFinished(DirectItem item, bool sold);
         public event SellItemFinished OnSellItemFinished;
 
         private DirectItem _item = null;
         private bool _createOrder = false;
         private bool _done = false;
+        private bool _sold = false;
         private double _price = 0.0f;
 
         private DateTime _lastAction;
@@ -72,7 +73,7 @@ namespace OmniEveModules.Scripts
                     break;
                 case State.Done:
                     if (OnSellItemFinished != null)
-                        OnSellItemFinished(_item);
+                        OnSellItemFinished(_item, _sold);
 
                     _done = true;
                     break;
@@ -149,7 +150,10 @@ namespace OmniEveModules.Scripts
                         }
 
                         if (marketWindow.DetailTypeId != _item.TypeId)
+                        {
                             _state = State.LoadItem;
+                            break;
+                        }
 
                         List<DirectOrder> sellOrders = marketWindow.SellOrders.OrderBy(o => o.Price).Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
                         DirectOrder firstOrder = sellOrders.FirstOrDefault();
@@ -165,7 +169,7 @@ namespace OmniEveModules.Scripts
                                 decimal priceDifferencePct = priceDifference / decimal.Parse(firstOrder.Price.ToString());
                                 if(priceDifferencePct > 0.05m || priceDifference > 5000000)
                                 {
-                                    Logging.Log("Sell:Process", "No sale price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
+                                    Logging.Log("Sell:Process", "No sale, price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
                                     _state = State.Done;
                                     break;
                                 }
@@ -248,6 +252,8 @@ namespace OmniEveModules.Scripts
                         sellWindow.SellItems();
 
                         Logging.Log("Sell:Process", "Selling item Name - " + _item.Name, Logging.White);
+
+                        _sold = true;
 
                         _state = State.Done;
                     }
