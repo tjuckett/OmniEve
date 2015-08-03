@@ -56,6 +56,7 @@ namespace OmniEveModules.Scripts
         private ModifyAllOrders _modifyAllOrders = null;
         private MarketInfoForList _marketInfoForList = null;
         private ItemHanger _itemHanger = null;
+        private SellItems _sellItems = null;
 
         public Automation()
         {
@@ -246,40 +247,46 @@ namespace OmniEveModules.Scripts
                 case State.CreateSellOrders:
                     try
                     {
-                        if (_itemsInHanger == null)
-                            _state = State.Done;
-
-                        int orderCap = Cache.Instance.DirectEve.GetOrderCap();
-                        int maxSellOrders = (int)((decimal)orderCap * 0.66m);
-                        int newSellOrders = 0;
-
-                        List<DirectItem> sellItemList = new List<DirectItem>();
-
-                        foreach (DirectItem item in _itemsInHanger)
+                        if (_sellItems == null)
                         {
-                            int typeId = item.TypeId;
+                            if (_itemsInHanger == null)
+                                _state = State.Done;
 
-                            DirectOrder order = _mySellOrders.FirstOrDefault(o => o.TypeId == typeId);
+                            int orderCap = Cache.Instance.DirectEve.GetOrderCap();
+                            int maxSellOrders = (int)((decimal)orderCap * 0.66m);
+                            int newSellOrders = 0;
 
-                            if (order == null)
+                            List<DirectItem> sellItemList = new List<DirectItem>();
+
+                            foreach (DirectItem item in _itemsInHanger)
                             {
-                                newSellOrders++;
+                                int typeId = item.TypeId;
 
-                                if (_mySellOrders.Count + newSellOrders <= maxSellOrders && _myBuyOrders.Count + _mySellOrders.Count + newSellOrders <= orderCap)
+                                DirectOrder order = _mySellOrders.FirstOrDefault(o => o.TypeId == typeId);
+
+                                if (order == null)
                                 {
-                                    if (item != null)
+                                    newSellOrders++;
+
+                                    if (_mySellOrders.Count + newSellOrders <= maxSellOrders && _myBuyOrders.Count + _mySellOrders.Count + newSellOrders <= orderCap)
                                     {
-                                        sellItemList.Add(item);
+                                        if (item != null)
+                                        {
+                                            sellItemList.Add(item);
+                                        }
                                     }
                                 }
                             }
+
+                            _sellItems = new SellItems(sellItemList);
+                            _sellItems.OnSellItemFinished += OnSellItemFinished;
+                            _sellItems.OnSellItemFinished += SellItemFinished;
+                            _sellItems.OnSellItemsFinished += OnSellItemsFinished;
+                            _sellItems.OnSellItemsFinished += SellItemsFinished;
+                            _sellItems.Initialize();
                         }
 
-                        SellItems sellItems = new SellItems(sellItemList);
-                        sellItems.OnSellItemFinished += OnSellItemFinished;
-                        sellItems.OnSellItemFinished += SellItemFinished;
-                        sellItems.OnSellItemsFinished += OnSellItemsFinished;
-                        sellItems.OnSellItemsFinished += SellItemsFinished;
+                        _sellItems.Process();
                     }
                     catch (Exception ex)
                     {
