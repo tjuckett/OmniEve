@@ -31,10 +31,12 @@ namespace OmniEveInjector
 
             openfileDialog = new OpenFileDialog();
 
+            eveFilePathTextBox.Text = Properties.Settings.Default.EveExeFolderPath;
             settingsINITextBox.Text = Properties.Settings.Default.SettingsIniFile;
             logFolderPathTextBox.Text = Properties.Settings.Default.LogFolderPath;
             logFileNameTextBox.Text = Properties.Settings.Default.LogFileName;
 
+            eveFilePathTextBox.TextChanged += eveFilePathTextChanged;
             settingsINITextBox.TextChanged += settingsINITextChanged;
             logFolderPathTextBox.TextChanged += logFolderPathChanged;
             logFileNameTextBox.TextChanged += logFileNameTextChanged;
@@ -50,6 +52,16 @@ namespace OmniEveInjector
             }
         }
 
+        private void eveFilePathBrowseButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = folderBrowserDialog.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                eveFilePathTextBox.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
         private void logFolderPathButton_Click(object sender, EventArgs e)
         {
             DialogResult result = folderBrowserDialog.ShowDialog();
@@ -58,6 +70,12 @@ namespace OmniEveInjector
             {
                 logFolderPathTextBox.Text = folderBrowserDialog.SelectedPath;
             }
+        }
+
+        public void eveFilePathTextChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.EveExeFolderPath = ((MetroTextBox)sender).Text;
+            Properties.Settings.Default.Save();
         }
 
         public void settingsINITextChanged(object sender, EventArgs e)
@@ -84,31 +102,36 @@ namespace OmniEveInjector
             {
                 // the target process - I'm using a dummy process for this
                 // if you don't have one, open Task Manager and choose wisely
-                Process[] processes = Process.GetProcesses();
-                
-                if(processes != null)
+
+                string exefilePath = Properties.Settings.Default.EveExeFolderPath;
+                string settingsINIFile = Properties.Settings.Default.SettingsIniFile;
+                string loaderDll = "OmniEveLoader.dll";
+                string logFilePath = Properties.Settings.Default.LogFolderPath;
+                string logFileName = Properties.Settings.Default.LogFileName;
+
+                var p = new Process
                 {
-                    Process p = processes.FirstOrDefault(x => x.ProcessName == "exefile");
-
-                    if(p != null)
-                    { 
-                        //System.Threading.Thread.Sleep(10000);
-
-                        string loaderDll = "OmniEveLoader.dll";
-                        string settingsINIFile = Properties.Settings.Default.SettingsIniFile;
-                        string logFilePath = Properties.Settings.Default.LogFolderPath;
-                        string logFileName = Properties.Settings.Default.LogFileName;
-
-                        EasyHook.RemoteHooking.Inject(p.Id, EasyHook.InjectionOptions.DoNotRequireStrongName, loaderDll, loaderDll, settingsINIFile, logFilePath, logFileName);
-                    }
-                    else
+                    StartInfo =
                     {
-                        MessageBox.Show("Eve does not appear to be running, please start eve and inject again");
+                        FileName = "exefile.exe",
+                        WorkingDirectory = exefilePath,
+                        Arguments = "/triPlatform=dx9 /noconsole"
                     }
+                };
+
+                if (p != null)
+                {
+
+                    p.Start();
+                    p.WaitForInputIdle();
+
+                    System.Threading.Thread.Sleep(500);
+
+                    EasyHook.RemoteHooking.Inject(p.Id, EasyHook.InjectionOptions.DoNotRequireStrongName, loaderDll, loaderDll, settingsINIFile, logFilePath, logFileName);
                 }
                 else
                 {
-                    MessageBox.Show("For some reason we couldn't get the process list, something is wrong, please close and reopen OmniEveInjector");
+                    MessageBox.Show("Eve does not appear to be running, please start eve and inject again");
                 }
             }
             catch (Exception ex)

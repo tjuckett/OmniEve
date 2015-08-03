@@ -71,7 +71,7 @@
     <Compile Include="Scripts\SellItem.cs" />
     <Compile Include="Scripts\SellItems.cs" />
     <Compile Include="States\OmniEveState.cs" />
-    <Compile Include="Scripts\UpdateAllOrders.cs" />
+    <Compile Include="Scripts\Automation.cs" />
     <Compile Include="Status\Status.cs" />
   </ItemGroup>
   <ItemGroup />

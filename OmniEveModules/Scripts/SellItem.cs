@@ -156,26 +156,33 @@ namespace OmniEveModules.Scripts
                         }
 
                         List<DirectOrder> sellOrders = marketWindow.SellOrders.OrderBy(o => o.Price).Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
-                        DirectOrder firstOrder = sellOrders.FirstOrDefault();
+                        List<DirectOrder> buyOrders = marketWindow.SellOrders.OrderBy(o => o.Price).Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
+                        DirectOrder firstSellOrder = sellOrders.FirstOrDefault();
+                        DirectOrder firstBuyOrder = buyOrders.FirstOrDefault();
 
-                        if (firstOrder != null)
+                        if (firstSellOrder != null)
                         {
-                            sellOrders.Remove(firstOrder);
-                            DirectOrder secondOrder = sellOrders.FirstOrDefault();
+                            sellOrders.Remove(firstSellOrder);
+                            DirectOrder secondSellOrder = sellOrders.FirstOrDefault();
 
-                            if (secondOrder != null)
+                            if (secondSellOrder != null)
                             {
-                                decimal priceDifference = decimal.Parse(secondOrder.Price.ToString()) - decimal.Parse(firstOrder.Price.ToString());
-                                decimal priceDifferencePct = priceDifference / decimal.Parse(firstOrder.Price.ToString());
-                                if(priceDifferencePct > 0.05m || priceDifference > 5000000)
+                                decimal priceDifference = decimal.Parse(secondSellOrder.Price.ToString()) - decimal.Parse(firstSellOrder.Price.ToString());
+                                decimal priceDifferencePct = priceDifference / decimal.Parse(firstSellOrder.Price.ToString());
+                                if (priceDifferencePct > 0.05m || priceDifference > 5000000)
                                 {
-                                    Logging.Log("Sell:Process", "No sale, price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
-                                    _state = State.Done;
-                                    break;
+                                    // Check if the first buy order is close enough to the sell order that we no longer want to sell, otherwise the jump between the two sell orders doesn't matter.
+                                    // If there is no first buy order then create the order anyway
+                                    if (firstBuyOrder != null && (firstSellOrder.Price - firstBuyOrder.Price) / firstSellOrder.Price < 0.5)
+                                    {
+                                        Logging.Log("Sell:Process", "No sale, price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
+                                        _state = State.Done;
+                                        break;
+                                    }
                                 }
                             }
 
-                            _price = double.Parse((decimal.Parse(firstOrder.Price.ToString()) - 0.01m).ToString());
+                            _price = double.Parse((decimal.Parse(firstSellOrder.Price.ToString()) - 0.01m).ToString());
                             _state = State.OpenSellWindow;
 
                             Logging.Log("Sell:Process", "Lowest sell price, Name - " + _item.Name + " Price - " + _price, Logging.White);

@@ -245,19 +245,19 @@ namespace OmniEve
 
             _nextPulse = DateTime.UtcNow.AddMilliseconds(Time.Instance.OmniEveBeforeLoginPulseDelay_milliseconds);
 
-            /*if (DateTime.UtcNow < OmniEveProgramLaunched.AddSeconds(5))
+            if (DateTime.UtcNow < OmniEveProgramLaunched.AddSeconds(5))
             {
                 //
                 // do not login for the first 5 seconds, wait...
                 //
                 return;
-            }*/
+            }
 
-            /*if (_humanInterventionRequired)
+            if (_humanInterventionRequired)
             {
                 Logging.Log("Startup", "OnFrame: HumanInterventionRequired is true (this will spam every second or so)", Logging.Orange);
                 return;
-            }*/
+            }
 
             // If the session is ready, then we are done :)
             if (Cache.Instance.DirectEve.Session.IsReady)
@@ -268,7 +268,7 @@ namespace OmniEve
                 return;
             }
 
-            /*if (Cache.Instance.DirectEve.Windows.Count != 0)
+            if (Cache.Instance.DirectEve.Windows.Count != 0)
             {
                 foreach (DirectWindow window in Cache.Instance.DirectEve.Windows)
                 {
@@ -512,7 +512,7 @@ namespace OmniEve
                         "Character id/name [" + Logging.MyCharacterName + "] not found, retrying in 10 seconds",
                         Logging.White);
                 }
-            }*/
+            }
         }
 
         private static void ParseArgs(IEnumerable<string> args)

@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InjectorUI));
             this.metroPanel1 = new MetroFramework.Controls.MetroPanel();
+            this.eveFilePathBrowseButton = new MetroFramework.Controls.MetroButton();
+            this.eveFilePathTextBox = new MetroFramework.Controls.MetroTextBox();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.startOmniLoader = new MetroFramework.Controls.MetroButton();
             this.logFileNameTextBox = new MetroFramework.Controls.MetroTextBox();
             this.logFileNameLabel = new MetroFramework.Controls.MetroLabel();
@@ -44,6 +47,9 @@
             // 
             // metroPanel1
             // 
+            this.metroPanel1.Controls.Add(this.eveFilePathBrowseButton);
+            this.metroPanel1.Controls.Add(this.eveFilePathTextBox);
+            this.metroPanel1.Controls.Add(this.metroLabel1);
             this.metroPanel1.Controls.Add(this.startOmniLoader);
             this.metroPanel1.Controls.Add(this.logFileNameTextBox);
             this.metroPanel1.Controls.Add(this.logFileNameLabel);
@@ -59,15 +65,47 @@
             this.metroPanel1.HorizontalScrollbarSize = 10;
             this.metroPanel1.Location = new System.Drawing.Point(20, 60);
             this.metroPanel1.Name = "metroPanel1";
-            this.metroPanel1.Size = new System.Drawing.Size(613, 211);
+            this.metroPanel1.Size = new System.Drawing.Size(613, 238);
             this.metroPanel1.TabIndex = 0;
             this.metroPanel1.VerticalScrollbarBarColor = true;
             this.metroPanel1.VerticalScrollbarHighlightOnWheel = false;
             this.metroPanel1.VerticalScrollbarSize = 10;
             // 
+            // eveFilePathBrowseButton
+            // 
+            this.eveFilePathBrowseButton.Location = new System.Drawing.Point(538, 23);
+            this.eveFilePathBrowseButton.Name = "eveFilePathBrowseButton";
+            this.eveFilePathBrowseButton.Size = new System.Drawing.Size(75, 23);
+            this.eveFilePathBrowseButton.TabIndex = 16;
+            this.eveFilePathBrowseButton.Text = "Browse";
+            this.eveFilePathBrowseButton.UseSelectable = true;
+            this.eveFilePathBrowseButton.Click += new System.EventHandler(this.eveFilePathBrowseButton_Click);
+            // 
+            // eveFilePathTextBox
+            // 
+            this.eveFilePathTextBox.Lines = new string[0];
+            this.eveFilePathTextBox.Location = new System.Drawing.Point(0, 23);
+            this.eveFilePathTextBox.MaxLength = 32767;
+            this.eveFilePathTextBox.Name = "eveFilePathTextBox";
+            this.eveFilePathTextBox.PasswordChar = '\0';
+            this.eveFilePathTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.eveFilePathTextBox.SelectedText = "";
+            this.eveFilePathTextBox.Size = new System.Drawing.Size(532, 23);
+            this.eveFilePathTextBox.TabIndex = 15;
+            this.eveFilePathTextBox.UseSelectable = true;
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.Location = new System.Drawing.Point(0, 0);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(83, 19);
+            this.metroLabel1.TabIndex = 14;
+            this.metroLabel1.Text = "Eve File Path";
+            // 
             // startOmniLoader
             // 
-            this.startOmniLoader.Location = new System.Drawing.Point(437, 170);
+            this.startOmniLoader.Location = new System.Drawing.Point(434, 196);
             this.startOmniLoader.Name = "startOmniLoader";
             this.startOmniLoader.Size = new System.Drawing.Size(176, 38);
             this.startOmniLoader.TabIndex = 13;
@@ -79,7 +117,7 @@
             // 
             this.logFileNameTextBox.Lines = new string[] {
         "OmniLog.log"};
-            this.logFileNameTextBox.Location = new System.Drawing.Point(0, 129);
+            this.logFileNameTextBox.Location = new System.Drawing.Point(0, 167);
             this.logFileNameTextBox.MaxLength = 32767;
             this.logFileNameTextBox.Name = "logFileNameTextBox";
             this.logFileNameTextBox.PasswordChar = '\0';
@@ -93,7 +131,7 @@
             // logFileNameLabel
             // 
             this.logFileNameLabel.AutoSize = true;
-            this.logFileNameLabel.Location = new System.Drawing.Point(0, 106);
+            this.logFileNameLabel.Location = new System.Drawing.Point(0, 145);
             this.logFileNameLabel.Name = "logFileNameLabel";
             this.logFileNameLabel.Size = new System.Drawing.Size(95, 19);
             this.logFileNameLabel.TabIndex = 11;
@@ -101,7 +139,7 @@
             // 
             // logFolderPathButton
             // 
-            this.logFolderPathButton.Location = new System.Drawing.Point(538, 76);
+            this.logFolderPathButton.Location = new System.Drawing.Point(538, 119);
             this.logFolderPathButton.Name = "logFolderPathButton";
             this.logFolderPathButton.Size = new System.Drawing.Size(75, 23);
             this.logFolderPathButton.TabIndex = 10;
@@ -112,7 +150,7 @@
             // logFolderPathTextBox
             // 
             this.logFolderPathTextBox.Lines = new string[0];
-            this.logFolderPathTextBox.Location = new System.Drawing.Point(0, 76);
+            this.logFolderPathTextBox.Location = new System.Drawing.Point(0, 119);
             this.logFolderPathTextBox.MaxLength = 32767;
             this.logFolderPathTextBox.Name = "logFolderPathTextBox";
             this.logFolderPathTextBox.PasswordChar = '\0';
@@ -125,7 +163,7 @@
             // logFolderPathLabel
             // 
             this.logFolderPathLabel.AutoSize = true;
-            this.logFolderPathLabel.Location = new System.Drawing.Point(0, 53);
+            this.logFolderPathLabel.Location = new System.Drawing.Point(0, 97);
             this.logFolderPathLabel.Name = "logFolderPathLabel";
             this.logFolderPathLabel.Size = new System.Drawing.Size(103, 19);
             this.logFolderPathLabel.TabIndex = 8;
@@ -133,7 +171,7 @@
             // 
             // settingsINIBrowseButton
             // 
-            this.settingsINIBrowseButton.Location = new System.Drawing.Point(538, 23);
+            this.settingsINIBrowseButton.Location = new System.Drawing.Point(538, 71);
             this.settingsINIBrowseButton.Name = "settingsINIBrowseButton";
             this.settingsINIBrowseButton.Size = new System.Drawing.Size(75, 23);
             this.settingsINIBrowseButton.TabIndex = 7;
@@ -144,7 +182,7 @@
             // settingsINITextBox
             // 
             this.settingsINITextBox.Lines = new string[0];
-            this.settingsINITextBox.Location = new System.Drawing.Point(0, 23);
+            this.settingsINITextBox.Location = new System.Drawing.Point(0, 71);
             this.settingsINITextBox.MaxLength = 32767;
             this.settingsINITextBox.Name = "settingsINITextBox";
             this.settingsINITextBox.PasswordChar = '\0';
@@ -157,7 +195,7 @@
             // settingsIniFileLabel
             // 
             this.settingsIniFileLabel.AutoSize = true;
-            this.settingsIniFileLabel.Location = new System.Drawing.Point(0, 0);
+            this.settingsIniFileLabel.Location = new System.Drawing.Point(0, 49);
             this.settingsIniFileLabel.Name = "settingsIniFileLabel";
             this.settingsIniFileLabel.Size = new System.Drawing.Size(98, 19);
             this.settingsIniFileLabel.TabIndex = 5;
@@ -167,7 +205,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(653, 291);
+            this.ClientSize = new System.Drawing.Size(653, 318);
             this.Controls.Add(this.metroPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "InjectorUI";
@@ -190,6 +228,9 @@
         private MetroFramework.Controls.MetroTextBox logFileNameTextBox;
         private MetroFramework.Controls.MetroLabel logFileNameLabel;
         private MetroFramework.Controls.MetroButton startOmniLoader;
+        private MetroFramework.Controls.MetroButton eveFilePathBrowseButton;
+        private MetroFramework.Controls.MetroTextBox eveFilePathTextBox;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
     }
 }
 

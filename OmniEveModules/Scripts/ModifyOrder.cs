@@ -130,25 +130,32 @@ namespace OmniEveModules.Scripts
 
                     if (marketWindow != null)
                     {
-                        _lastAction = DateTime.UtcNow;
-                        
-                        List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
-                        DirectOrder order = orders.FirstOrDefault(o => o.OrderId == OrderId);
-
-                        if(order != null)
+                        try
                         {
-                            Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
+                            _lastAction = DateTime.UtcNow;
 
-                            bool success = order.ModifyOrder(Price);
+                            List<DirectOrder> orders = marketWindow.GetMyOrders(IsBid).ToList();
+                            DirectOrder order = orders.FirstOrDefault(o => o.OrderId == OrderId);
 
-                            if (success)
-                                Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
+                            if (order != null)
+                            {
+                                Logging.Log("ModifyOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
+
+                                bool success = order.ModifyOrder(Price);
+
+                                if (success)
+                                    Logging.Log("ModifyOrder:Process", "Modifying order successful", Logging.White);
+                                else
+                                    Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
+                            }
                             else
-                                Logging.Log("ModifyOrder:Process", "Modifying order failure", Logging.White);
+                            {
+                                Logging.Log("ModifyOrder:Process", "Order no longer exists, exiting modify action", Logging.White);
+                            }
                         }
-                        else
+                        catch(Exception ex)
                         {
-                            Logging.Log("ModifyOrder:Process", "Order no longer exists, exiting modify action", Logging.White);
+                            Logging.Log("ModifyOrder:Process", "Exception [" + ex + "] - Ending modify order script", Logging.Debug);
                         }
 
                         _state = State.Done;

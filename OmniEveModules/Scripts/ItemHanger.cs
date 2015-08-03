@@ -24,17 +24,13 @@ namespace OmniEveModules.Scripts
             CompareMyOrders
         }
 
-        public delegate void ItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders, List<DirectOrder> buyOrders);
+        public delegate void ItemHangerFinished(List<DirectItem> hangerItems);
         public event ItemHangerFinished OnItemHangerFinished;
 
         private DateTime _lastAction;
         private State _state = State.Idle;
         private bool _done = false;
         private List<DirectItem> _hangerItems;
-
-        private MyOrders _myOrders = null;
-        private List<DirectOrder> _sellOrders;
-        private List<DirectOrder> _buyOrders;
 
         public void Initialize()
         {
@@ -60,7 +56,7 @@ namespace OmniEveModules.Scripts
                     break;
                 case State.Done:
                     if (OnItemHangerFinished != null)
-                        OnItemHangerFinished(_hangerItems, _sellOrders, _buyOrders);
+                        OnItemHangerFinished(_hangerItems);
 
                     _done = true;
                     break;
@@ -86,33 +82,9 @@ namespace OmniEveModules.Scripts
                         _hangerItems.Add(item);
                     }
 
-                    _state = State.CompareMyOrders;
-                    break;
-
-                case State.CompareMyOrders:
-                    if (DateTime.UtcNow.Subtract(_lastAction).TotalSeconds < 2)
-                        break;
-
-                    _lastAction = DateTime.UtcNow;
-
-                    if (_myOrders == null)
-                    { 
-                        _myOrders = new MyOrders();
-                        _myOrders.OnMyOrdersFinished += OnMyOrdersFinished;
-                        _myOrders.Initialize();
-                    }
-
-                    _myOrders.Process();
-    
+                    _state = State.Done;
                     break;
             }
-        }
-
-        private void OnMyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
-        {
-            _sellOrders = mySellOrders;
-            _buyOrders = myBuyOrders;
-            _state = State.Done;
         }
     }
 }

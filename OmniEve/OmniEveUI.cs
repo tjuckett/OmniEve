@@ -73,6 +73,11 @@ namespace OmniEve
             return true;
         }
 
+        private void UpdateAllOrdersFinished()
+        {
+            CheckState();
+        }
+
         private void OnMyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
         {
             sellingGrid.Invoke((MethodInvoker)delegate { UpdateMySellOrdersGrid_Fill(mySellOrders); });
@@ -81,11 +86,11 @@ namespace OmniEve
             CheckState();
         }
 
-        private void OnCheckMyOrdersFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
+        private void OnCheckMyOrdersAgainstMarketFinished(List<DirectOrder> mySellOrders, List<DirectOrder> myBuyOrders)
         {
             int orderCap = Cache.Instance.DirectEve.GetOrderCap();
 
-            Logging.Log("OmniEveUI:OnCheckMyOrdersFinished", "Buy Order Count - " + myBuyOrders.Count + " Sell Order Count - " + mySellOrders.Count + " Order Cap - " + orderCap, Logging.White);
+            Logging.Log("OmniEveUI:OnCheckMyOrdersAgainstMarketFinished", "Buy Order Count - " + myBuyOrders.Count + " Sell Order Count - " + mySellOrders.Count + " Order Cap - " + orderCap, Logging.White);
 
             int maxBuyOrders = (int)((decimal)orderCap * 0.66m);
             int newBuyOrders = 0;
@@ -108,6 +113,53 @@ namespace OmniEve
                         if(myBuyOrders.Count + newBuyOrders <= maxBuyOrders && myBuyOrders.Count + mySellOrders.Count + newBuyOrders <= (orderCap-5))
                         {
                             row.Cells["Market_Select"].Value = true;
+                        }
+                    }
+                }
+            });
+
+            CheckState();
+        }
+
+        private void OnCheckItemHangerAgainstMarketFinished(List<DirectItem> hangerItems)
+        {
+            Logging.Log("OmniEveUI: OnCheckItemHangerAgainstMarketFinished", "Checking items against new market orders, don't want to create orders for items that haven't even sold yet", Logging.White);
+
+            marketGrid.Invoke((MethodInvoker)delegate
+            {
+                int ordersToAdd = 0;
+                List<int> typeIdsRemoved = new List<int>(); ;
+
+                foreach (DataGridViewRow row in marketGrid.Rows)
+                {
+                    bool selected = (bool)row.Cells["Market_Select"].Value;
+                    int typeId = (int)row.Cells["Market_TypeId"].Value;
+
+                    DirectItem item = hangerItems.FirstOrDefault(h => h.TypeId == typeId);
+
+                    if (item != null && selected == true)
+                    {
+                        Logging.Log("OmniEveUI: OnCheckItemHangerAgainstMarketFinished", "We have this item already in our item hanger, no need to add a new order yet TypeId - " + typeId, Logging.White);
+                        ordersToAdd++;
+                        typeIdsRemoved.Add(typeId);
+                        row.Cells["Market_Select"].Value = false;
+                    }
+                }
+
+                if(ordersToAdd > 0)
+                {
+                    Logging.Log("OmniEveUI: OnCheckItemHangerAgainstMarketFinished", "Adding new orders for all the ones that were taken away", Logging.White);
+
+                    foreach (DataGridViewRow row in marketGrid.Rows)
+                    {
+                        bool selected = (bool)row.Cells["Market_Select"].Value;
+                        int typeId = (int)row.Cells["Market_TypeId"].Value;
+
+                        if (row.DefaultCellStyle.BackColor == Color.LightGreen && row.DefaultCellStyle.ForeColor == Color.Black && ordersToAdd > 0 && selected == false && typeIdsRemoved.Find(t => t == typeId) == 0)
+                        {
+                            Logging.Log("OmniEveUI: OnCheckItemHangerAgainstMarketFinished", "Adding new order TypeId - " + typeId, Logging.White);
+                            row.Cells["Market_Select"].Value = true;
+                            ordersToAdd--;
                         }
                     }
                 }
@@ -373,14 +425,10 @@ namespace OmniEve
             return buyOrders;
         }
 
-        private void OnItemHangerFinished(List<DirectItem> hangerItems, List<DirectOrder> sellOrders, List<DirectOrder> buyOrders)
+        private void OnItemHangerFinished(List<DirectItem> hangerItems)
         {
             itemHangerGrid.Invoke((MethodInvoker)delegate 
             {
-                int orderCap = Cache.Instance.DirectEve.GetOrderCap();
-                int maxSellOrders = (int)((decimal)orderCap * 0.66m);
-                int newSellOrders = 0;
-
                 Logging.Log("OmniEveUI:UpdateItemHanger", "Clearing existing item hanger grid of items", Logging.White);
                 itemHangerGrid.Rows.Clear();
 
@@ -401,22 +449,40 @@ namespace OmniEve
                     itemHangerGrid.Rows[index].Cells["ItemHanger_Quantity"].Value = item.Quantity;
                     itemHangerGrid.Rows[index].Cells["ItemHanger_Group"].Value = item.GroupName;
                     itemHangerGrid.Rows[index].Cells["ItemHanger_Volume"].Value = item.Volume;
+                    itemHangerGrid.Rows[index].Cells["ItemHanger_TypeId"].Value = item.TypeId;
 
-                    DirectOrder order = sellOrders.FirstOrDefault(o => o.TypeId == item.TypeId);
+                    itemHangerGrid.AllowUserToAddRows = false;
+                }
+            });
+
+            CheckState();
+        }
+
+        private void OnCheckMyOrdersAgainstItemHangerFinished(List<DirectOrder> sellOrders, List<DirectOrder> buyOrders)
+        {
+            itemHangerGrid.Invoke((MethodInvoker)delegate
+            {
+                int orderCap = Cache.Instance.DirectEve.GetOrderCap();
+                int maxSellOrders = (int)((decimal)orderCap * 0.66m);
+                int newSellOrders = 0;
+
+                foreach (DataGridViewRow row in itemHangerGrid.Rows)
+                {
+                    int typeId = (int)row.Cells["ItemHanger_TypeId"].Value;
+
+                    DirectOrder order = sellOrders.FirstOrDefault(o => o.TypeId == typeId);
 
                     if (order == null)
                     {
                         newSellOrders++;
-                        itemHangerGrid.Rows[index].DefaultCellStyle.BackColor = Color.LightGreen;
-                        itemHangerGrid.Rows[index].DefaultCellStyle.ForeColor = Color.Black;
+                        row.DefaultCellStyle.BackColor = Color.LightGreen;
+                        row.DefaultCellStyle.ForeColor = Color.Black;
 
                         if (sellOrders.Count + newSellOrders <= maxSellOrders && buyOrders.Count + sellOrders.Count + newSellOrders <= orderCap)
                         {
-                            itemHangerGrid.Rows[index].Cells["ItemHanger_Select"].Value = true;
+                            row.Cells["ItemHanger_Select"].Value = true;
                         }
                     }
-
-                    itemHangerGrid.AllowUserToAddRows = false;
                 }
             });
 
@@ -564,8 +630,14 @@ namespace OmniEve
             autoStartButton.Enabled = true;
             autoStopButton.Enabled = true;
             autoSecondsTextBox.Enabled = true;
-            refreshItemHangerButton.Enabled = true;
+            loadItemHangerButton.Enabled = true;
+            checkMyOrdersAgainstItemsButton.Enabled = true;
             sellItemsButton.Enabled = true;
+            checkMyOrdersAgainstMarketButton.Enabled = true;
+            checkItemHangerAgainstMarketButton.Enabled = true;
+            loadBuyOrdersButton.Enabled = true;
+            createBuyOrderButton.Enabled = true;
+
         }
 
         private void DisableControls()
@@ -573,10 +645,15 @@ namespace OmniEve
             myOrdersButton.Enabled = false;
             modifyButton.Enabled = false;
             marketInfoMyOrdersButton.Enabled = false;
-            refreshItemHangerButton.Enabled = false;
-            sellItemsButton.Enabled = false;
             autoStartButton.Enabled = false;
             autoSecondsTextBox.Enabled = false;
+            loadItemHangerButton.Enabled = false;
+            checkMyOrdersAgainstItemsButton.Enabled = false;
+            sellItemsButton.Enabled = false;
+            checkMyOrdersAgainstMarketButton.Enabled = false;
+            checkItemHangerAgainstMarketButton.Enabled = false;
+            loadBuyOrdersButton.Enabled = false;
+            createBuyOrderButton.Enabled = false;
             
             if (_mode == Mode.Manual)
                 autoStopButton.Enabled = false;
@@ -586,19 +663,23 @@ namespace OmniEve
         {
             // Only refresh orders when the action queue is empty, otherwise wait till the next time or lengthen the time between events
             if(_omniEve != null && _omniEve.IsActionQueueEmpty() == true)
-                UpdateAllOrders();
+                AutomateAll();
         }
 
-        private void UpdateAllOrders()
+        private void AutomateAll()
         {
             if(_omniEve != null)
             {
-                UpdateAllOrders updateAllOrders = new UpdateAllOrders();
-                updateAllOrders.OnMyOrdersFinished += OnMyOrdersFinished;
-                updateAllOrders.OnMarketInfoFinished += OnMarketInfoFinished;
-                updateAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
-                updateAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
-                _omniEve.AddScript(updateAllOrders);
+                Automation automation = new Automation();
+                automation.OnAutomationFinished += UpdateAllOrdersFinished;
+                automation.OnMyOrdersFinished += OnMyOrdersFinished;
+                automation.OnMarketInfoFinished += OnMarketInfoFinished;
+                automation.OnModifySellOrderFinished += OnModifySellOrderFinished;
+                automation.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
+                automation.OnItemHangerFinished += OnItemHangerFinished;
+                automation.OnSellItemFinished += OnSellItemFinished;
+                automation.OnSellItemsFinished += OnSellItemsFinished;
+                _omniEve.AddScript(automation);
             }
         }
 
@@ -630,7 +711,7 @@ namespace OmniEve
             _omniEve.AddScript(modifyAllOrders);
         }
 
-        public void RefreshItemHanger()
+        public void LoadItemHanger()
         {
             ItemHanger itemHanger = new ItemHanger();
             itemHanger.OnItemHangerFinished += OnItemHangerFinished;
@@ -686,6 +767,9 @@ namespace OmniEve
                         {
                             int typeId = (int)row.Cells["Market_TypeId"].Value;
                             int volume = (int)row.Cells["Market_Volume"].Value;
+
+                            volume = volume / 2;
+                            volume = Math.Min(volume, 100);
 
                             Logging.Log("OmniEveUI:CreateBuyOrders", "Adding type to create buy order for TypeId - " + typeId + " Volume - " + volume, Logging.Debug);
                             ordersToCreate.Add(typeId, volume);
@@ -784,8 +868,6 @@ namespace OmniEve
             {
                 _timer.Stop();
                 _timer.Elapsed -= AutoTimerElapsed;
-
-                CheckState();
             }
             catch (Exception ex)
             {
@@ -805,7 +887,7 @@ namespace OmniEve
                 _timer.Start();
 
 
-                UpdateAllOrders();
+                AutomateAll();
                 CheckState();
             }
             catch (Exception ex)
@@ -844,7 +926,7 @@ namespace OmniEve
             }
         }
 
-        private void refreshItemHangerButton_Click(object sender, EventArgs e)
+        private void loadItemHangerButton_Click(object sender, EventArgs e)
         {
             if (_mode == Mode.Idle)
             {
@@ -852,7 +934,7 @@ namespace OmniEve
 
                 Logging.Log("OmniEveUI:RefreshItemHangerButton", "Adding item hanger action", Logging.Debug);
 
-                RefreshItemHanger();
+                LoadItemHanger();
 
                 CheckState();
             }
@@ -875,6 +957,11 @@ namespace OmniEve
         private void loadBuyOrdersButton_Click(object sender, EventArgs e)
         {
             _mode = Mode.Manual;
+
+            marketGrid.Invoke((MethodInvoker)delegate
+            {
+                marketGrid.Rows.Clear();
+            });
 
             string[] allLines = File.ReadAllLines("C:\\Users\\Tim\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
 
@@ -927,14 +1014,14 @@ namespace OmniEve
             }
         }
 
-        private void checkMyOrdersButton_Click(object sender, EventArgs e)
+        private void checkMyOrdersAgainstMarketButton_Click(object sender, EventArgs e)
         {
             try
             {
                 _mode = Mode.Manual;
 
                 MyOrders myOrders = new MyOrders();
-                myOrders.OnMyOrdersFinished += OnCheckMyOrdersFinished;
+                myOrders.OnMyOrdersFinished += OnCheckMyOrdersAgainstMarketFinished;
                 _omniEve.AddScript(myOrders);
 
                 CheckState();
@@ -942,6 +1029,42 @@ namespace OmniEve
             catch (Exception ex)
             {
                 Logging.Log("OmniEveUI:checkMyOrdersButton", "Exception [" + ex + "]", Logging.Debug);
+            }
+        }
+
+        private void checkItemHangerAgainstMarketButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _mode = Mode.Manual;
+
+                ItemHanger itemHanger = new ItemHanger();
+                itemHanger.OnItemHangerFinished += OnCheckItemHangerAgainstMarketFinished;
+                _omniEve.AddScript(itemHanger);
+
+                CheckState();
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("OmniEveUI:checkItemHangerAgainstMarketButton", "Exception [" + ex + "]", Logging.Debug);
+            }
+        }
+
+        private void checkMyOrdersAgainstItemsButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _mode = Mode.Manual;
+
+                MyOrders myOrders = new MyOrders();
+                myOrders.OnMyOrdersFinished += OnCheckMyOrdersAgainstItemHangerFinished;
+                _omniEve.AddScript(myOrders);
+
+                CheckState();
+            }
+            catch (Exception ex)
+            {
+                Logging.Log("OmniEveUI:checkMyOrdersAgainstItemsButton", "Exception [" + ex + "]", Logging.Debug);
             }
         }
     }

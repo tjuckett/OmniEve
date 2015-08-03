@@ -51,11 +51,6 @@
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.ordersPage = new MetroFramework.Controls.MetroTabPage();
             this.marketInfoMyOrdersButton = new MetroFramework.Controls.MetroButton();
-            this.metroLabel2 = new MetroFramework.Controls.MetroLabel();
-            this.autoStopButton = new MetroFramework.Controls.MetroButton();
-            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
-            this.autoStartButton = new MetroFramework.Controls.MetroButton();
-            this.autoSecondsTextBox = new MetroFramework.Controls.MetroTextBox();
             this.modifyButton = new MetroFramework.Controls.MetroButton();
             this.myOrdersButton = new MetroFramework.Controls.MetroButton();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -88,21 +83,23 @@
             this.Buying_Range = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Buying_MinVolume = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.inventoryPage = new MetroFramework.Controls.MetroTabPage();
+            this.checkMyOrdersAgainstItemsButton = new MetroFramework.Controls.MetroButton();
             this.sellItemsButton = new MetroFramework.Controls.MetroButton();
             this.itemHangerGrid = new MetroFramework.Controls.MetroGrid();
             this.ItemHanger_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ItemHanger_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemHanger_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemHanger_ItemId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemHanger_Quantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemHanger_Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ItemHanger_Volume = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.refreshItemHangerButton = new MetroFramework.Controls.MetroButton();
+            this.loadItemHangerButton = new MetroFramework.Controls.MetroButton();
             this.marketTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.checkItemHangerAgainstMarketButton = new MetroFramework.Controls.MetroButton();
+            this.checkMyOrdersAgainstMarketButton = new MetroFramework.Controls.MetroButton();
             this.loadBuyOrdersButton = new MetroFramework.Controls.MetroButton();
             this.createBuyOrderButton = new MetroFramework.Controls.MetroButton();
             this.marketGrid = new MetroFramework.Controls.MetroGrid();
-            this.loggingTabPage = new MetroFramework.Controls.MetroTabPage();
-            this.logTextBox = new MetroFramework.Controls.MetroTextBox();
             this.Market_Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.Market_TypeId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Market_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -110,7 +107,14 @@
             this.Market_BuyPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Market_SellPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Market_PotentialProfit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.checkMyOrdersButton = new MetroFramework.Controls.MetroButton();
+            this.automationTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.metroPanel5 = new MetroFramework.Controls.MetroPanel();
+            this.autoStopButton = new MetroFramework.Controls.MetroButton();
+            this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
+            this.autoStartButton = new MetroFramework.Controls.MetroButton();
+            this.autoSecondsTextBox = new MetroFramework.Controls.MetroTextBox();
+            this.loggingTabPage = new MetroFramework.Controls.MetroTabPage();
+            this.logTextBox = new MetroFramework.Controls.MetroTextBox();
             this.metroTabControl1.SuspendLayout();
             this.ordersPage.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -124,6 +128,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.itemHangerGrid)).BeginInit();
             this.marketTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.marketGrid)).BeginInit();
+            this.automationTabPage.SuspendLayout();
+            this.metroPanel5.SuspendLayout();
             this.loggingTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -132,11 +138,12 @@
             this.metroTabControl1.Controls.Add(this.ordersPage);
             this.metroTabControl1.Controls.Add(this.inventoryPage);
             this.metroTabControl1.Controls.Add(this.marketTabPage);
+            this.metroTabControl1.Controls.Add(this.automationTabPage);
             this.metroTabControl1.Controls.Add(this.loggingTabPage);
             this.metroTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.metroTabControl1.Location = new System.Drawing.Point(20, 60);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 2;
+            this.metroTabControl1.SelectedIndex = 3;
             this.metroTabControl1.Size = new System.Drawing.Size(1159, 578);
             this.metroTabControl1.TabIndex = 0;
             this.metroTabControl1.UseSelectable = true;
@@ -144,11 +151,6 @@
             // ordersPage
             // 
             this.ordersPage.Controls.Add(this.marketInfoMyOrdersButton);
-            this.ordersPage.Controls.Add(this.metroLabel2);
-            this.ordersPage.Controls.Add(this.autoStopButton);
-            this.ordersPage.Controls.Add(this.metroLabel1);
-            this.ordersPage.Controls.Add(this.autoStartButton);
-            this.ordersPage.Controls.Add(this.autoSecondsTextBox);
             this.ordersPage.Controls.Add(this.modifyButton);
             this.ordersPage.Controls.Add(this.myOrdersButton);
             this.ordersPage.Controls.Add(this.tableLayoutPanel1);
@@ -174,65 +176,6 @@
             this.marketInfoMyOrdersButton.Text = "Market Info";
             this.marketInfoMyOrdersButton.UseSelectable = true;
             this.marketInfoMyOrdersButton.Click += new System.EventHandler(this.marketInfoButton_Click);
-            // 
-            // metroLabel2
-            // 
-            this.metroLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.metroLabel2.AutoSize = true;
-            this.metroLabel2.Location = new System.Drawing.Point(767, 513);
-            this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(52, 19);
-            this.metroLabel2.TabIndex = 10;
-            this.metroLabel2.Text = "Manual";
-            // 
-            // autoStopButton
-            // 
-            this.autoStopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.autoStopButton.Location = new System.Drawing.Point(205, 513);
-            this.autoStopButton.Name = "autoStopButton";
-            this.autoStopButton.Size = new System.Drawing.Size(75, 23);
-            this.autoStopButton.TabIndex = 9;
-            this.autoStopButton.Text = "Stop";
-            this.autoStopButton.UseSelectable = true;
-            this.autoStopButton.Click += new System.EventHandler(this.autoStopButton_Click);
-            // 
-            // metroLabel1
-            // 
-            this.metroLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.metroLabel1.AutoSize = true;
-            this.metroLabel1.Location = new System.Drawing.Point(0, 513);
-            this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(37, 19);
-            this.metroLabel1.TabIndex = 8;
-            this.metroLabel1.Text = "Auto";
-            // 
-            // autoStartButton
-            // 
-            this.autoStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.autoStartButton.Location = new System.Drawing.Point(124, 513);
-            this.autoStartButton.Name = "autoStartButton";
-            this.autoStartButton.Size = new System.Drawing.Size(75, 23);
-            this.autoStartButton.TabIndex = 7;
-            this.autoStartButton.Text = "Start";
-            this.autoStartButton.UseSelectable = true;
-            this.autoStartButton.Click += new System.EventHandler(this.autoStartButton_Click);
-            // 
-            // autoSecondsTextBox
-            // 
-            this.autoSecondsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.autoSecondsTextBox.Lines = new string[] {
-        "960"};
-            this.autoSecondsTextBox.Location = new System.Drawing.Point(43, 513);
-            this.autoSecondsTextBox.MaxLength = 32767;
-            this.autoSecondsTextBox.Name = "autoSecondsTextBox";
-            this.autoSecondsTextBox.PasswordChar = '\0';
-            this.autoSecondsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
-            this.autoSecondsTextBox.SelectedText = "";
-            this.autoSecondsTextBox.Size = new System.Drawing.Size(75, 23);
-            this.autoSecondsTextBox.TabIndex = 6;
-            this.autoSecondsTextBox.Text = "960";
-            this.autoSecondsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.autoSecondsTextBox.UseSelectable = true;
             // 
             // modifyButton
             // 
@@ -630,9 +573,10 @@
             // 
             // inventoryPage
             // 
+            this.inventoryPage.Controls.Add(this.checkMyOrdersAgainstItemsButton);
             this.inventoryPage.Controls.Add(this.sellItemsButton);
             this.inventoryPage.Controls.Add(this.itemHangerGrid);
-            this.inventoryPage.Controls.Add(this.refreshItemHangerButton);
+            this.inventoryPage.Controls.Add(this.loadItemHangerButton);
             this.inventoryPage.HorizontalScrollbarBarColor = true;
             this.inventoryPage.HorizontalScrollbarHighlightOnWheel = false;
             this.inventoryPage.HorizontalScrollbarSize = 0;
@@ -644,6 +588,17 @@
             this.inventoryPage.VerticalScrollbarBarColor = true;
             this.inventoryPage.VerticalScrollbarHighlightOnWheel = false;
             this.inventoryPage.VerticalScrollbarSize = 0;
+            // 
+            // checkMyOrdersAgainstItemsButton
+            // 
+            this.checkMyOrdersAgainstItemsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkMyOrdersAgainstItemsButton.Location = new System.Drawing.Point(924, 510);
+            this.checkMyOrdersAgainstItemsButton.Name = "checkMyOrdersAgainstItemsButton";
+            this.checkMyOrdersAgainstItemsButton.Size = new System.Drawing.Size(109, 23);
+            this.checkMyOrdersAgainstItemsButton.TabIndex = 7;
+            this.checkMyOrdersAgainstItemsButton.Text = "Check My Orders";
+            this.checkMyOrdersAgainstItemsButton.UseSelectable = true;
+            this.checkMyOrdersAgainstItemsButton.Click += new System.EventHandler(this.checkMyOrdersAgainstItemsButton_Click);
             // 
             // sellItemsButton
             // 
@@ -680,6 +635,7 @@
             this.itemHangerGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.itemHangerGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ItemHanger_Select,
+            this.ItemHanger_TypeId,
             this.ItemHanger_Name,
             this.ItemHanger_ItemId,
             this.ItemHanger_Quantity,
@@ -721,6 +677,12 @@
             this.ItemHanger_Select.Name = "ItemHanger_Select";
             this.ItemHanger_Select.Width = 41;
             // 
+            // ItemHanger_TypeId
+            // 
+            this.ItemHanger_TypeId.HeaderText = "TypeId";
+            this.ItemHanger_TypeId.Name = "ItemHanger_TypeId";
+            this.ItemHanger_TypeId.Visible = false;
+            // 
             // ItemHanger_Name
             // 
             this.ItemHanger_Name.HeaderText = "Name";
@@ -747,20 +709,21 @@
             this.ItemHanger_Volume.HeaderText = "Volume";
             this.ItemHanger_Volume.Name = "ItemHanger_Volume";
             // 
-            // refreshItemHangerButton
+            // loadItemHangerButton
             // 
-            this.refreshItemHangerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.refreshItemHangerButton.Location = new System.Drawing.Point(924, 510);
-            this.refreshItemHangerButton.Name = "refreshItemHangerButton";
-            this.refreshItemHangerButton.Size = new System.Drawing.Size(109, 23);
-            this.refreshItemHangerButton.TabIndex = 5;
-            this.refreshItemHangerButton.Text = "Refresh";
-            this.refreshItemHangerButton.UseSelectable = true;
-            this.refreshItemHangerButton.Click += new System.EventHandler(this.refreshItemHangerButton_Click);
+            this.loadItemHangerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadItemHangerButton.Location = new System.Drawing.Point(809, 510);
+            this.loadItemHangerButton.Name = "loadItemHangerButton";
+            this.loadItemHangerButton.Size = new System.Drawing.Size(109, 23);
+            this.loadItemHangerButton.TabIndex = 5;
+            this.loadItemHangerButton.Text = "Load Item Hanger";
+            this.loadItemHangerButton.UseSelectable = true;
+            this.loadItemHangerButton.Click += new System.EventHandler(this.loadItemHangerButton_Click);
             // 
             // marketTabPage
             // 
-            this.marketTabPage.Controls.Add(this.checkMyOrdersButton);
+            this.marketTabPage.Controls.Add(this.checkItemHangerAgainstMarketButton);
+            this.marketTabPage.Controls.Add(this.checkMyOrdersAgainstMarketButton);
             this.marketTabPage.Controls.Add(this.loadBuyOrdersButton);
             this.marketTabPage.Controls.Add(this.createBuyOrderButton);
             this.marketTabPage.Controls.Add(this.marketGrid);
@@ -776,10 +739,32 @@
             this.marketTabPage.VerticalScrollbarHighlightOnWheel = false;
             this.marketTabPage.VerticalScrollbarSize = 0;
             // 
+            // checkItemHangerAgainstMarketButton
+            // 
+            this.checkItemHangerAgainstMarketButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkItemHangerAgainstMarketButton.Location = new System.Drawing.Point(924, 510);
+            this.checkItemHangerAgainstMarketButton.Name = "checkItemHangerAgainstMarketButton";
+            this.checkItemHangerAgainstMarketButton.Size = new System.Drawing.Size(109, 23);
+            this.checkItemHangerAgainstMarketButton.TabIndex = 9;
+            this.checkItemHangerAgainstMarketButton.Text = "Check Item Hanger";
+            this.checkItemHangerAgainstMarketButton.UseSelectable = true;
+            this.checkItemHangerAgainstMarketButton.Click += new System.EventHandler(this.checkItemHangerAgainstMarketButton_Click);
+            // 
+            // checkMyOrdersAgainstMarketButton
+            // 
+            this.checkMyOrdersAgainstMarketButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkMyOrdersAgainstMarketButton.Location = new System.Drawing.Point(809, 510);
+            this.checkMyOrdersAgainstMarketButton.Name = "checkMyOrdersAgainstMarketButton";
+            this.checkMyOrdersAgainstMarketButton.Size = new System.Drawing.Size(109, 23);
+            this.checkMyOrdersAgainstMarketButton.TabIndex = 8;
+            this.checkMyOrdersAgainstMarketButton.Text = "Check My Orders";
+            this.checkMyOrdersAgainstMarketButton.UseSelectable = true;
+            this.checkMyOrdersAgainstMarketButton.Click += new System.EventHandler(this.checkMyOrdersAgainstMarketButton_Click);
+            // 
             // loadBuyOrdersButton
             // 
             this.loadBuyOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.loadBuyOrdersButton.Location = new System.Drawing.Point(809, 510);
+            this.loadBuyOrdersButton.Location = new System.Drawing.Point(694, 510);
             this.loadBuyOrdersButton.Name = "loadBuyOrdersButton";
             this.loadBuyOrdersButton.Size = new System.Drawing.Size(109, 23);
             this.loadBuyOrdersButton.TabIndex = 7;
@@ -856,36 +841,6 @@
             this.marketGrid.Size = new System.Drawing.Size(1159, 507);
             this.marketGrid.TabIndex = 2;
             // 
-            // loggingTabPage
-            // 
-            this.loggingTabPage.Controls.Add(this.logTextBox);
-            this.loggingTabPage.HorizontalScrollbarBarColor = true;
-            this.loggingTabPage.HorizontalScrollbarHighlightOnWheel = false;
-            this.loggingTabPage.HorizontalScrollbarSize = 0;
-            this.loggingTabPage.Location = new System.Drawing.Point(4, 38);
-            this.loggingTabPage.Name = "loggingTabPage";
-            this.loggingTabPage.Size = new System.Drawing.Size(1151, 536);
-            this.loggingTabPage.TabIndex = 2;
-            this.loggingTabPage.Text = "Logging";
-            this.loggingTabPage.VerticalScrollbarBarColor = true;
-            this.loggingTabPage.VerticalScrollbarHighlightOnWheel = false;
-            this.loggingTabPage.VerticalScrollbarSize = 0;
-            // 
-            // logTextBox
-            // 
-            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logTextBox.Lines = new string[0];
-            this.logTextBox.Location = new System.Drawing.Point(0, 0);
-            this.logTextBox.MaxLength = 0;
-            this.logTextBox.Multiline = true;
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.PasswordChar = '\0';
-            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logTextBox.SelectedText = "";
-            this.logTextBox.Size = new System.Drawing.Size(1151, 536);
-            this.logTextBox.TabIndex = 3;
-            this.logTextBox.UseSelectable = true;
-            // 
             // Market_Select
             // 
             this.Market_Select.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
@@ -925,16 +880,119 @@
             this.Market_PotentialProfit.HeaderText = "Potential Profit";
             this.Market_PotentialProfit.Name = "Market_PotentialProfit";
             // 
-            // checkMyOrdersButton
+            // automationTabPage
             // 
-            this.checkMyOrdersButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.checkMyOrdersButton.Location = new System.Drawing.Point(924, 510);
-            this.checkMyOrdersButton.Name = "checkMyOrdersButton";
-            this.checkMyOrdersButton.Size = new System.Drawing.Size(109, 23);
-            this.checkMyOrdersButton.TabIndex = 8;
-            this.checkMyOrdersButton.Text = "Check My Orders";
-            this.checkMyOrdersButton.UseSelectable = true;
-            this.checkMyOrdersButton.Click += new System.EventHandler(this.checkMyOrdersButton_Click);
+            this.automationTabPage.Controls.Add(this.metroPanel5);
+            this.automationTabPage.HorizontalScrollbarBarColor = true;
+            this.automationTabPage.HorizontalScrollbarHighlightOnWheel = false;
+            this.automationTabPage.HorizontalScrollbarSize = 0;
+            this.automationTabPage.Location = new System.Drawing.Point(4, 38);
+            this.automationTabPage.Margin = new System.Windows.Forms.Padding(0);
+            this.automationTabPage.Name = "automationTabPage";
+            this.automationTabPage.Size = new System.Drawing.Size(1151, 536);
+            this.automationTabPage.TabIndex = 4;
+            this.automationTabPage.Text = "Automation";
+            this.automationTabPage.VerticalScrollbarBarColor = true;
+            this.automationTabPage.VerticalScrollbarHighlightOnWheel = false;
+            this.automationTabPage.VerticalScrollbarSize = 0;
+            // 
+            // metroPanel5
+            // 
+            this.metroPanel5.Controls.Add(this.autoStopButton);
+            this.metroPanel5.Controls.Add(this.metroLabel1);
+            this.metroPanel5.Controls.Add(this.autoStartButton);
+            this.metroPanel5.Controls.Add(this.autoSecondsTextBox);
+            this.metroPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.metroPanel5.HorizontalScrollbarBarColor = true;
+            this.metroPanel5.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroPanel5.HorizontalScrollbarSize = 0;
+            this.metroPanel5.Location = new System.Drawing.Point(0, 0);
+            this.metroPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.metroPanel5.Name = "metroPanel5";
+            this.metroPanel5.Size = new System.Drawing.Size(1151, 536);
+            this.metroPanel5.TabIndex = 2;
+            this.metroPanel5.VerticalScrollbarBarColor = true;
+            this.metroPanel5.VerticalScrollbarHighlightOnWheel = false;
+            this.metroPanel5.VerticalScrollbarSize = 0;
+            // 
+            // autoStopButton
+            // 
+            this.autoStopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoStopButton.Location = new System.Drawing.Point(208, 11);
+            this.autoStopButton.Name = "autoStopButton";
+            this.autoStopButton.Size = new System.Drawing.Size(75, 23);
+            this.autoStopButton.TabIndex = 13;
+            this.autoStopButton.Text = "Stop";
+            this.autoStopButton.UseSelectable = true;
+            this.autoStopButton.Click += new System.EventHandler(this.autoStopButton_Click);
+            // 
+            // metroLabel1
+            // 
+            this.metroLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.metroLabel1.AutoSize = true;
+            this.metroLabel1.Location = new System.Drawing.Point(3, 11);
+            this.metroLabel1.Name = "metroLabel1";
+            this.metroLabel1.Size = new System.Drawing.Size(37, 19);
+            this.metroLabel1.TabIndex = 12;
+            this.metroLabel1.Text = "Auto";
+            // 
+            // autoStartButton
+            // 
+            this.autoStartButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoStartButton.Location = new System.Drawing.Point(127, 11);
+            this.autoStartButton.Name = "autoStartButton";
+            this.autoStartButton.Size = new System.Drawing.Size(75, 23);
+            this.autoStartButton.TabIndex = 11;
+            this.autoStartButton.Text = "Start";
+            this.autoStartButton.UseSelectable = true;
+            this.autoStartButton.Click += new System.EventHandler(this.autoStartButton_Click);
+            // 
+            // autoSecondsTextBox
+            // 
+            this.autoSecondsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.autoSecondsTextBox.Lines = new string[] {
+        "1200"};
+            this.autoSecondsTextBox.Location = new System.Drawing.Point(46, 11);
+            this.autoSecondsTextBox.MaxLength = 32767;
+            this.autoSecondsTextBox.Name = "autoSecondsTextBox";
+            this.autoSecondsTextBox.PasswordChar = '\0';
+            this.autoSecondsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.autoSecondsTextBox.SelectedText = "";
+            this.autoSecondsTextBox.Size = new System.Drawing.Size(75, 23);
+            this.autoSecondsTextBox.TabIndex = 10;
+            this.autoSecondsTextBox.Text = "1200";
+            this.autoSecondsTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.autoSecondsTextBox.UseSelectable = true;
+            // 
+            // loggingTabPage
+            // 
+            this.loggingTabPage.Controls.Add(this.logTextBox);
+            this.loggingTabPage.HorizontalScrollbarBarColor = true;
+            this.loggingTabPage.HorizontalScrollbarHighlightOnWheel = false;
+            this.loggingTabPage.HorizontalScrollbarSize = 0;
+            this.loggingTabPage.Location = new System.Drawing.Point(4, 38);
+            this.loggingTabPage.Name = "loggingTabPage";
+            this.loggingTabPage.Size = new System.Drawing.Size(1151, 536);
+            this.loggingTabPage.TabIndex = 2;
+            this.loggingTabPage.Text = "Logging";
+            this.loggingTabPage.VerticalScrollbarBarColor = true;
+            this.loggingTabPage.VerticalScrollbarHighlightOnWheel = false;
+            this.loggingTabPage.VerticalScrollbarSize = 0;
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logTextBox.Lines = new string[0];
+            this.logTextBox.Location = new System.Drawing.Point(0, 0);
+            this.logTextBox.MaxLength = 0;
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.PasswordChar = '\0';
+            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logTextBox.SelectedText = "";
+            this.logTextBox.Size = new System.Drawing.Size(1151, 536);
+            this.logTextBox.TabIndex = 3;
+            this.logTextBox.UseSelectable = true;
             // 
             // OmniEveUI
             // 
@@ -948,7 +1006,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OmniEveUI_FormClosing);
             this.metroTabControl1.ResumeLayout(false);
             this.ordersPage.ResumeLayout(false);
-            this.ordersPage.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.metroPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sellingGrid)).EndInit();
@@ -962,6 +1019,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.itemHangerGrid)).EndInit();
             this.marketTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.marketGrid)).EndInit();
+            this.automationTabPage.ResumeLayout(false);
+            this.metroPanel5.ResumeLayout(false);
+            this.metroPanel5.PerformLayout();
             this.loggingTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -981,17 +1041,12 @@
         private MetroFramework.Controls.MetroButton myOrdersButton;
         private MetroFramework.Controls.MetroTabPage loggingTabPage;
         private MetroFramework.Controls.MetroTextBox logTextBox;
-        private MetroFramework.Controls.MetroLabel metroLabel1;
-        private MetroFramework.Controls.MetroButton autoStartButton;
-        private MetroFramework.Controls.MetroTextBox autoSecondsTextBox;
-        private MetroFramework.Controls.MetroButton autoStopButton;
-        private MetroFramework.Controls.MetroLabel metroLabel2;
         private MetroFramework.Controls.MetroLabel metroLabel3;
         private MetroFramework.Controls.MetroPanel metroPanel1;
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroPanel metroPanel4;
         private MetroFramework.Controls.MetroTabPage inventoryPage;
-        private MetroFramework.Controls.MetroButton refreshItemHangerButton;
+        private MetroFramework.Controls.MetroButton loadItemHangerButton;
         private MetroFramework.Controls.MetroGrid itemHangerGrid;
         private MetroFramework.Controls.MetroButton marketInfoMyOrdersButton;
         private MetroFramework.Controls.MetroButton sellItemsButton;
@@ -1015,12 +1070,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Region;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_Range;
         private System.Windows.Forms.DataGridViewTextBoxColumn Buying_MinVolume;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ItemHanger_Select;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Name;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_ItemId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Quantity;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Group;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Volume;
         private MetroFramework.Controls.MetroGrid marketGrid;
         private MetroFramework.Controls.MetroButton loadBuyOrdersButton;
         private MetroFramework.Controls.MetroButton createBuyOrderButton;
@@ -1031,7 +1080,22 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Market_BuyPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn Market_SellPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn Market_PotentialProfit;
-        private MetroFramework.Controls.MetroButton checkMyOrdersButton;
+        private MetroFramework.Controls.MetroButton checkMyOrdersAgainstMarketButton;
+        private MetroFramework.Controls.MetroButton checkItemHangerAgainstMarketButton;
+        private MetroFramework.Controls.MetroButton checkMyOrdersAgainstItemsButton;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ItemHanger_Select;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_TypeId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_ItemId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Quantity;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Group;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ItemHanger_Volume;
+        private MetroFramework.Controls.MetroTabPage automationTabPage;
+        private MetroFramework.Controls.MetroPanel metroPanel5;
+        private MetroFramework.Controls.MetroButton autoStopButton;
+        private MetroFramework.Controls.MetroLabel metroLabel1;
+        private MetroFramework.Controls.MetroButton autoStartButton;
+        private MetroFramework.Controls.MetroTextBox autoSecondsTextBox;
 
     }
 }

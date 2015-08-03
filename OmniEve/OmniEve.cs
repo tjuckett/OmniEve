@@ -157,7 +157,6 @@ namespace OmniEve
                             Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Popping next action off the queue", Logging.Teal);
                             
                             _currentScript = _scripts[_currentScriptIndex];
-                            _currentScriptIndex++;
                             
                             _state = OmniEveState.InitAction;
                         }
@@ -181,6 +180,7 @@ namespace OmniEve
                             {
                                 Logging.Log("OmniEve:EVEOnFrame", "OnFrame: Current action is done, going back to idle state", Logging.Teal);
                                 _state = OmniEveState.Idle;
+                                _currentScriptIndex++;
                                 _currentScript = null;
                             }
                         }
