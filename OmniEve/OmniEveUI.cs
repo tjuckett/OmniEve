@@ -767,9 +767,13 @@ namespace OmniEve
                         {
                             int typeId = (int)row.Cells["Market_TypeId"].Value;
                             int volume = (int)row.Cells["Market_Volume"].Value;
+                            double price = (double)row.Cells["Market_BuyPrice"].Value;
 
                             volume = volume / 2;
-                            volume = Math.Min(volume, 100);
+                            volume = Math.Max(volume, 1);
+
+                            if (volume * price > 100000000)
+                                volume = (int)(10000000.0 / price);
 
                             Logging.Log("OmniEveUI:CreateBuyOrders", "Adding type to create buy order for TypeId - " + typeId + " Volume - " + volume, Logging.Debug);
                             ordersToCreate.Add(typeId, volume);

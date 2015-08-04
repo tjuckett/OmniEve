@@ -173,7 +173,7 @@ namespace OmniEveModules.Scripts
                                 {
                                     // Check if the first buy order is close enough to the sell order that we no longer want to sell, otherwise the jump between the two sell orders doesn't matter.
                                     // If there is no first buy order then create the order anyway
-                                    if (firstBuyOrder != null && (firstSellOrder.Price - firstBuyOrder.Price) / firstSellOrder.Price < 0.5)
+                                    if (firstBuyOrder != null && firstSellOrder.Price / firstBuyOrder.Price < 1.5)
                                     {
                                         Logging.Log("Sell:Process", "No sale, price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
                                         _state = State.Done;

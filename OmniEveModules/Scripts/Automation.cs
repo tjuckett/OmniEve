@@ -174,7 +174,7 @@ namespace OmniEveModules.Scripts
                                     {
                                         sellOrders.Add(mySellOrder);
                                     }
-                                    else if (highestBuyOrder != null && (lowestSellOrder.Price - highestBuyOrder.Price) / lowestSellOrder.Price > 0.5 && priceDifferencePct < 0.25)
+                                    else if (highestBuyOrder != null && lowestSellOrder.Price / highestBuyOrder.Price >= 1.5 && priceDifferencePct < 0.25)
                                     {
                                         sellOrders.Add(mySellOrder);
                                     }
@@ -200,7 +200,7 @@ namespace OmniEveModules.Scripts
                                     {
                                         buyOrders.Add(myBuyOrder);
                                     }
-                                    else if (lowestSellOrder != null && (lowestSellOrder.Price - highestBuyOrder.Price) / lowestSellOrder.Price > 0.5 && priceDifferencePct < 0.25)
+                                    else if (lowestSellOrder != null && lowestSellOrder.Price / highestBuyOrder.Price >= 1.5 && priceDifferencePct < 0.25)
                                     {
                                         buyOrders.Add(myBuyOrder);
                                     }
