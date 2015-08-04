@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,8 +43,10 @@ namespace OmniEveModules.Scripts
         public event ItemHanger.ItemHangerFinished OnItemHangerFinished;
 
         public event SellItems.SellItemsFinished OnSellItemsFinished;
-
         public event SellItem.SellItemFinished OnSellItemFinished;
+
+        public event BuyItems.BuyItemsFinished OnBuyItemsFinished;
+        public event BuyItem.BuyItemFinished OnBuyItemFinished;
 
         private List<DirectOrder> _mySellOrders { get; set; }
         private List<DirectOrder> _myBuyOrders { get; set; }
@@ -51,12 +54,15 @@ namespace OmniEveModules.Scripts
 
         private bool _done = false;
         private State _state = State.Idle;
+        private int _newSellOrders = 0;
+        private int _newBuyOrders = 0;
 
         private MyOrders _myOrders = null;
         private ModifyAllOrders _modifyAllOrders = null;
         private MarketInfoForList _marketInfoForList = null;
         private ItemHanger _itemHanger = null;
         private SellItems _sellItems = null;
+        private BuyItems _buyItems = null;
 
         public Automation()
         {
@@ -100,8 +106,11 @@ namespace OmniEveModules.Scripts
                     {
                         if (_myOrders == null)
                         {
+                            Logging.Log("Automation:Process", "MyOrders State - Begin", Logging.Debug);
+
                             _myOrders = new MyOrders();
                             _myOrders.OnMyOrdersFinished += MyOrdersFinished;
+                            _myOrders.OnMyOrdersFinished += OnMyOrdersFinished;
 
                             _myOrders.Initialize();
                         }
@@ -120,6 +129,8 @@ namespace OmniEveModules.Scripts
                     {
                         if (_marketInfoForList == null)
                         {
+                            Logging.Log("Automation:Process", "MarketInfo State - Begin", Logging.Debug);
+
                             List<int> typeIds = new List<int>();
 
                             foreach (DirectOrder order in _mySellOrders)
@@ -152,6 +163,8 @@ namespace OmniEveModules.Scripts
                     {
                         if (_modifyAllOrders == null)
                         {
+                            Logging.Log("Automation:Process", "ModifyOrders State - Begin", Logging.Debug);
+
                             List<DirectOrder> sellOrders = new List<DirectOrder>();
                             List<DirectOrder> buyOrders = new List<DirectOrder>();
 
@@ -217,7 +230,7 @@ namespace OmniEveModules.Scripts
 
                         _modifyAllOrders.Process();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Logging.Log("Automation:Process", "Exception [" + ex + "]", Logging.Debug);
                         _state = State.Done;
@@ -229,6 +242,8 @@ namespace OmniEveModules.Scripts
                     {
                         if (_itemHanger == null)
                         {
+                            Logging.Log("Automation:CheckItemHanger", "ModifyOrders State - Begin", Logging.Debug);
+
                             _itemHanger = new ItemHanger();
                             _itemHanger.OnItemHangerFinished += OnItemHangerFinished;
                             _itemHanger.OnItemHangerFinished += ItemHangerFinished;
@@ -252,9 +267,10 @@ namespace OmniEveModules.Scripts
                             if (_itemsInHanger == null)
                                 _state = State.Done;
 
+                            Logging.Log("Automation:CreateSellOrders", "ModifyOrders State - Begin", Logging.Debug);
+
                             int orderCap = Cache.Instance.DirectEve.GetOrderCap();
                             int maxSellOrders = (int)((decimal)orderCap * 0.66m);
-                            int newSellOrders = 0;
 
                             List<DirectItem> sellItemList = new List<DirectItem>();
 
@@ -266,9 +282,9 @@ namespace OmniEveModules.Scripts
 
                                 if (order == null)
                                 {
-                                    newSellOrders++;
+                                    _newSellOrders++;
 
-                                    if (_mySellOrders.Count + newSellOrders <= maxSellOrders && _myBuyOrders.Count + _mySellOrders.Count + newSellOrders <= orderCap)
+                                    if (_mySellOrders.Count + _newSellOrders <= maxSellOrders && _myBuyOrders.Count + _mySellOrders.Count + _newSellOrders <= orderCap)
                                     {
                                         if (item != null)
                                         {
@@ -296,7 +312,73 @@ namespace OmniEveModules.Scripts
                     break;
 
                 case State.CreateBuyOrders:
-                    _state = State.Done;
+                    try
+                    {
+                        if (_buyItems == null)
+                        {
+                            Logging.Log("Automation:CreateBuyOrders", "ModifyOrders State - Begin", Logging.Debug);
+
+                            int orderCap = Cache.Instance.DirectEve.GetOrderCap();
+
+                            int maxBuyOrders = (int)((decimal)orderCap * 0.66m);
+
+                            Dictionary<int, int> ordersToCreate = new Dictionary<int, int>();
+
+                            string[] allLines = File.ReadAllLines("C:\\Users\\Tim\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+
+                            foreach (string line in allLines)
+                            {
+                                try
+                                {
+                                    string[] parameters = line.Split(',');
+
+                                    int typeId = int.Parse(parameters[0]);
+                                    int volume = int.Parse(parameters[2]);
+                                    double buyPrice = double.Parse(parameters[3]);
+
+                                    volume = volume / 2;
+                                    
+                                    if (volume * buyPrice > 100000000)
+                                        volume = (int)(10000000.0 / buyPrice);
+
+                                    if (volume <= 0)
+                                        volume = 1;
+
+                                    DirectOrder order = _myBuyOrders.FirstOrDefault(o => o.TypeId == typeId);
+                                    DirectItem item = _itemsInHanger.FirstOrDefault(i => i.TypeId == typeId);
+
+                                    if (order == null && item == null)
+                                    {
+                                        _newBuyOrders++;
+
+                                        if (_myBuyOrders.Count + _newBuyOrders <= maxBuyOrders && _myBuyOrders.Count + _mySellOrders.Count + _newBuyOrders + _newSellOrders <= (orderCap - 5))
+                                        {
+                                            Logging.Log("Automation:Process", "Adding type to create buy order for TypeId - " + typeId + " Volume - " + volume, Logging.Debug);
+                                            ordersToCreate.Add(typeId, volume);
+                                        }
+                                    }
+                                }
+                                catch(Exception ex)
+                                {
+                                    Logging.Log("Automation:Process", "Exception [" + ex + "]", Logging.Debug);
+                                }
+                            }
+
+                            _buyItems = new BuyItems(ordersToCreate, true);
+                            _buyItems.OnBuyItemFinished += OnBuyItemFinished;
+                            _buyItems.OnBuyItemFinished += BuyItemFinished;
+                            _buyItems.OnBuyItemsFinished += OnBuyItemsFinished;
+                            _buyItems.OnBuyItemsFinished += BuyItemsFinished;
+                            _buyItems.Initialize();
+                        }
+
+                        _buyItems.Process();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logging.Log("Automation:Process", "Exception [" + ex + "]", Logging.Debug);
+                        _state = State.Done;
+                    }
                     break;
             }
         }
@@ -308,17 +390,21 @@ namespace OmniEveModules.Scripts
 
             _state = State.MarketInfo;
 
-            OnMyOrdersFinished(mySellOrders, myBuyOrders);
+            Logging.Log("Automation:Process", "MyOrders State - End", Logging.Debug);
         }
 
         private void MarketInfoForListFinished()
         {
             _state = State.ModifyOrders;
+
+            Logging.Log("Automation:Process", "MarketInfo State - End", Logging.Debug);
         }
 
         private void ModifyAllOrdersFinished()
         {
             _state = State.CheckItemHanger;
+
+            Logging.Log("Automation:Process", "ModifyOrders State - End", Logging.Debug);
         }
 
         private void ItemHangerFinished(List<DirectItem> hangerItems)
@@ -326,17 +412,30 @@ namespace OmniEveModules.Scripts
             _itemsInHanger = hangerItems;
 
             _state = State.CreateSellOrders;
+
+            Logging.Log("Automation:Process", "CheckItemHanger State - End", Logging.Debug);
         }
 
         private void SellItemFinished(DirectItem item, bool sold)
         {
-            //if (sold == true)
-            //    _mySellOrders.Add();
         }
 
         private void SellItemsFinished(List<DirectItem> itemsSold)
         {
             _state = State.CreateBuyOrders;
+
+            Logging.Log("Automation:Process", "CreateSellOrders State - End", Logging.Debug);
+        }
+
+        private void BuyItemFinished(int typeId, bool orderCreated)
+        {
+        }
+
+        private void BuyItemsFinished(List<int> typeIdsBought, bool ordersCreated)
+        {
+            _state = State.Done;
+
+            Logging.Log("Automation:Process", "CreateBuyOrders State - End", Logging.Debug);
         }
     }
 }
