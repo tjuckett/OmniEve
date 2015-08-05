@@ -67,10 +67,10 @@ namespace OmniEveModules.Scripts
                 case State.Idle:
                     break;
                 case State.Done:
+                    _done = true;
+
                     if (OnModifyAllOrdersFinished != null)
                         OnModifyAllOrdersFinished();
-
-                    _done = true;
                     break;
 
                 case State.Begin:

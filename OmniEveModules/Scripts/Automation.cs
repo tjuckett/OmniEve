@@ -91,10 +91,10 @@ namespace OmniEveModules.Scripts
                 case State.Idle:
                     break;
                 case State.Done:
+                    _done = true;
+
                     if (OnAutomationFinished != null)
                         OnAutomationFinished();
-
-                    _done = true;
                     break;
 
                 case State.Begin:
@@ -324,7 +324,7 @@ namespace OmniEveModules.Scripts
 
                             Dictionary<int, int> ordersToCreate = new Dictionary<int, int>();
 
-                            string[] allLines = File.ReadAllLines("C:\\Users\\tjuckett\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+                            string[] allLines = File.ReadAllLines("C:\\Users\\Tim\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
 
                             foreach (string line in allLines)
                             {

@@ -59,10 +59,10 @@ namespace OmniEveModules.Scripts
                 case State.Idle:
                     break;
                 case State.Done:
+                    _done = true;
+
                     if (OnMyOrdersFinished != null)
                         OnMyOrdersFinished(_mySellOrders, _myBuyOrders);
-
-                    _done = true;
                     break;
 
                 case State.Begin:

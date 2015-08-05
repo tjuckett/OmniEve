@@ -67,10 +67,10 @@ namespace OmniEveModules.Scripts
                 case State.Idle:
                     break;
                 case State.Done:
+                    _done = true;
+
                     if (OnBuyItemsFinished != null)
                         OnBuyItemsFinished(_typeIdsBought, _createOrders);
-
-                    _done = true;
                     break;
 
                 case State.Begin:

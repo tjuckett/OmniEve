@@ -70,7 +70,7 @@ namespace OmniEve
 
         public bool IsActionQueueEmpty()
         {
-            return _scripts.Count() == _currentScriptIndex;
+            return (_currentScript != null && _currentScript.IsDone() && _currentScriptIndex == _scripts.Count() - 1) || _currentScriptIndex == _scripts.Count();
         }
 
         public bool OnFrameValidate()

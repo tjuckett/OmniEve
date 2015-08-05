@@ -55,10 +55,10 @@ namespace OmniEveModules.Scripts
                 case State.Idle:
                     break;
                 case State.Done:
+                    _done = true;
+
                     if (OnItemHangerFinished != null)
                         OnItemHangerFinished(_hangerItems);
-
-                    _done = true;
                     break;
 
                 case State.Begin:
