@@ -705,7 +705,7 @@ namespace OmniEve
             List<DirectOrder> modifySellOrderList = CreateModifySellOrdersList();
             List<DirectOrder> modifyBuyOrderList = CreateModifyBuyOrdersList();
 
-            ModifyAllOrders modifyAllOrders = new ModifyAllOrders(modifySellOrderList, modifyBuyOrderList);
+            UpdateAllOrders modifyAllOrders = new UpdateAllOrders(modifySellOrderList, modifyBuyOrderList);
             modifyAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
             modifyAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
             _omniEve.AddScript(modifyAllOrders);

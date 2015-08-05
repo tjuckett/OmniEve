@@ -159,15 +159,32 @@ namespace OmniEveModules.Scripts
                             break;
                         }
 
-                        List<DirectOrder> orders = marketWindow.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
+                        List<DirectOrder> buyOrders = marketWindow.BuyOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
+                        List<DirectOrder> sellOrders = marketWindow.SellOrders.Where(o => o.StationId == Cache.Instance.DirectEve.Session.StationId).ToList();
 
-                        DirectOrder order = orders.OrderByDescending(o => o.Price).FirstOrDefault();
-                        if (order != null)
+                        DirectOrder highestBuyOrder = buyOrders.OrderByDescending(o => o.Price).FirstOrDefault();
+                        DirectOrder lowestSellOrder = sellOrders.OrderBy(o => o.Price).FirstOrDefault();
+                        if (highestBuyOrder != null)
                         {
-                            double price = double.Parse((decimal.Parse(order.Price.ToString()) + 0.01m).ToString());
-                            if (Cache.Instance.DirectEve.Session.StationId != null)
+                            bool createBuyOrder = (lowestSellOrder == null);
+
+                            if(lowestSellOrder != null)
                             {
-                                Cache.Instance.DirectEve.Buy((int)Cache.Instance.DirectEve.Session.StationId, _typeId, price, _volume, DirectOrderRange.Station, 1, 90);
+                                double profit = lowestSellOrder.Price - highestBuyOrder.Price;
+                                double tax = lowestSellOrder.Price * .01 + highestBuyOrder.Price * 0.015;
+                                double profitPct = lowestSellOrder.Price / highestBuyOrder.Price;
+
+                                if((profit < 10000000 && profitPct > 1.50) || (profit >= 10000000 && tax < profit * 0.25))
+                                    createBuyOrder = true;
+                            }
+
+                            if(createBuyOrder == true)
+                            { 
+                                double price = double.Parse((decimal.Parse(highestBuyOrder.Price.ToString()) + 0.01m).ToString());
+                                if (Cache.Instance.DirectEve.Session.StationId != null)
+                                {
+                                    Cache.Instance.DirectEve.Buy((int)Cache.Instance.DirectEve.Session.StationId, _typeId, price, _volume, DirectOrderRange.Station, 1, 90);
+                                }
                             }
                         }
                         _state = State.Done;

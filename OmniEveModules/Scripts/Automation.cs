@@ -58,7 +58,7 @@ namespace OmniEveModules.Scripts
         private int _newBuyOrders = 0;
 
         private MyOrders _myOrders = null;
-        private ModifyAllOrders _modifyAllOrders = null;
+        private UpdateAllOrders _updateAllOrders = null;
         private MarketInfoForList _marketInfoForList = null;
         private ItemHanger _itemHanger = null;
         private SellItems _sellItems = null;
@@ -161,74 +161,19 @@ namespace OmniEveModules.Scripts
                 case State.ModifyOrders:
                     try
                     {
-                        if (_modifyAllOrders == null)
+                        if (_updateAllOrders == null)
                         {
                             Logging.Log("Automation:Process", "ModifyOrders State - Begin", Logging.Debug);
 
-                            List<DirectOrder> sellOrders = new List<DirectOrder>();
-                            List<DirectOrder> buyOrders = new List<DirectOrder>();
+                            _updateAllOrders = new UpdateAllOrders(_mySellOrders, _myBuyOrders);
+                            _updateAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
+                            _updateAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
+                            _updateAllOrders.OnUpdateAllOrdersFinished += UpdateAllOrdersFinished;
 
-                            foreach (DirectOrder mySellOrder in _mySellOrders)
-                            {
-                                MarketItem marketItem = Cache.Instance.GetMarketItem(mySellOrder.TypeId);
-
-                                if (marketItem == null)
-                                    continue;
-
-                                DirectOrder lowestSellOrder = marketItem.SellOrders.OrderBy(o => o.Price).FirstOrDefault(o => o.StationId == mySellOrder.StationId);
-                                DirectOrder highestBuyOrder = marketItem.BuyOrders.OrderByDescending(o => o.Price).FirstOrDefault(o => o.StationId == mySellOrder.StationId);
-
-                                if (lowestSellOrder != null && lowestSellOrder.Price <= mySellOrder.Price && lowestSellOrder.OrderId != mySellOrder.OrderId)
-                                {
-                                    double priceDifference = mySellOrder.Price - lowestSellOrder.Price;
-                                    double priceDifferencePct = priceDifference / mySellOrder.Price;
-
-                                    if (priceDifferencePct < 0.05 && priceDifference < 5000000)
-                                    {
-                                        sellOrders.Add(mySellOrder);
-                                    }
-                                    else if (highestBuyOrder != null && lowestSellOrder.Price / highestBuyOrder.Price >= 1.5 && priceDifferencePct < 0.25)
-                                    {
-                                        sellOrders.Add(mySellOrder);
-                                    }
-                                }
-                            }
-
-                            foreach (DirectOrder myBuyOrder in _myBuyOrders)
-                            {
-                                MarketItem marketItem = Cache.Instance.GetMarketItem(myBuyOrder.TypeId);
-
-                                if (marketItem == null)
-                                    continue;
-
-                                DirectOrder lowestSellOrder = marketItem.SellOrders.OrderBy(o => o.Price).FirstOrDefault(o => o.StationId == myBuyOrder.StationId);
-                                DirectOrder highestBuyOrder = marketItem.BuyOrders.OrderByDescending(o => o.Price).FirstOrDefault(o => o.StationId == myBuyOrder.StationId);
-
-                                if (highestBuyOrder != null && highestBuyOrder.Price >= myBuyOrder.Price && highestBuyOrder.OrderId != myBuyOrder.OrderId)
-                                {
-                                    double priceDifference = highestBuyOrder.Price - myBuyOrder.Price;
-                                    double priceDifferencePct = priceDifference / myBuyOrder.Price;
-
-                                    if (priceDifferencePct < 0.05 && priceDifference < 5000000)
-                                    {
-                                        buyOrders.Add(myBuyOrder);
-                                    }
-                                    else if (lowestSellOrder != null && lowestSellOrder.Price / highestBuyOrder.Price >= 1.5 && priceDifferencePct < 0.25)
-                                    {
-                                        buyOrders.Add(myBuyOrder);
-                                    }
-                                }
-                            }
-
-                            _modifyAllOrders = new ModifyAllOrders(sellOrders, buyOrders);
-                            _modifyAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
-                            _modifyAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
-                            _modifyAllOrders.OnModifyAllOrdersFinished += ModifyAllOrdersFinished;
-
-                            _modifyAllOrders.Initialize();
+                            _updateAllOrders.Initialize();
                         }
 
-                        _modifyAllOrders.Process();
+                        _updateAllOrders.Process();
                     }
                     catch (Exception ex)
                     {
@@ -242,7 +187,7 @@ namespace OmniEveModules.Scripts
                     {
                         if (_itemHanger == null)
                         {
-                            Logging.Log("Automation:CheckItemHanger", "ModifyOrders State - Begin", Logging.Debug);
+                            Logging.Log("Automation:CheckItemHanger", "CheckItemHanger State - Begin", Logging.Debug);
 
                             _itemHanger = new ItemHanger();
                             _itemHanger.OnItemHangerFinished += OnItemHangerFinished;
@@ -267,7 +212,7 @@ namespace OmniEveModules.Scripts
                             if (_itemsInHanger == null)
                                 _state = State.Done;
 
-                            Logging.Log("Automation:CreateSellOrders", "ModifyOrders State - Begin", Logging.Debug);
+                            Logging.Log("Automation:CreateSellOrders", "CreateSellOrders State - Begin", Logging.Debug);
 
                             int orderCap = Cache.Instance.DirectEve.GetOrderCap();
                             int maxSellOrders = (int)((decimal)orderCap * 0.66m);
@@ -316,7 +261,7 @@ namespace OmniEveModules.Scripts
                     {
                         if (_buyItems == null)
                         {
-                            Logging.Log("Automation:CreateBuyOrders", "ModifyOrders State - Begin", Logging.Debug);
+                            Logging.Log("Automation:CreateBuyOrders", "CreateBuyOrders State - Begin", Logging.Debug);
 
                             int orderCap = Cache.Instance.DirectEve.GetOrderCap();
 
@@ -324,7 +269,7 @@ namespace OmniEveModules.Scripts
 
                             Dictionary<int, int> ordersToCreate = new Dictionary<int, int>();
 
-                            string[] allLines = File.ReadAllLines("C:\\Users\\Tim\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+                            string[] allLines = File.ReadAllLines("C:\\Users\\tjuckett\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
 
                             foreach (string line in allLines)
                             {
@@ -400,7 +345,7 @@ namespace OmniEveModules.Scripts
             Logging.Log("Automation:Process", "MarketInfo State - End", Logging.Debug);
         }
 
-        private void ModifyAllOrdersFinished()
+        private void UpdateAllOrdersFinished()
         {
             _state = State.CheckItemHanger;
 
