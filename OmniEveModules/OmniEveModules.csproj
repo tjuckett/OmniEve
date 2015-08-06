@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Scripts\BuyItems.cs" />
+    <Compile Include="Scripts\CancelOrder.cs" />
     <Compile Include="Scripts\IScript.cs" />
     <Compile Include="Scripts\BuyItem.cs" />
     <Compile Include="Scripts\ItemHanger.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Lookup\Time.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\ModifyAllOrders.cs" />
+    <Compile Include="Scripts\UpdateAllOrders.cs" />
     <Compile Include="Scripts\SellItem.cs" />
     <Compile Include="Scripts\SellItems.cs" />
     <Compile Include="States\OmniEveState.cs" />

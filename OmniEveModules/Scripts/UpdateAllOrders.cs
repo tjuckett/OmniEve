@@ -132,6 +132,7 @@ namespace OmniEveModules.Scripts
 
                         if (highestBuyOrder != null && lowestSellOrder != null && ((profit < 10000000 && profitPct < 1.25) || (profit >= 10000000 && tax > profit * 0.5)))
                         {
+                            Logging.Log("UpdateAllOrders:Process", "Creating cancel order script for Order Id - " + order.OrderId, Logging.White);
                             CancelOrder cancelOrder = new CancelOrder(order.OrderId, true);
                             cancelOrder.OnCancelOrderFinished += OnCancelOrderFinished;
                             _cancelOrders.Add(cancelOrder);
@@ -171,7 +172,7 @@ namespace OmniEveModules.Scripts
                     {
                         _modifyOrders.Remove(_currentModify);
 
-                        Logging.Log("UpdateAllOrders:Process", "Popping next order script to run", Logging.White);
+                        Logging.Log("UpdateAllOrders:Process", "Popping next modify script to run", Logging.White);
 
                         _currentModify.Initialize();
                         _state = State.ProcessModify;
@@ -207,10 +208,10 @@ namespace OmniEveModules.Scripts
                     {
                         _cancelOrders.Remove(_currentCancel);
 
-                        Logging.Log("UpdateAllOrders:Process", "Popping next order script to run", Logging.White);
+                        Logging.Log("UpdateAllOrders:Process", "Popping next cancel script to run", Logging.White);
 
                         _currentCancel.Initialize();
-                        _state = State.ProcessModify;
+                        _state = State.ProcessCancel;
                     }
                     else
                     {

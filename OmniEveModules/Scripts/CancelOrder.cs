@@ -137,7 +137,7 @@ namespace OmniEveModules.Scripts
 
                             if (order != null)
                             {
-                                Logging.Log("CancelOrder:Process", "Loaded order, OrderId - " + order.OrderId + " OrderPrice - " + order.Price + " NewPrice - " + Price, Logging.White);
+                                Logging.Log("CancelOrder:Process", "Loaded order, OrderId - " + order.OrderId, Logging.White);
 
                                 bool success = order.CancelOrder();
 
