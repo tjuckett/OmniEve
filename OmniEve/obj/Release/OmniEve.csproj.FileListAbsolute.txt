@@ -62,22 +62,6 @@ C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEve\obj\Release\OmniEve.cspro
 C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEve\obj\Release\OmniEve.exe
 C:\Users\tjuckett\Google Drive\OmniEve\OmniEve\OmniEve\obj\Release\OmniEve.pdb
 E:\CloudStation\Eve Bot\Inprogress\OmniEve\OmniEve\obj\Release\OmniEve.csprojResolveAssemblyReference.cache
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.csprojResolveAssemblyReference.cache
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.OmniEveUI.resources
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.Properties.Resources.resources
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.csproj.GenerateResource.Cache
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.exe
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.exe.config
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.exe
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.pdb
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\DirectEve.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\MetroFramework.Design.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\MetroFramework.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\MetroFramework.Fonts.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEveModules.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEveModules.pdb
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\DirectEve.pdb
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.pdb
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.exe.config
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.exe
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.pdb
@@ -94,3 +78,19 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.Properties.Res
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.csproj.GenerateResource.Cache
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.exe
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.exe.config
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEve.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\DirectEve.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\MetroFramework.Design.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\MetroFramework.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\MetroFramework.Fonts.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEveModules.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Release\DirectEve.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.OmniEveUI.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.Properties.Resources.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.csproj.GenerateResource.Cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Release\OmniEve.pdb

@@ -678,7 +678,6 @@ namespace OmniEve
                 automation.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
                 automation.OnItemHangerFinished += OnItemHangerFinished;
                 automation.OnSellItemFinished += OnSellItemFinished;
-                automation.OnSellItemsFinished += OnSellItemsFinished;
                 _omniEve.AddScript(automation);
             }
         }

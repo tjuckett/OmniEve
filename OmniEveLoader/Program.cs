@@ -100,7 +100,7 @@ namespace OmniEveLoader
                     }
                 }
 
-                Logging.Log("OmniEveLoader", "OmniEveLoader: done.", Logging.White);
+                //Logging.Log("OmniEveLoader", "OmniEveLoader: done.", Logging.White);
             }
             catch (Exception ex)
             {

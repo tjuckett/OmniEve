@@ -69,18 +69,6 @@ C:\Users\Tim\Google Drive\OmniEve (1)\OmniEve\OmniEveInjector\obj\Release\OmniEv
 C:\Users\Tim\Google Drive\OmniEve\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe.config
 C:\Users\Tim\Google Drive\OmniEve\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.exe
 C:\Users\Tim\Google Drive\OmniEve\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.pdb
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe.config
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.pdb
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\EasyHook.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.Design.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.Fonts.dll
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.InjectorUI.resources
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.Properties.Resources.resources
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csproj.GenerateResource.Cache
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.exe
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.pdb
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe.config
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.pdb
@@ -94,4 +82,16 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjecto
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csproj.GenerateResource.Cache
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.exe
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe.config
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\OmniEveInjector.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\EasyHook.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.Design.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\bin\Release\MetroFramework.Fonts.dll
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.InjectorUI.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.Properties.Resources.resources
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csproj.GenerateResource.Cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.exe
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveInjector\obj\Release\OmniEveInjector.csprojResolveAssemblyReference.cache
