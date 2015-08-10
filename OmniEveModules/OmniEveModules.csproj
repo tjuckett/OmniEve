@@ -53,15 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scripts\BuyItems.cs" />
-    <Compile Include="Scripts\CancelOrder.cs" />
+    <Compile Include="Actions\IAction.cs" />
+    <Compile Include="Actions\ScriptComplete.cs" />
+    <Compile Include="Actions\CancelOrder.cs" />
     <Compile Include="Scripts\IScript.cs" />
-    <Compile Include="Scripts\BuyItem.cs" />
-    <Compile Include="Scripts\ItemHanger.cs" />
-    <Compile Include="Scripts\MarketInfoForList.cs" />
-    <Compile Include="Scripts\MyOrders.cs" />
-    <Compile Include="Scripts\MarketInfo.cs" />
-    <Compile Include="Scripts\ModifyOrder.cs" />
+    <Compile Include="Actions\BuyItem.cs" />
+    <Compile Include="Actions\ItemHanger.cs" />
+    <Compile Include="Actions\MyOrders.cs" />
+    <Compile Include="Actions\MarketInfo.cs" />
+    <Compile Include="Actions\ModifyOrder.cs" />
     <Compile Include="Caching\Cache.cs" />
     <Compile Include="Caching\MarketItem.cs" />
     <Compile Include="Logging\ControlWriter.cs" />
@@ -69,8 +69,7 @@
     <Compile Include="Lookup\Time.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\UpdateAllOrders.cs" />
-    <Compile Include="Scripts\SellItem.cs" />
-    <Compile Include="Scripts\SellItems.cs" />
+    <Compile Include="Actions\SellItem.cs" />
     <Compile Include="States\OmniEveState.cs" />
     <Compile Include="Scripts\Automation.cs" />
     <Compile Include="Status\Status.cs" />

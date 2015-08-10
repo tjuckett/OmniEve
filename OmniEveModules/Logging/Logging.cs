@@ -11,12 +11,13 @@ namespace OmniEveModules.Logging
 {
     public static class Logging
     {
-        public static int LoggingInstances = 0;
+        //public static int LoggingInstances = 0;
 
         static Logging()
         {
-            Interlocked.Increment(ref LoggingInstances);
-            Logging.PathToCurrentDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            //Interlocked.Increment(ref LoggingInstances);
+            lock(loglock)
+                PathToCurrentDirectory = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
 
         //~Logging()
@@ -82,97 +83,107 @@ namespace OmniEveModules.Logging
 
         public static TextBoxWriter TextBoxWriter { get; set; }
 
+        public static object loglock = new object();
+
 
         //public  void Log(string line)
         //public static void Log(string module, string line, string color = Logging.White)
         public static void Log(string module, string line, string color, bool verbose = false)
         {
-            try
+            lock (loglock)
             {
-                DateTimeForLogs = DateTime.Now;
-
-                if (verbose) //tons of info
+                try
                 {
-                    //
-                    // verbose text logging - with line numbers, filenames and Methods listed ON EVERY LOGGING LINE - this is ALOT more detail
-                    //
-                    System.Diagnostics.StackFrame sf = new System.Diagnostics.StackFrame(1, true);
-                    module += "-[line" + sf.GetFileLineNumber().ToString() + "]in[" + System.IO.Path.GetFileName(sf.GetFileName()) + "][" + sf.GetMethod().Name + "]";
-                }
+                
+                    DateTimeForLogs = DateTime.Now;
 
-                _colorLogLine = line;
-                Logging.redactedColorLogLine = String.Format("{0:HH:mm:ss} {1}", DateTimeForLogs, "[" + module + "] " + FilterSensitiveInfo(_plainLogLine) + "\r\n");  //In memory Console Log with sensitive info redacted
-
-                _plainLogLine = FilterColorsFromLogs(line);
-
-                Logging.redactedPlainLogLine = String.Format("{0:HH:mm:ss} {1}", DateTimeForLogs, "[" + module + "] " + FilterSensitiveInfo(_plainLogLine) + "\r\n");  //In memory Console Log with sensitive info redacted
-
-                Logging.ExtConsole = Logging.redactedPlainLogLine;
-
-                if (TextBoxWriter != null)
-                {
-                    TextBoxWriter.Write(Logging.redactedPlainLogLine);
-                }                
-
-                if (Logging.tryToLogToFile)
-                {
-                    if (Logging.SaveConsoleLog)//(Settings.Instance.SaveConsoleLog)
+                    if (verbose) //tons of info
                     {
-                        if (!Logging.ConsoleLogOpened)
+                        //
+                        // verbose text logging - with line numbers, filenames and Methods listed ON EVERY LOGGING LINE - this is ALOT more detail
+                        //
+                        System.Diagnostics.StackFrame sf = new System.Diagnostics.StackFrame(1, true);
+                        module += "-[line" + sf.GetFileLineNumber().ToString() + "]in[" + System.IO.Path.GetFileName(sf.GetFileName()) + "][" + sf.GetMethod().Name + "]";
+                    }
+
+                    _colorLogLine = line;
+                    Logging.redactedColorLogLine = String.Format("{0:HH:mm:ss} {1}", DateTimeForLogs, "[" + module + "] " + FilterSensitiveInfo(_plainLogLine) + "\r\n");  //In memory Console Log with sensitive info redacted
+
+                    _plainLogLine = FilterColorsFromLogs(line);
+
+                    Logging.redactedPlainLogLine = String.Format("{0:HH:mm:ss} {1}", DateTimeForLogs, "[" + module + "] " + FilterSensitiveInfo(_plainLogLine) + "\r\n");  //In memory Console Log with sensitive info redacted
+
+                    Logging.ExtConsole = Logging.redactedPlainLogLine;
+
+                    /*if (TextBoxWriter != null)
+                    {
+                        lock (TextBoxWriter)
                         {
-                            //
-                            // begin logging to file
-                            //
-                            if (Logging.ConsoleLogPath != null && Logging.ConsoleLogFile != null)
-                            {
-                                if (!string.IsNullOrEmpty(Logging.ConsoleLogFile))
-                                {
-                                    Directory.CreateDirectory(Logging.ConsoleLogPath);
-                                    if (Directory.Exists(Logging.ConsoleLogPath))
-                                    {
-                                        Logging.ConsoleLogOpened = true;
-                                    }
-                                    line = "";
-                                }
-                                else
-                                {
-                                    line = "Logging: Unable to write log to file yet as: ConsoleLogFile is not yet defined";
-                                }
-                            }
+                            TextBoxWriter.Write(Logging.redactedPlainLogLine);
                         }
+                    }*/
 
-                        if (Logging.ConsoleLogOpened)
+                    if (Logging.tryToLogToFile)
+                    {
+                        if (Logging.SaveConsoleLog)//(Settings.Instance.SaveConsoleLog)
                         {
-                            //
-                            // log file ready: add next logging entry...
-                            //
-                            //
-                            // normal text logging
-                            //
-                            if (Logging.ConsoleLogFile != null && !verbose) //normal
+                            if (!Logging.ConsoleLogOpened)
                             {
-                                File.AppendAllText(System.IO.Path.Combine(Logging.ConsoleLogPath, Logging.ConsoleLogFile), Logging.redactedPlainLogLine); //Write In Memory Console log to File
+                                //
+                                // begin logging to file
+                                //
+                                if (Logging.ConsoleLogPath != null && Logging.ConsoleLogFile != null)
+                                {
+                                    if (!string.IsNullOrEmpty(Logging.ConsoleLogFile))
+                                    {
+                                        Directory.CreateDirectory(Logging.ConsoleLogPath);
+                                        if (Directory.Exists(Logging.ConsoleLogPath))
+                                        {
+                                            Logging.ConsoleLogOpened = true;
+                                        }
+                                        line = "";
+                                    }
+                                    else
+                                    {
+                                        line = "Logging: Unable to write log to file yet as: ConsoleLogFile is not yet defined";
+                                    }
+                                }
                             }
 
-                            //
-                            // redacted text logging - sensitive info removed so you can generally paste the contents of this log publicly w/o fear of easily exposing user identifiable info
-                            //
-                            if (Logging.ConsoleLogFileRedacted != null)
+                            if (Logging.ConsoleLogOpened)
                             {
-                                File.AppendAllText(System.IO.Path.Combine(Logging.ConsoleLogPath, Logging.ConsoleLogFileRedacted), Logging.redactedPlainLogLine);               //Write In Memory Console log to File
+                                //
+                                // log file ready: add next logging entry...
+                                //
+                                //
+                                // normal text logging
+                                //
+                                if (Logging.ConsoleLogFile != null && !verbose) //normal
+                                {
+                                    File.AppendAllText(System.IO.Path.Combine(Logging.ConsoleLogPath, Logging.ConsoleLogFile), Logging.redactedPlainLogLine); //Write In Memory Console log to File
+                                }
+
+                                //
+                                // redacted text logging - sensitive info removed so you can generally paste the contents of this log publicly w/o fear of easily exposing user identifiable info
+                                //
+                                if (Logging.ConsoleLogFileRedacted != null)
+                                {
+                                    File.AppendAllText(System.IO.Path.Combine(Logging.ConsoleLogPath, Logging.ConsoleLogFileRedacted), Logging.redactedPlainLogLine);               //Write In Memory Console log to File
+                                }
                             }
                         }
                     }
                 }
-            }
-            catch (Exception exception)
-            {
-                BasicLog(module, exception.Message);
+                catch (Exception exception)
+                {
+                    BasicLog(module, exception.Message);
+                }
             }
         }
 
         public static void BasicLog(string module, string logmessage)
         {
+            
             Console.WriteLine(string.Format("{0:HH:mm:ss} {1}", DateTime.UtcNow, "[" + module + "] " + logmessage));
             if (Logging.SaveLogRedacted && Logging.ConsoleLogFileRedacted != null)
             {

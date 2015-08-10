@@ -19,7 +19,10 @@ namespace OmniEveModules.Logging
 
         public override void Write(string value)
         {
-            textbox.AppendText(value);
+            textbox.Invoke((MethodInvoker)delegate 
+            {
+                textbox.AppendText(value);
+            });
         }
 
         public override Encoding Encoding

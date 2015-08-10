@@ -14,3 +14,19 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Debug\OmniEveModules.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\bin\Debug\DirectEve.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.exe
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\OmniEve.exe.config
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\OmniEve.exe
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\OmniEve.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\DirectEve.dll
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\MetroFramework.Design.dll
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\MetroFramework.dll
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\MetroFramework.Fonts.dll
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\OmniEveModules.dll
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\OmniEveModules.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\bin\Debug\DirectEve.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.csprojResolveAssemblyReference.cache
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.OmniEveUI.resources
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.Properties.Resources.resources
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.csproj.GenerateResource.Cache
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.exe
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEve\obj\Debug\OmniEve.pdb

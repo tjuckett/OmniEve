@@ -30,6 +30,8 @@ namespace OmniEveModules.Caching
         
         public DirectEve DirectEve { get; set; }
 
+        public int OrderCap { get; set; }
+
         public int RandomNumber(int min, int max)
         {
             Random random = new Random();

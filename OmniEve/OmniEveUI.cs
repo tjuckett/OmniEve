@@ -17,6 +17,7 @@ using MetroFramework.Controls;
 namespace OmniEve
 {
     using DirectEve;
+    using OmniEveModules.Actions;
     using OmniEveModules.Caching;
     using OmniEveModules.Scripts;
     using OmniEveModules.Logging;
@@ -48,7 +49,7 @@ namespace OmniEve
             // If we are in the idle state then clean up the action queue before we allow the user to re-enable the controls
             if (IsInIdleState() == true)
             {
-                _omniEve.CleanUpActions();
+                //_omniEve.CleanUpActions();
                 _mode = Mode.Idle;
 
                 EnableControls();
@@ -63,17 +64,17 @@ namespace OmniEve
         {
             if (_mode == Mode.Manual)
             {
-                return (_omniEve != null && _omniEve.IsActionQueueEmpty() == true);
+                return _omniEve.IsActionQueueEmpty();
             }
             else if (_mode == Mode.Automatic)
             {
-                return (_timer.Enabled == false);
+                return !_timer.Enabled && _omniEve.IsActionQueueEmpty();
             }
 
             return true;
         }
 
-        private void UpdateAllOrdersFinished()
+        private void AutomationFinished()
         {
             CheckState();
         }
@@ -524,42 +525,6 @@ namespace OmniEve
             CheckState();
         }
 
-        private void OnSellItemsFinished(List<DirectItem> itemsSold)
-        {
-            itemHangerGrid.Invoke((MethodInvoker)delegate 
-            {
-                List<DataGridViewRow> rowsToRemove = new List<DataGridViewRow>();
-
-                foreach (DataGridViewRow row in itemHangerGrid.Rows)
-                {
-                    try
-                    {
-                        DirectItem item = itemsSold.FirstOrDefault(i => i.ItemId == (long)row.Cells["ItemHanger_ItemId"].Value);
-
-                        if(item != null)
-                        {
-                            rowsToRemove.Add(row);
-                        }
-                        else if((bool)row.Cells["ItemHanger_Select"].Value == true)
-                        {
-                            row.DefaultCellStyle.BackColor = Color.Yellow;
-                            row.DefaultCellStyle.ForeColor = Color.Black;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Log("OmniEveUI:OnSellItemsFinished", "Exception [" + ex + "]", Logging.Debug);
-                    }
-                }
-
-                // Remove all the rows that had sell orders created
-                foreach (DataGridViewRow row in rowsToRemove)
-                    itemHangerGrid.Rows.Remove(row);
-            });
-
-            CheckState();
-        }
-
         private void OnBuyItemFinished(int typeId, bool orderCreated)
         {
             marketGrid.Invoke((MethodInvoker)delegate
@@ -579,38 +544,6 @@ namespace OmniEve
                     catch (Exception ex)
                     {
                         Logging.Log("OmniEveUI:OnSellItemFinished", "Exception [" + ex + "]", Logging.Debug);
-                    }
-                }
-
-                // Remove all the rows that had sell orders created
-                foreach (DataGridViewRow row in rowsToRemove)
-                    marketGrid.Rows.Remove(row);
-            });
-
-            CheckState();
-        }
-
-        private void OnBuyItemsFinished(List<int> typeIdsBought, bool ordersCreated)
-        {
-            marketGrid.Invoke((MethodInvoker)delegate
-            {
-                List<DataGridViewRow> rowsToRemove = new List<DataGridViewRow>();
-
-                foreach (DataGridViewRow row in marketGrid.Rows)
-                {
-                    try
-                    {
-                        int typeId = typeIdsBought.FirstOrDefault(i => i == (int)row.Cells["Market_TypeId"].Value);
-
-                        if (typeId != 0)
-                        {
-                            row.DefaultCellStyle.BackColor = Color.White;
-                            row.DefaultCellStyle.ForeColor = Color.Black;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logging.Log("OmniEveUI:OnSellItemsFinished", "Exception [" + ex + "]", Logging.Debug);
                     }
                 }
 
@@ -671,14 +604,16 @@ namespace OmniEve
             if(_omniEve != null)
             {
                 Automation automation = new Automation();
-                automation.OnAutomationFinished += UpdateAllOrdersFinished;
+                automation.ScriptCompleted += AutomationFinished;
                 automation.OnMyOrdersFinished += OnMyOrdersFinished;
                 automation.OnMarketInfoFinished += OnMarketInfoFinished;
                 automation.OnModifySellOrderFinished += OnModifySellOrderFinished;
                 automation.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
                 automation.OnItemHangerFinished += OnItemHangerFinished;
                 automation.OnSellItemFinished += OnSellItemFinished;
-                _omniEve.AddScript(automation);
+                _omniEve.RunScript(automation);
+
+                Logging.Log("OmniEveUI:AutomateAll", "Automation started", Logging.Debug);
             }
         }
 
@@ -688,7 +623,7 @@ namespace OmniEve
             {
                 MyOrders myOrders = new MyOrders();
                 myOrders.OnMyOrdersFinished += OnMyOrdersFinished;
-                _omniEve.AddScript(myOrders);
+                _omniEve.AddAction(myOrders);
             }
         }
 
@@ -701,20 +636,17 @@ namespace OmniEve
 
         public void ModifyOrders()
         {
-            List<DirectOrder> modifySellOrderList = CreateModifySellOrdersList();
-            List<DirectOrder> modifyBuyOrderList = CreateModifyBuyOrdersList();
-
-            UpdateAllOrders modifyAllOrders = new UpdateAllOrders(modifySellOrderList, modifyBuyOrderList);
-            modifyAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
-            modifyAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
-            _omniEve.AddScript(modifyAllOrders);
+            UpdateAllOrders UpdateAllOrders = new UpdateAllOrders();
+            UpdateAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
+            UpdateAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
+            _omniEve.RunScript(UpdateAllOrders);
         }
 
         public void LoadItemHanger()
         {
             ItemHanger itemHanger = new ItemHanger();
             itemHanger.OnItemHangerFinished += OnItemHangerFinished;
-            _omniEve.AddScript(itemHanger);
+            _omniEve.AddAction(itemHanger);
         }
 
         public void SellItemsInHanger()
@@ -734,7 +666,9 @@ namespace OmniEve
                             if (item != null)
                             {
                                 Logging.Log("OmniEveUI:SellItemsInHanger", "Adding item to list of items to be sold ItemId - " + itemId, Logging.Debug);
-                                sellItemList.Add(item);
+                                SellItem sellItem = new SellItem(item, true);
+                                sellItem.OnSellItemFinished += OnSellItemFinished;
+                                _omniEve.AddAction(sellItem);
                             }
                         }
                     }
@@ -744,12 +678,6 @@ namespace OmniEve
                     }
                 }
             });
-
-            SellItems sellItems = new SellItems(sellItemList);
-            sellItems.OnSellItemFinished += OnSellItemFinished;
-            sellItems.OnSellItemsFinished += OnSellItemsFinished;
-
-            _omniEve.AddScript(sellItems);
         }
 
         public void CreateBuyOrders()
@@ -775,7 +703,9 @@ namespace OmniEve
                                 volume = (int)(10000000.0 / price);
 
                             Logging.Log("OmniEveUI:CreateBuyOrders", "Adding type to create buy order for TypeId - " + typeId + " Volume - " + volume, Logging.Debug);
-                            ordersToCreate.Add(typeId, volume);
+                            BuyItem buyItem = new BuyItem(typeId, volume, true);
+                            buyItem.OnBuyItemFinished += OnBuyItemFinished;
+                            _omniEve.AddAction(buyItem);
                         }
                     }
                     catch (Exception ex)
@@ -784,12 +714,6 @@ namespace OmniEve
                     }
                 }
             });
-
-            BuyItems buyItems = new BuyItems(ordersToCreate, true);
-            buyItems.OnBuyItemFinished += OnBuyItemFinished;
-            buyItems.OnBuyItemsFinished += OnBuyItemsFinished;
-
-            _omniEve.AddScript(buyItems);
         }
 
         private void OmniEveUI_FormClosing(object sender, FormClosingEventArgs e)
@@ -822,25 +746,30 @@ namespace OmniEve
 
                 // Create a list of market info type ids, this will be a combination of the buy and sell orders, we don't want to get
                 // an item twice if we have a buy and sell order, just include it once.
-                List<int> marketInfoTypeIds = new List<int>();
+                List<int> typeIds = new List<int>();
 
                 foreach (DirectOrder order in Cache.Instance.MySellOrders)
-                    marketInfoTypeIds.Add(order.TypeId);
+                    typeIds.Add(order.TypeId);
 
                 foreach (DirectOrder order in Cache.Instance.MyBuyOrders)
                 {
                     // If the type id isn't already in the list of ids to get market info for then add it
-                    if (marketInfoTypeIds.FirstOrDefault(o => o == order.TypeId) == 0)
-                        marketInfoTypeIds.Add(order.TypeId);
+                    if (typeIds.FirstOrDefault(o => o == order.TypeId) == 0)
+                        typeIds.Add(order.TypeId);
                 }
 
                 // Add an action for each sell order and get the updated market values
                 if (_omniEve != null)
                 {
-                    MarketInfoForList marketInfoForList = new MarketInfoForList(marketInfoTypeIds);
-                    marketInfoForList.OnMarketInfoFinished += OnMarketInfoFinished;
-                    _omniEve.AddScript(marketInfoForList);
+                    foreach(int typeId in typeIds)
+                    {
+                        MarketInfo marketInfo = new MarketInfo(typeId);
+                        marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
+                        _omniEve.AddAction(marketInfo);
+                    }
                 }
+
+                CheckState();
             }
             catch (Exception ex)
             {
@@ -888,8 +817,7 @@ namespace OmniEve
                 _timer.Elapsed += AutoTimerElapsed;
                 _timer.AutoReset = true;
                 _timer.Start();
-
-
+                
                 AutomateAll();
                 CheckState();
             }
@@ -908,7 +836,7 @@ namespace OmniEve
                 MetroGrid grid = (MetroGrid)sender;
                 MarketInfo marketInfo = new MarketInfo(int.Parse(grid.CurrentRow.Cells["Selling_TypeId"].Value.ToString()));
                 marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
-                _omniEve.AddScript(marketInfo);
+                _omniEve.AddAction(marketInfo);
 
                 CheckState();
             }
@@ -923,7 +851,7 @@ namespace OmniEve
                 MetroGrid grid = (MetroGrid)sender;
                 MarketInfo marketInfo = new MarketInfo(int.Parse(grid.CurrentRow.Cells["Buying_TypeId"].Value.ToString()));
                 marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
-                _omniEve.AddScript(marketInfo);
+                _omniEve.AddAction(marketInfo);
 
                 CheckState();
             }
@@ -966,7 +894,7 @@ namespace OmniEve
                 marketGrid.Rows.Clear();
             });
 
-            string[] allLines = File.ReadAllLines("C:\\Users\\Tim\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+            string[] allLines = File.ReadAllLines("C:\\Users\\Tim And Desiree\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
 
             foreach (string line in allLines)
             {
@@ -1025,7 +953,7 @@ namespace OmniEve
 
                 MyOrders myOrders = new MyOrders();
                 myOrders.OnMyOrdersFinished += OnCheckMyOrdersAgainstMarketFinished;
-                _omniEve.AddScript(myOrders);
+                _omniEve.AddAction(myOrders);
 
                 CheckState();
             }
@@ -1043,7 +971,7 @@ namespace OmniEve
 
                 ItemHanger itemHanger = new ItemHanger();
                 itemHanger.OnItemHangerFinished += OnCheckItemHangerAgainstMarketFinished;
-                _omniEve.AddScript(itemHanger);
+                _omniEve.AddAction(itemHanger);
 
                 CheckState();
             }
@@ -1061,7 +989,7 @@ namespace OmniEve
 
                 MyOrders myOrders = new MyOrders();
                 myOrders.OnMyOrdersFinished += OnCheckMyOrdersAgainstItemHangerFinished;
-                _omniEve.AddScript(myOrders);
+                _omniEve.AddAction(myOrders);
 
                 CheckState();
             }
