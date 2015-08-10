@@ -25,6 +25,7 @@ namespace OmniEve
         private static DateTime _nextOmniEveAction = DateTime.UtcNow.AddHours(-1);
 
         private volatile List<IAction> _actions = new List<IAction>();
+        private volatile List<IScript> _scripts = new List<IScript>();
 
         public bool Cleanup { get; set; }
         public OmniEveState State { get { return _state; } }
@@ -53,10 +54,21 @@ namespace OmniEve
             }
         }
 
-        public void RunScript(IScript script, params object[] arguments)
+        public void RunScript(IScript script)
         {
             script.DoActions += RunScriptDoActions;
-            script.RunScriptAsync(arguments);
+            script.Start();
+
+            lock(_scripts)
+                _scripts.Add(script);
+        }
+
+        public void StopScript(IScript script)
+        {
+            script.Stop();
+            
+            lock (_scripts)
+                _scripts.Remove(script);
         }
 
         private void RunScriptDoActions(List<IAction> actions)

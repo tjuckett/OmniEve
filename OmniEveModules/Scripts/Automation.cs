@@ -55,41 +55,43 @@ namespace OmniEveModules.Scripts
         private List<BuyItem> _buyActions = new List<BuyItem>();
         private List<MarketInfo> _marketActions = new List<MarketInfo>();
 
-        public override void DoWork(params object[] arguments)
+        public override void Update()
         {
             try
             {
-                while (_state != State.Done)
+                switch (_state)
                 {
-                    switch (_state)
-                    {
-                        case State.Processing:
-                            break;
-                        case State.MyOrders:
-                            RunMyOrders();
-                            break;
-                        case State.MarketInfo:
-                            RunMarketInfo();
-                            break;
-                        case State.UpdateOrders:
-                            RunUpdateOrders();
-                            break;
-                        case State.ItemHanger:
-                            RunItemHanger();
-                            break;
-                        case State.CreateSellOrders:
-                            RunCreateSellOrders();
-                            break;
-                        case State.CreateBuyOrders:
-                            RunCreateBuyOrders();
-                            break;
-                    }
-                }   
+                    case State.Processing:
+                        break;
+                    case State.MyOrders:
+                        RunMyOrders();
+                        break;
+                    case State.MarketInfo:
+                        RunMarketInfo();
+                        break;
+                    case State.UpdateOrders:
+                        RunUpdateOrders();
+                        break;
+                    case State.ItemHanger:
+                        RunItemHanger();
+                        break;
+                    case State.CreateSellOrders:
+                        RunCreateSellOrders();
+                        break;
+                    case State.CreateBuyOrders:
+                        RunCreateBuyOrders();
+                        break;
+                }
             }
             catch (Exception ex)
             {
                 Logging.Log("Automation:DoWork", "Exception [" + ex + "]", Logging.Debug);
             }
+        }
+
+        public override bool IsDone()
+        {
+            return _state == State.Done;
         }
 
         private void ChangeState(State state)
@@ -168,7 +170,7 @@ namespace OmniEveModules.Scripts
             updateAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
             updateAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
             updateAllOrders.ScriptCompleted += UpdateAllOrdersComplete;
-            updateAllOrders.RunScriptAsync();
+            updateAllOrders.Start();
 
             ChangeState(State.Processing);
         }
@@ -261,7 +263,7 @@ namespace OmniEveModules.Scripts
 
             Logging.Log("Automation:RunCreateBuyOrders", "CreateBuyOrders State - Begin", Logging.Debug);
 
-            string[] allLines = File.ReadAllLines("C:\\Users\\Tim And Desiree\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+            string[] allLines = File.ReadAllLines("C:\\Users\\tjuckett\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
 
             foreach (string line in allLines)
             {
@@ -328,7 +330,7 @@ namespace OmniEveModules.Scripts
             }
             else
             {
-                Logging.Log("Automation:Process", "Hit max number of buy orders allowed, going to done state", Logging.White);
+                Logging.Log("Automation:RunNextBuyAction", "Hit max number of buy orders allowed, going to done state", Logging.White);
             }
 
             _buyActions.Clear();
@@ -343,7 +345,7 @@ namespace OmniEveModules.Scripts
 
             ChangeState(State.MarketInfo);
 
-            Logging.Log("Automation:Process", "MyOrders State - End", Logging.Debug);
+            Logging.Log("Automation:MyOrdersFinished", "MyOrders State - End", Logging.Debug);
         }
 
         private void MarketInfoFinished(MarketItem marketItem)
@@ -351,7 +353,7 @@ namespace OmniEveModules.Scripts
             if (RunNextMarketAction() == false)
             {
                 ChangeState(State.UpdateOrders);
-                Logging.Log("Automation:Process", "MarketInfo State - End", Logging.Debug);
+                Logging.Log("Automation:MarketInfoFinished", "MarketInfo State - End", Logging.Debug);
             }
         }
 
@@ -359,7 +361,7 @@ namespace OmniEveModules.Scripts
         {
             ChangeState(State.ItemHanger);
 
-            Logging.Log("Automation:Process", "UpdateOrders State - End", Logging.Debug);
+            Logging.Log("Automation:UpdateAllOrdersComplete", "UpdateOrders State - End", Logging.Debug);
         }
 
         private void ItemHangerFinished(List<DirectItem> hangerItems)
@@ -368,7 +370,7 @@ namespace OmniEveModules.Scripts
 
             ChangeState(State.CreateSellOrders);
 
-            Logging.Log("Automation:Process", "CheckItem State - End", Logging.Debug);
+            Logging.Log("Automation:ItemHangerFinished", "CheckItem State - End", Logging.Debug);
         }
 
         private void SellItemFinished(DirectItem item, bool sold)
@@ -378,7 +380,7 @@ namespace OmniEveModules.Scripts
 
             if (RunNextSellAction() == false)
             {
-                Logging.Log("Automation:Process", "CreateSellOrders State - End", Logging.Debug);
+                Logging.Log("Automation:SellItemFinished", "CreateSellOrders State - End", Logging.Debug);
                 ChangeState(State.CreateBuyOrders);
             }
         }
@@ -390,8 +392,8 @@ namespace OmniEveModules.Scripts
 
             if (RunNextBuyAction() == false)
             {
-                Logging.Log("Automation:Process", "CreateBuyOrders State - End", Logging.Debug);
-                ChangeState(State.Done);
+                Logging.Log("Automation:BuyItemFinished", "CreateBuyOrders State - End", Logging.Debug);
+                ChangeState(State.MyOrders);
             }
         }
     }

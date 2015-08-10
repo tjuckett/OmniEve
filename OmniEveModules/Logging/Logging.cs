@@ -115,13 +115,13 @@ namespace OmniEveModules.Logging
 
                     Logging.ExtConsole = Logging.redactedPlainLogLine;
 
-                    /*if (TextBoxWriter != null)
+                    if (TextBoxWriter != null)
                     {
                         lock (TextBoxWriter)
                         {
                             TextBoxWriter.Write(Logging.redactedPlainLogLine);
                         }
-                    }*/
+                    }
 
                     if (Logging.tryToLogToFile)
                     {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace OmniEveModules.Scripts
 {
+    using OmniEveModules.Caching;
     using OmniEveModules.Actions;
 
     public delegate void DoActionsEventHandler(List<IAction> actions);
@@ -18,30 +19,27 @@ namespace OmniEveModules.Scripts
         public event DoActionsEventHandler DoActions;
         public event ScriptCompleteEventHandler ScriptCompleted;
 
-        public abstract void DoWork(params object[] arguments);
+        public abstract void Update();
+        public abstract bool IsDone();
 
-        public void RunScriptAsync()
+        public void Start()
         {
-            _thread = new Thread(delegate()
-            {
-                DoWork();
-
-                DoActions(new List<IAction>() { new ScriptComplete(ScriptCompleted) });
-            });
-
-            _thread.Start();
+            Cache.Instance.DirectEve.OnFrame += OnFrame;
         }
 
-        public void RunScriptAsync(params object[] arguments)
+        public void Stop()
         {
-            _thread = new Thread(delegate ()
-            {
-                DoWork(arguments);
+            Cache.Instance.DirectEve.OnFrame -= OnFrame;
+            
+            DoActions(new List<IAction>() { new ScriptComplete(ScriptCompleted) });
+        }
 
-                DoActions(new List<IAction>() { new ScriptComplete(ScriptCompleted) });
-            });
-
-            _thread.Start();
+        public void OnFrame(object sender, EventArgs e)
+        {
+            if(IsDone() == false)
+                Update();
+            else
+                Stop();
         }
 
         public void RunAction(IAction action)

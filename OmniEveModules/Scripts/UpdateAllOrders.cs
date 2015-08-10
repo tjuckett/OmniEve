@@ -19,10 +19,19 @@ namespace OmniEveModules.Scripts
 
         public event CancelOrder.CancelOrderFinished OnCancelOrderFinished;
 
-        public override void DoWork(params object[] arguments)
+        private bool _isDone = false;
+
+        public override bool IsDone()
+        {
+            return _isDone;
+        }
+
+        public override void Update()
         {
             RunActions(CreateModifySellActions());
             RunActions(CreateModifyBuyAndCancelActions());
+
+            _isDone = true;
         }
 
         public List<IAction> CreateModifySellActions()

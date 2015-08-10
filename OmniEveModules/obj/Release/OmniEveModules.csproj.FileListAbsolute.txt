@@ -50,3 +50,4 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFrame
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache

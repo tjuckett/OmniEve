@@ -9,6 +9,7 @@ using Mono.Options;
 
 namespace OmniEve
 {
+    using OmniEveModules.Scripts;
     using OmniEveModules.Logging;
     using OmniEveModules.Caching;
     using OmniEveModules.Lookup;
@@ -201,7 +202,11 @@ namespace OmniEve
                     }
 
                     Logging.Log("Program:Main", "Launching OmniEveUI", Logging.Teal);
-                    Application.Run(new OmniEveUI(_omniEve));
+
+                    Automation automation = new Automation();
+                    _omniEve.RunScript(automation);
+
+                    //Application.Run(new OmniEveUI(_omniEve));
 
                     while (_omniEve.State != OmniEveModules.States.OmniEveState.CloseOmniEve)
                     {
