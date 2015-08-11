@@ -47,15 +47,21 @@ namespace OmniEveModules.Scripts
         private volatile State _state = State.MyOrders;
         private volatile int _newSellOrders = 0;
         private volatile int _newBuyOrders = 0;
+        private bool _isDone = false;
 
         private List<DirectOrder> _mySellOrders = null;
         private List<DirectOrder> _myBuyOrders = null;
         private List<DirectItem> _itemsInHanger = null;
-        private List<SellItem> _sellActions = new List<SellItem>();
-        private List<BuyItem> _buyActions = new List<BuyItem>();
-        private List<MarketInfo> _marketActions = new List<MarketInfo>();
+        private Stack<SellItem> _sellActions = new Stack<SellItem>();
+        private Stack<BuyItem> _buyActions = new Stack<BuyItem>();
+        private Stack<MarketInfo> _marketActions = new Stack<MarketInfo>();
 
-        public override void Update()
+        public override bool IsDone()
+        {
+            return _isDone;
+        }
+
+        public override void OnFrame()
         {
             try
             {
@@ -81,17 +87,15 @@ namespace OmniEveModules.Scripts
                     case State.CreateBuyOrders:
                         RunCreateBuyOrders();
                         break;
+                    case State.Done:
+                        _isDone = true;
+                        break;
                 }
             }
             catch (Exception ex)
             {
                 Logging.Log("Automation:DoWork", "Exception [" + ex + "]", Logging.Debug);
             }
-        }
-
-        public override bool IsDone()
-        {
-            return _state == State.Done;
         }
 
         private void ChangeState(State state)
@@ -133,7 +137,7 @@ namespace OmniEveModules.Scripts
                 MarketInfo marketInfo = new MarketInfo(typeId);
                 marketInfo.OnMarketInfoFinished += OnMarketInfoFinished;
                 marketInfo.OnMarketInfoFinished += MarketInfoFinished;
-                _marketActions.Add(marketInfo);
+                _marketActions.Push(marketInfo);
             }
 
             if (RunNextMarketAction() == true)
@@ -144,12 +148,14 @@ namespace OmniEveModules.Scripts
 
         private bool RunNextMarketAction()
         {
-            MarketInfo marketInfo = _marketActions.FirstOrDefault();
+            MarketInfo marketInfo = null;
+
+            if(_marketActions.Count > 0)
+                marketInfo = _marketActions.Pop();
 
             if (marketInfo != null)
             {
                 Logging.Log("Automation:RunNextMarketAction", "Popping next market info action to run", Logging.White);
-                _marketActions.Remove(marketInfo);
                 RunAction(marketInfo);
                 return true;
             }
@@ -214,7 +220,7 @@ namespace OmniEveModules.Scripts
                     SellItem sellItem = new SellItem(item, true);
                     sellItem.OnSellItemFinished += OnSellItemFinished;
                     sellItem.OnSellItemFinished += SellItemFinished;
-                    _sellActions.Add(sellItem);
+                    _sellActions.Push(sellItem);
                 }
             }
 
@@ -231,12 +237,14 @@ namespace OmniEveModules.Scripts
 
             if (_mySellOrders.Count + _newSellOrders <= maxSellOrders && _myBuyOrders.Count + _mySellOrders.Count + _newSellOrders < orderCap)
             {
-                SellItem sellItem = _sellActions.FirstOrDefault();
+                SellItem sellItem = null;
+
+                if(_sellActions.Count > 0)
+                    sellItem = _sellActions.Pop();
 
                 if (sellItem != null)
                 {
                     Logging.Log("Automation:RunNextSellItem", "Popping next sell script to run", Logging.White);
-                    _sellActions.Remove(sellItem);
                     RunAction(sellItem);
                     return true;
                 }
@@ -263,7 +271,7 @@ namespace OmniEveModules.Scripts
 
             Logging.Log("Automation:RunCreateBuyOrders", "CreateBuyOrders State - Begin", Logging.Debug);
 
-            string[] allLines = File.ReadAllLines("C:\\Users\\tjuckett\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
+            string[] allLines = File.ReadAllLines("C:\\Users\\Tim and Desiree\\Documents\\GitHub\\OmniEve\\output\\BuyOrders.txt");
 
             foreach (string line in allLines)
             {
@@ -292,7 +300,7 @@ namespace OmniEveModules.Scripts
                         BuyItem buyItem = new BuyItem(typeId, volume, true);
                         buyItem.OnBuyItemFinished += OnBuyItemFinished;
                         buyItem.OnBuyItemFinished += BuyItemFinished;
-                        _buyActions.Add(buyItem);
+                        _buyActions.Push(buyItem);
                     }
                 }
                 catch (Exception ex)
@@ -314,12 +322,14 @@ namespace OmniEveModules.Scripts
 
             if (_myBuyOrders.Count + _newBuyOrders <= maxBuyOrders && _myBuyOrders.Count + _mySellOrders.Count + _newBuyOrders + _newSellOrders < (orderCap - 5))
             {
-                BuyItem buyItem = _buyActions.FirstOrDefault();
+                BuyItem buyItem = null;
+
+                if(_buyActions.Count > 0)
+                    buyItem = _buyActions.Pop();
 
                 if (buyItem != null)
                 {
                     Logging.Log("Automation:RunNextBuyItem", "Popping next buy script to run", Logging.White);
-                    _buyActions.Remove(buyItem);
                     RunAction(buyItem);
                     return true;
                 }

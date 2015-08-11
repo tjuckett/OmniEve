@@ -26,7 +26,7 @@ namespace OmniEveModules.Scripts
             return _isDone;
         }
 
-        public override void Update()
+        public override void OnFrame()
         {
             RunActions(CreateModifySellActions());
             RunActions(CreateModifyBuyAndCancelActions());

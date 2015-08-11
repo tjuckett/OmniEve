@@ -99,11 +99,11 @@ namespace OmniEveModules.Actions
 
                     if (!marketWindow.IsReady)
                     {
-                        Logging.Log("Sell:Process", "Market window is not ready", Logging.White);
+                        Logging.Log("SellItem:Process", "Market window is not ready", Logging.White);
                         break;
                     }
 
-                    Logging.Log("Sell:Process", "Opening Market", Logging.White);
+                    Logging.Log("SellItem:Process", "Opening Market", Logging.White);
                     _state = State.LoadItem;
 
                     break;
@@ -117,7 +117,7 @@ namespace OmniEveModules.Actions
 
                     if (marketWindow != null)
                     {
-                        Logging.Log("Sell:Process", "Load orders for TypeId - " + _item.TypeId.ToString(), Logging.White);
+                        Logging.Log("SellItem:Process", "Load orders for TypeId - " + _item.TypeId.ToString(), Logging.White);
 
                         if (marketWindow.DetailTypeId != _item.TypeId)
                         {
@@ -129,7 +129,7 @@ namespace OmniEveModules.Actions
                     }
                     else
                     {
-                        Logging.Log("Sell:Process", "MarketWindow is not open, going back to open market state", Logging.White);
+                        Logging.Log("SellItem:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
                         _state = State.OpenMarket;
                     }
@@ -146,7 +146,7 @@ namespace OmniEveModules.Actions
                     {
                         if (!marketWindow.IsReady)
                         {
-                            Logging.Log("Sell:Process", "Market window is not ready", Logging.White);
+                            Logging.Log("SellItem:Process", "Market window is not ready", Logging.White);
                             break;
                         }
 
@@ -176,7 +176,7 @@ namespace OmniEveModules.Actions
                                     // If there is no first buy order then create the order anyway
                                     if (firstBuyOrder != null && firstSellOrder.Price / firstBuyOrder.Price < 1.5)
                                     {
-                                        Logging.Log("Sell:Process", "No sale, price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
+                                        Logging.Log("SellItem:Process", "No sale, price difference between the first two orders is too high Pct - " + priceDifferencePct + " Diff - " + priceDifference, Logging.White);
                                         _state = State.Done;
                                         break;
                                     }
@@ -186,17 +186,17 @@ namespace OmniEveModules.Actions
                             _price = double.Parse((decimal.Parse(firstSellOrder.Price.ToString()) - 0.01m).ToString());
                             _state = State.OpenSellWindow;
 
-                            Logging.Log("Sell:Process", "Lowest sell price, Name - " + _item.Name + " Price - " + _price, Logging.White);
+                            Logging.Log("SellItem:Process", "Lowest sell price, Name - " + _item.Name + " Price - " + _price, Logging.White);
                         }
                         else
                         {
-                            Logging.Log("Sell:Process", "No current sell orders, can't create lowest order for Name - " + _item.Name, Logging.White);
+                            Logging.Log("SellItem:Process", "No current sell orders, can't create lowest order for Name - " + _item.Name, Logging.White);
                             _state = State.Done;
                         }
                     }
                     else
                     {
-                        Logging.Log("Sell:Process", "MarketWindow is not open, going back to open market state", Logging.White);
+                        Logging.Log("SellItem:Process", "MarketWindow is not open, going back to open market state", Logging.White);
 
                         _state = State.OpenMarket;
                     }
@@ -209,7 +209,7 @@ namespace OmniEveModules.Actions
 
                     if (Cache.Instance.DirectEve.OpenSellItems(_item) == true)
                     {
-                        Logging.Log("Sell:Process", "Opening sell window for Name - " + _item.Name, Logging.White);
+                        Logging.Log("SellItem:Process", "Opening sell window for Name - " + _item.Name, Logging.White);
                         if (_createOrder)
                             _state = State.SetPrice;
                         else
@@ -217,7 +217,7 @@ namespace OmniEveModules.Actions
                     }
                     else
                     {
-                        Logging.Log("Sell:Process", "Failed to open sell window for Name - " + _item.Name, Logging.White);
+                        Logging.Log("SellItem:Process", "Failed to open sell window for Name - " + _item.Name, Logging.White);
                         _state = State.Done;
                     }
 
@@ -234,22 +234,25 @@ namespace OmniEveModules.Actions
                         if(!sellWindow.IsReady)
                         {
                             _sellWindowNotReadyCount++;
-                            Logging.Log("Sell:Process", "Sell window is not ready", Logging.White);
+                            Logging.Log("SellItem:Process", "Sell window is not ready", Logging.White);
 
                             if (_sellWindowNotReadyCount >= 5)
-                                _state = State.OpenSellWindow;
+                            {
+                                Logging.Log("SellItem:Process", "Something is wrong trying to sell this item, quitting the sell", Logging.White);
+                                _state = State.Done;
+                            }
 
                             break;
                         }
 
                         sellWindow.SetPrice(_item.ItemId, _price);
 
-                        Logging.Log("Sell:Process", "Sell window setting price to " + _price, Logging.White);
+                        Logging.Log("SellItem:Process", "Sell window setting price to " + _price, Logging.White);
                         _state = State.SellItem;
                     }
                     else
                     {
-                        Logging.Log("Sell:Process", "Sell Window is not open going back to open sell window state", Logging.White);
+                        Logging.Log("SellItem:Process", "Sell Window is not open going back to open sell window state", Logging.White);
                         _state = State.OpenSellWindow;
                     }
 
@@ -261,7 +264,7 @@ namespace OmniEveModules.Actions
                         if (!sellWindow.IsReady)
                         {
                             _sellWindowNotReadyCount++;
-                            Logging.Log("Sell:Process", "Sell window is not ready", Logging.White);
+                            Logging.Log("SellItem:Process", "Sell window is not ready", Logging.White);
 
                             if (_sellWindowNotReadyCount >= 5)
                                 _state = State.OpenSellWindow;
@@ -271,7 +274,7 @@ namespace OmniEveModules.Actions
 
                         sellWindow.SellItems();
 
-                        Logging.Log("Sell:Process", "Selling item Name - " + _item.Name, Logging.White);
+                        Logging.Log("SellItem:Process", "Selling item Name - " + _item.Name, Logging.White);
 
                         _sold = true;
 
@@ -279,7 +282,7 @@ namespace OmniEveModules.Actions
                     }
                     else
                     {
-                        Logging.Log("Sell:Process", "Sell Window is not open going back to open sell window state", Logging.White);
+                        Logging.Log("SellItem:Process", "Sell Window is not open going back to open sell window state", Logging.White);
                         _state = State.OpenSellWindow;
                     }
 

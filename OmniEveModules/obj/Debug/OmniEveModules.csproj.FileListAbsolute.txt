@@ -14,3 +14,4 @@ C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveModules\bin\Debug\Metro
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveModules\bin\Debug\DirectEve.pdb
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveModules\obj\Debug\OmniEveModules.dll
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveModules\obj\Debug\OmniEveModules.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveModules\obj\Debug\OmniEveModules.csprojResolveAssemblyReference.cache

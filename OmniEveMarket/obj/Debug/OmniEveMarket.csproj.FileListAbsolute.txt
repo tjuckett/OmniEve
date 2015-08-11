@@ -23,3 +23,4 @@ C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEv
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.csproj.GenerateResource.Cache
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.exe
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveMarket\obj\Debug\OmniEveMarket.csprojResolveAssemblyReference.cache

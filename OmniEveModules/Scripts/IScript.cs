@@ -19,42 +19,37 @@ namespace OmniEveModules.Scripts
         public event DoActionsEventHandler DoActions;
         public event ScriptCompleteEventHandler ScriptCompleted;
 
-        public abstract void Update();
         public abstract bool IsDone();
+        public abstract void OnFrame();
+
+        public void OnFrame(object sender, EventArgs e)
+        {
+            OnFrame();
+
+            if (IsDone() == true)
+                Stop();
+        }
 
         public void Start()
         {
             Cache.Instance.DirectEve.OnFrame += OnFrame;
         }
 
-        public void Stop()
+        private void Stop()
         {
-            Cache.Instance.DirectEve.OnFrame -= OnFrame;
-            
             DoActions(new List<IAction>() { new ScriptComplete(ScriptCompleted) });
         }
 
-        public void OnFrame(object sender, EventArgs e)
-        {
-            if(IsDone() == false)
-                Update();
-            else
-                Stop();
-        }
-
-        public void RunAction(IAction action)
+        protected void RunAction(IAction action)
         {
             List<IAction> actions = new List<IAction>() { action };
 
             DoActions(actions);
         }
 
-        public void RunActions(List<IAction> actions)
+        protected void RunActions(List<IAction> actions)
         {
             DoActions(actions);
         }
-
-        private List<IAction> _actions = new List<IAction>();
-        private Thread _thread;
     }
 }

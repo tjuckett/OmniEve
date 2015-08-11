@@ -24,8 +24,7 @@ namespace OmniEve
         private IAction _currentAction = null;
         private static DateTime _nextOmniEveAction = DateTime.UtcNow.AddHours(-1);
 
-        private volatile List<IAction> _actions = new List<IAction>();
-        private volatile List<IScript> _scripts = new List<IScript>();
+        private volatile Stack<IAction> _actions = new Stack<IAction>();
 
         public bool Cleanup { get; set; }
         public OmniEveState State { get { return _state; } }
@@ -56,19 +55,11 @@ namespace OmniEve
 
         public void RunScript(IScript script)
         {
-            script.DoActions += RunScriptDoActions;
-            script.Start();
-
-            lock(_scripts)
-                _scripts.Add(script);
-        }
-
-        public void StopScript(IScript script)
-        {
-            script.Stop();
-            
-            lock (_scripts)
-                _scripts.Remove(script);
+            if (script != null)
+            {
+                script.DoActions += RunScriptDoActions;
+                script.Start();
+            }
         }
 
         private void RunScriptDoActions(List<IAction> actions)
@@ -83,16 +74,13 @@ namespace OmniEve
         {
             lock (_actions)
             {
-                _actions.Add(action);
+                _actions.Push(action);
             }
         }        
 
         public bool IsActionQueueEmpty()
         {
-            lock (_actions)
-            {
-                return _actions.Count <= 0 && (_currentAction == null || _currentAction.IsDone());
-            }
+            return _actions.Count <= 0 && (_currentAction == null || _currentAction.IsDone());
         }
 
         public bool OnFrameValidate()
@@ -187,16 +175,11 @@ namespace OmniEve
                     case OmniEveState.NextAction:
                         
                         if (_actions.Count > 0)
-                            _currentAction = _actions.FirstOrDefault();
+                            _currentAction = _actions.Pop();
 
                         if (_currentAction != null)
                         {
                             Logging.Log("OmniEve:EVEOnFrame", "Popping next action off the queue", Logging.Teal);
-
-                            lock (_actions)
-                            {
-                                _actions.Remove(_currentAction);
-                            }
                             
                             _state = OmniEveState.InitAction;
                         }

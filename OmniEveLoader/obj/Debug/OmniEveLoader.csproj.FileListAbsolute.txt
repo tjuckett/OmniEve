@@ -15,3 +15,4 @@ C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\Intero
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.csproj.ResolveComReference.cache
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.dll
 C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.pdb
+C:\Users\Tim and Desiree\Documents\GitHub\OmniEve\OmniEveLoader\obj\Debug\OmniEveLoader.csprojResolveAssemblyReference.cache
