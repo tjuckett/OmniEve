@@ -621,9 +621,9 @@ namespace OmniEve
                 Automation automation = new Automation();
                 automation.ScriptCompleted += AutomationFinished;
                 automation.OnMyOrdersFinished += OnMyOrdersFinished;
-                automation.OnMarketInfoFinished += OnMarketInfoFinished;
-                automation.OnModifySellOrderFinished += OnModifySellOrderFinished;
-                automation.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
+                //automation.OnMarketInfoFinished += OnMarketInfoFinished;
+                //automation.OnModifySellOrderFinished += OnModifySellOrderFinished;
+                //automation.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
                 automation.OnItemHangerFinished += OnItemHangerFinished;
                 automation.OnSellItemFinished += OnSellItemFinished;
                 _omniEve.RunScript(automation);
@@ -651,10 +651,10 @@ namespace OmniEve
 
         public void ModifyOrders()
         {
-            UpdateAllOrders UpdateAllOrders = new UpdateAllOrders();
+            /*UpdateAllOrders UpdateAllOrders = new UpdateAllOrders();
             UpdateAllOrders.OnModifySellOrderFinished += OnModifySellOrderFinished;
             UpdateAllOrders.OnModifyBuyOrderFinished += OnModifyBuyOrderFinished;
-            _omniEve.RunScript(UpdateAllOrders);
+            _omniEve.RunScript(UpdateAllOrders);*/
         }
 
         public void LoadItemHanger()

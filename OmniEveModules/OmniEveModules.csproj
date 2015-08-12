@@ -61,14 +61,13 @@
     <Compile Include="Actions\ItemHanger.cs" />
     <Compile Include="Actions\MyOrders.cs" />
     <Compile Include="Actions\MarketInfo.cs" />
-    <Compile Include="Actions\ModifyOrder.cs" />
+    <Compile Include="Actions\UpdateOrder.cs" />
     <Compile Include="Caching\Cache.cs" />
     <Compile Include="Caching\MarketItem.cs" />
     <Compile Include="Logging\ControlWriter.cs" />
     <Compile Include="Logging\Logging.cs" />
     <Compile Include="Lookup\Time.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\UpdateAllOrders.cs" />
     <Compile Include="Actions\SellItem.cs" />
     <Compile Include="States\OmniEveState.cs" />
     <Compile Include="Scripts\Automation.cs" />

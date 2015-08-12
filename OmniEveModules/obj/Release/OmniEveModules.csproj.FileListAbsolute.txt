@@ -41,6 +41,7 @@ C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
 C:\Users\Tim\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache
+C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\OmniEveModules.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\OmniEveModules.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\DirectEve.dll
@@ -50,4 +51,3 @@ C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\MetroFrame
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\bin\Release\DirectEve.pdb
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.dll
 C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.pdb
-C:\Users\tjuckett\Documents\GitHub\OmniEve\OmniEveModules\obj\Release\OmniEveModules.csprojResolveAssemblyReference.cache

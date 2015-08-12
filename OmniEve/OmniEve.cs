@@ -24,7 +24,7 @@ namespace OmniEve
         private IAction _currentAction = null;
         private static DateTime _nextOmniEveAction = DateTime.UtcNow.AddHours(-1);
 
-        private volatile Stack<IAction> _actions = new Stack<IAction>();
+        private volatile Queue<IAction> _actions = new Queue<IAction>();
 
         public bool Cleanup { get; set; }
         public OmniEveState State { get { return _state; } }
@@ -74,7 +74,7 @@ namespace OmniEve
         {
             lock (_actions)
             {
-                _actions.Push(action);
+                _actions.Enqueue(action);
             }
         }        
 
@@ -175,7 +175,10 @@ namespace OmniEve
                     case OmniEveState.NextAction:
                         
                         if (_actions.Count > 0)
-                            _currentAction = _actions.Pop();
+                        { 
+                            lock(_actions)
+                                _currentAction = _actions.Dequeue();
+                        }
 
                         if (_currentAction != null)
                         {
